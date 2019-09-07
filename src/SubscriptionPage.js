@@ -17,7 +17,14 @@ import AddressBadge from './components/Widgets/AddressBadge';
 import globalStyles from './assets/GlobalStyles';
 
 export default class SubscriptionPage extends Component {
+
+    viewOrder(){
+        this.props.navigation.navigate('OrderSummary');
+    }
+
     render() {
+        const { navigation } = this.props;
+        const storeId = navigation.getParam('id');
         return (
             <ScrollView>
                 <View>
@@ -30,7 +37,7 @@ export default class SubscriptionPage extends Component {
                     />
                     <View style = {globalStyles.spacer20}></View>
                     <Text style={styles.title}>Subscription Title</Text>
-                    <Text style={styles.subTitle}>Company Name</Text>
+                    <Text style={styles.subTitle}>Company Name {storeId}</Text>
                     <View style = {globalStyles.spacer20}></View>
                     </View>
                     <FitImage
@@ -50,7 +57,7 @@ export default class SubscriptionPage extends Component {
                         <QuantityStepper/>
                         <Selectionlist data = {["Option 1","Option 2","Option 3"]}/>
                         <SelectionCarousel/>
-                        <TouchableOpacity style={styles.cta} onPress={()=>this.showOptions()}>
+                        <TouchableOpacity style={styles.cta} onPress={()=>this.viewOrder()}>
                             <Text style={styles.ctaText}> View Order </Text>
                         </TouchableOpacity>
                     </View>

@@ -6,10 +6,15 @@ import { Text,
     StyleSheet,
     ScrollView
 } from 'react-native';
+
 import WalletCard from './components/WalletCard';
+
 
 export default class WalletView extends Component {
     render() {
+        const { navigation } = this.props;
+        const storeId = navigation.getParam('id');
+        console.log("from wallet: "+storeId);
         return (
             <ScrollView>
                 <View style={styles.container}>

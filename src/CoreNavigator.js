@@ -4,12 +4,15 @@ import UpcomingView from './UpcomingView';
 import SettingsView from './SettingsView';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import SubscriptionPage from './SubscriptionPage';
+import OrderSummary from './OrderSummary';
+import { createStackNavigator } from 'react-navigation-stack';
 
 
 const TabNavigator = createBottomTabNavigator({
-    Wallet: WalletView,
+    Wallet:WalletView,
     Upcoming: UpcomingView,
-    Settings: SettingsView
+    Settings: SettingsView,
 },{
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
@@ -23,7 +26,7 @@ const TabNavigator = createBottomTabNavigator({
         }else if (routeName === 'Settings') {
           iconName = `ios-cog`;
         }
-        // You can return any component that you like here!
+        
         return <IconComponent name={iconName} size={25} color={tintColor} />;
       },
     }),
@@ -35,4 +38,19 @@ const TabNavigator = createBottomTabNavigator({
 );
   
 
-export default TabNavigator;
+const CoreStack = createStackNavigator(
+  { 
+    Home:TabNavigator,
+    LandingPage: {
+      screen: SubscriptionPage,
+      path: 'stores/:id',
+    },
+    OrderSummary:OrderSummary,
+  },
+  {
+    mode: 'card',
+    headerMode: 'none',
+  }
+);
+
+export default CoreStack;
