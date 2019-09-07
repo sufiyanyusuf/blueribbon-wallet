@@ -25,13 +25,16 @@ export default class WalletCard extends Component {
           <View style={styles.CardContainer}>
             <View style={styles.contentContainer}>
                 <View style={styles.cardHeader}>
-                    <View>
+                    <View style = {styles.cardHeaderTextContainer}>
                         <Text style={styles.h3}>Brand Name</Text>
                         <Text style={styles.caption}>Product Name</Text>
                     </View>
-                    <View>
-                        <FitImage style={styles.graphic} resizeMode={'contain'} source={require('../assets/logo_sample.png')}/>
-                    </View>
+
+                    <FitImage
+                      resizeMode="contain"
+                      source={{ uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
+                      style={styles.fitImage}
+                    />
                 </View>
               <Text style={styles.h1}>Remaining Value</Text>
             </View>
@@ -83,8 +86,13 @@ const styles = StyleSheet.create({
         color: "#888888"
     },
     cardHeader:{
+        flex:1,
         flexDirection:"row",
-        marginBottom:40
+        marginBottom:40,
+        justifyContent:'space-between',
+    },
+    cardHeaderTextContainer:{
+        flexGrow:2
     },
     caption:{
         fontFamily:"TTCommons-Regular",
@@ -118,5 +126,13 @@ const styles = StyleSheet.create({
       textAlign: "justify",
       color: "#ffffff",
       marginLeft: 30
-    }
+    },
+    fitImage: {
+      borderRadius: 30,
+      overflow: 'hidden',
+    },
+    fitImageWithSize: {
+      height: 60,
+      width: 60
+    },
   });
