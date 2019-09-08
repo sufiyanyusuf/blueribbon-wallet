@@ -29,16 +29,16 @@ export default class SubscriptionPage extends Component {
             <ScrollView>
                 <View>
                     <View style = {styles.subContainer}>
-                    <View style = {globalStyles.spacer60}></View>
-                    <FitImage
-                        resizeMode="contain"
-                        source={{ uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
-                        style={styles.avatar}
-                    />
-                    <View style = {globalStyles.spacer20}></View>
-                    <Text style={styles.title}>Subscription Title</Text>
-                    <Text style={styles.subTitle}>Company Name {storeId}</Text>
-                    <View style = {globalStyles.spacer20}></View>
+                        <View style = {globalStyles.spacer60}></View>
+                        <FitImage
+                            resizeMode="contain"
+                            source={{ uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
+                            style={styles.avatar}
+                        />
+                        <View style = {globalStyles.spacer20}></View>
+                        <Text style={styles.title}>Subscription Title</Text>
+                        <Text style={styles.subTitle}>Company Name {storeId}</Text>
+                        <View style = {globalStyles.spacer20}></View>
                     </View>
                     <FitImage
                         resizeMode="contain"
@@ -53,10 +53,11 @@ export default class SubscriptionPage extends Component {
                         <View style = {globalStyles.spacer20}></View>
                         <Text>Product Description</Text>
                         <View style = {globalStyles.spacer40}></View>
+                    </View>
                         <SelectionCarousel data = {["Option 1","Option 2","Option 3"]}/>
+                    <View style = {styles.subContainer}>
                         <QuantityStepper/>
                         <Selectionlist data = {["Option 1","Option 2","Option 3"]}/>
-                        <SelectionCarousel/>
                         <TouchableOpacity style={styles.cta} onPress={()=>this.viewOrder()}>
                             <Text style={styles.ctaText}> View Order </Text>
                         </TouchableOpacity>

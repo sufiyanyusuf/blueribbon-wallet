@@ -7,7 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import SubscriptionPage from './SubscriptionPage';
 import OrderSummary from './OrderSummary';
 import { createStackNavigator } from 'react-navigation-stack';
-
+import PaymentConfirmation from './PaymentConfirmation'
 
 const TabNavigator = createBottomTabNavigator({
     Wallet:WalletView,
@@ -46,6 +46,7 @@ const CoreStack = createStackNavigator(
       path: 'stores/:id',
     },
     OrderSummary:OrderSummary,
+    Confirmation:PaymentConfirmation
   },
   {
     mode: 'card',

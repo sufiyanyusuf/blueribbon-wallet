@@ -7,6 +7,7 @@ import {
     FlatList,
   } from 'react-native';
 import SelectionListItem from '../Controls/SelectionListCell';
+import SelectionCarouselItem from '../Controls/SelectionCarouselItem';
 import globalStyles from '../../assets/GlobalStyles';
 
 export default class SelectionCarousel extends Component {
@@ -34,8 +35,10 @@ export default class SelectionCarousel extends Component {
                 data={this.state.data}
                 keyExtractor = {(item, index) => index.toString()}
                 renderItem={({ item, index }) => 
-                 <SelectionListItem title={item} index={index} onSelection={this.cellSelected}/>
+                 <SelectionCarouselItem title={item} index={index} onSelection={this.cellSelected}/>
                 }
+                ListFooterComponent={<View style={{width:35}}></View>}
+                ListHeaderComponent={<View style={{width:35}}></View>}
             />
             <View style = {globalStyles.spacer40}></View>
             <View style = {globalStyles.divider}></View>
@@ -77,6 +80,7 @@ const styles = StyleSheet.create({
         color: "#000000"
     },
     title:{
+        marginLeft:40,
         fontFamily:"TTCommons-Bold",
         fontSize: 24,
         fontStyle: "normal",

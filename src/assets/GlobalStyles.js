@@ -25,4 +25,8 @@ export default styles = StyleSheet.create({
         height:20,
         width:20
     },
+    spacer10:{
+        height:10,
+        width:10
+    },
 });
