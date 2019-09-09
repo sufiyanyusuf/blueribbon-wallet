@@ -7,39 +7,40 @@ export default class SelectionListItem extends Component {
 	constructor(props){
 		super(props);
 		this.state =  ({
-            checked:false,
+            checked:this.props.selected,
         });
     }
     
 	toggleCheckbox=()=>{
-        console.log(this.state);
-		if (this.state.checked == false){
-			this.setState({
-				checked:true
-			});
-		}else{
-			this.setState({
-				checked:false
-			});
+		if (this.props.selected == false){
+			// this.setState({
+			// 	checked:true
+            // });
+            this.props.onSelection(this.props.index);
         }
-		this.props.onSelection(this.props.index)
-	}
+        // else{
+		// 	this.setState({
+		// 		checked:false
+		// 	});
+        // }
+    }
 
 	render() {
+        console.log("index:",this.props.index,this.props.selected);
 		return (
             <View style={styles.container}>
                 <View style={styles.container_checkBox}>
                     <TouchableOpacity onPress={this.toggleCheckbox}>
-                        <View style={[styles.checkbox,this.state.checked&&styles.checkbox_checked]}>
+                        <View style={[styles.checkbox,this.props.selected&&styles.checkbox_checked]}>
                             <Icon name="md-checkmark" size={25} color="#ffffff"/>
                         </View>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.container_text}>
                     <TouchableOpacity onPress={this.toggleCheckbox}>
-                            <Text style={[styles.item_title, this.state.checked&&styles.item_title_checked]}>
-                                    {this.props.title}
-                            </Text>
+                        <Text style={[styles.item_title, this.props.selected&&styles.item_title_checked]}>
+                                {this.props.title}
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </View>

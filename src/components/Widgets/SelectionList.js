@@ -15,12 +15,17 @@ export default class SelectionList extends Component {
       super(props);
         this.state = ({
             data:this.props.data,
-            multiSelect:false
+            singleSelection:true,
+            selectedIndex:0,
         });
     }
 
     cellSelected=(index)=>{
-        console.log("selected cell" + index);
+        console.log("mutate");
+        this.setState({
+            selectedIndex:index,
+            data:this.props.data
+        });
     }
     
     render() {
@@ -31,9 +36,10 @@ export default class SelectionList extends Component {
             <View style = {globalStyles.spacer20}></View>
             <FlatList
                 data={this.state.data}
+                extraData={this.state.selectedIndex}
                 keyExtractor = {(item, index) => index.toString()}
                 renderItem={({ item, index }) => 
-                 <SelectionListItem title={item} index={index} onSelection={this.cellSelected}/>
+                 <SelectionListItem title={item} index={index} onSelection={this.cellSelected} selected={this.state.selectedIndex==index}/>
                 }
             />
             <View style = {globalStyles.spacer40}></View>

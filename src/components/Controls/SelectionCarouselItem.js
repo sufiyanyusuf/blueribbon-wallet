@@ -9,6 +9,7 @@ export default class SelectionCarouselItem extends Component {
 		super(props);
 		this.state =  ({
             checked:false,
+            singleSelection:true
         });
     }
     
@@ -95,6 +96,7 @@ const styles = StyleSheet.create({
     container_text: {
         width:120,
         padding:15,
+        paddingBottom:25,
         flex: 1,
         flexDirection: 'column',
         marginLeft: 4,
