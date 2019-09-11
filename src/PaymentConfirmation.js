@@ -30,7 +30,7 @@ export default class PaymentConfirmation extends Component {
               title = "back"
               onPress={() => this.props.navigation.goBack()}
             />
-            <View style={globalStyles.spacer20}></View>
+            <View style={globalStyles.spacer60}></View>
             <FitImage
               resizeMode="contain"
               source={{ uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
@@ -38,21 +38,12 @@ export default class PaymentConfirmation extends Component {
             />
             <View style={globalStyles.spacer20}></View>
             <View style={globalStyles.spacer20}></View>
-            <Text style = {styles.subtitle}>Title of subscription</Text>
+            <Text style = {styles.subtitle}>Payment Successful</Text>
             <View style={globalStyles.spacer20}></View>
 
-            <Text style = {styles.groupTitle}>Subscription Details</Text>
-            <View style={globalStyles.spacer10}></View>
-            <Text style = {styles.groupBody}>Detail 1</Text>
-            <Text style = {styles.groupBody}>Detail 1</Text>
-            <Text style = {styles.groupBody}>Detail 1</Text>
+            <Text style = {styles.groupBody}>Thanks for your order, we look forward to serving you. A copy of your receipt is saved in your wallet. </Text>
 
             <View style={globalStyles.spacer40}></View>
-
-
-            <Text style = {styles.groupTitle}>Delivery Details</Text>
-            <View style={globalStyles.spacer10}></View>
-            <Text style = {styles.groupBody}>Detail 1</Text>
 
             <View style={globalStyles.spacer40}></View>
           </View>
@@ -64,7 +55,7 @@ export default class PaymentConfirmation extends Component {
               style={styles.cta} 
               onPress={() => this.props.navigation.popToTop()}
             >
-              <Text style={styles.ctaText}>Complete</Text>
+              <Text style={styles.ctaText}>Close</Text>
             </TouchableOpacity>
           </View>
 
@@ -88,7 +79,7 @@ styles = StyleSheet.create({
     paddingTop:5,
     height: 60,
     borderRadius: 30,
-    backgroundColor: "#000000",
+    backgroundColor: "#0A71F2",
     flexDirection:'row',
     alignItems:'center',
     justifyContent:"center",

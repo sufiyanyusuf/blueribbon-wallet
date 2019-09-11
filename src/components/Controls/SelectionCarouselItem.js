@@ -7,33 +7,24 @@ import FitImage from 'react-native-fit-image';
 export default class SelectionCarouselItem extends Component {
 	constructor(props){
 		super(props);
-		this.state =  ({
-            checked:false,
-            singleSelection:true
+        this.state =  ({
+            checked:this.props.selected,
         });
     }
     
 	toggleSelection=()=>{
-        console.log(this.state);
-		if (this.state.checked == false){
-			this.setState({
-				checked:true
-			});
-		}else{
-			this.setState({
-				checked:false
-			});
+        if (this.props.selected == false){
+            this.props.onSelection(this.props.index);
         }
-		this.props.onSelection(this.props.index)
 	}
 
 	render() {
 		return (
             <TouchableOpacity onPress={this.toggleSelection} activeOpacity={.7} >
                 <View style = {styles.rootContainer}>
-                    <View style={[styles.containerUnselected, this.state.checked&&styles.containerSelected]}>
+                    <View style={[styles.containerUnselected, this.props.selected&&styles.containerSelected]}>
                             <View style={styles.container_text}>
-                                <Text numberOfLines={2} style={[styles.item_title, this.state.checked&&styles.item_title_checked]}>
+                                <Text numberOfLines={2} style={[styles.item_title, this.props.selected&&styles.item_title_checked]}>
                                     {this.props.title}
                                 </Text>
                             </View>

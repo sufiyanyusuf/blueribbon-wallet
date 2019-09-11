@@ -16,11 +16,16 @@ export default class SelectionCarousel extends Component {
       super(props);
         this.state = ({
             data:this.props.data,
+            selectedIndex:0,
             multiSelect:false
         });
     }
 
     cellSelected=(index)=>{
+        this.setState({
+            selectedIndex:index,
+            data:this.props.data
+        });
         console.log("selected cell" + index);
     }
     
@@ -31,11 +36,12 @@ export default class SelectionCarousel extends Component {
             <View style = {globalStyles.spacer20}></View>
             <FlatList
                 horizontal = {true}
+                extraData={this.state.selectedIndex}
                 showsHorizontalScrollIndicator={false}
                 data={this.state.data}
                 keyExtractor = {(item, index) => index.toString()}
                 renderItem={({ item, index }) => 
-                 <SelectionCarouselItem title={item} index={index} onSelection={this.cellSelected}/>
+                 <SelectionCarouselItem title={item} index={index} onSelection={this.cellSelected} selected={this.state.selectedIndex==index}/>
                 }
                 ListFooterComponent={<View style={{width:35}}></View>}
                 ListHeaderComponent={<View style={{width:35}}></View>}

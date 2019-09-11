@@ -21,7 +21,6 @@ export default class SelectionList extends Component {
     }
 
     cellSelected=(index)=>{
-        console.log("mutate");
         this.setState({
             selectedIndex:index,
             data:this.props.data

@@ -13,16 +13,8 @@ export default class SelectionListItem extends Component {
     
 	toggleCheckbox=()=>{
 		if (this.props.selected == false){
-			// this.setState({
-			// 	checked:true
-            // });
             this.props.onSelection(this.props.index);
         }
-        // else{
-		// 	this.setState({
-		// 		checked:false
-		// 	});
-        // }
     }
 
 	render() {
