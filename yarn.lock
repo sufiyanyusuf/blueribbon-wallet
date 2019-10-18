@@ -4951,9 +4951,9 @@ react-lifecycles-compat@^3.0.4:
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
 react-native-auth0@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/react-native-auth0/-/react-native-auth0-1.5.0.tgz#6714669a5d17abd8b4b9b7affd4428f517e9359c"
-  integrity sha512-sAna5N7TukGZPLQBnEcvpQ7rwsgofieqI8OCWS3ksOKE1Z6nIBKMpUGFFx5JpT+nbmhcz3F6te2JgWUxUehK6A==
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-auth0/-/react-native-auth0-1.6.0.tgz#1a1bac6057b5bf6a804c28e1c773e4a03d40638c"
+  integrity sha512-LvW9Cn7+coh8snXwFYLPrCE7ZXfXxX3//vlxRn2WviahakFEY0sj0gdg2jG2gCkwh/1YJ9eoqos1ZJV2O/2mxg==
   dependencies:
     base-64 "^0.1.0"
     url "^0.11.0"
