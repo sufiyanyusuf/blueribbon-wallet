@@ -16,59 +16,58 @@ import Selectionlist from './components/Widgets/SelectionList';
 import AddressBadge from './components/Widgets/AddressBadge';
 import globalStyles from './assets/GlobalStyles';
 
-export default class SubscriptionPage extends Component {
+const SubscriptionPage = ({navigation}) => {
 
-    viewOrder(){
-        this.props.navigation.navigate('OrderSummary');
+    const viewOrder = () => {
+        navigation.navigate('OrderSummary');
     }
 
-    render() {
-        const { navigation } = this.props;
-        const storeId = navigation.getParam('id');
-        return (
-            <ScrollView>
-                <View>
-                    <View style = {styles.subContainer}>
-                        <View style = {globalStyles.spacer60}></View>
-                        <FitImage
-                            resizeMode="contain"
-                            source={{ uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
-                            style={styles.avatar}
-                        />
-                        <View style = {globalStyles.spacer20}></View>
-                        <Text style={styles.title}>Subscription Title</Text>
-                        <Text style={styles.subTitle}>Company Name {storeId}</Text>
-                        <View style = {globalStyles.spacer20}></View>
-                    </View>
+    const storeId = navigation.getParam('id');
+
+    return (
+        <ScrollView>
+            <View>
+                <View style = {styles.subContainer}>
+                    <View style = {globalStyles.spacer60}></View>
                     <FitImage
                         resizeMode="contain"
                         source={{ uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
+                        style={styles.avatar}
                     />
-
-                    <View style={styles.addressBadge}>
-                        <AddressBadge/>
-                    </View>
-                    
-                    <View style = {styles.subContainer}>
-                        <View style = {globalStyles.spacer20}></View>
-                        <Text>Product Description</Text>
-                        <View style = {globalStyles.spacer40}></View>
-                    </View>
-                        <SelectionCarousel data = {["Option 1","Option 2","Option 3"]}/>
-                    <View style = {styles.subContainer}>
-                        <QuantityStepper/>
-                        <Selectionlist data = {["Option 1","Option 2","Option 3"]}/>
-                        <TouchableOpacity style={styles.cta} onPress={()=>this.viewOrder()}>
-                            <Text style={styles.ctaText}> View Order </Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style = {globalStyles.spacer40}></View>
-
+                    <View style = {globalStyles.spacer20}></View>
+                    <Text style={styles.title}>Subscription Title</Text>
+                    <Text style={styles.subTitle}>Company Name {storeId}</Text>
+                    <View style = {globalStyles.spacer20}></View>
                 </View>
-            </ScrollView>
-        )
-    }
+                <FitImage
+                    resizeMode="contain"
+                    source={{ uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
+                />
+
+                <View style={styles.addressBadge}>
+                    <AddressBadge/>
+                </View>
+                
+                <View style = {styles.subContainer}>
+                    <View style = {globalStyles.spacer20}></View>
+                    <Text>Product Description</Text>
+                    <View style = {globalStyles.spacer40}></View>
+                </View>
+                    <SelectionCarousel data = {["Option 1","Option 2","Option 3"]}/>
+                <View style = {styles.subContainer}>
+                    <QuantityStepper/>
+                    <Selectionlist data = {["Option 1","Option 2","Option 3"]}/>
+                    <TouchableOpacity style={styles.cta} onPress={()=>viewOrder()}>
+                        <Text style={styles.ctaText}> View Order </Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View style = {globalStyles.spacer40}></View>
+
+            </View>
+        </ScrollView>
+    )
+    
 }
 
 const styles = StyleSheet.create({
@@ -117,3 +116,5 @@ const styles = StyleSheet.create({
         marginRight:20
     }
 });
+
+export default SubscriptionPage;
