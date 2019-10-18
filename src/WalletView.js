@@ -10,20 +10,20 @@ import { Text,
 import WalletCard from './components/WalletCard';
 
 
-export default class WalletView extends Component {
-    render() {
-        const { navigation } = this.props;
-        const storeId = navigation.getParam('id');
-        console.log("from wallet: "+storeId);
-        return (
-            <ScrollView>
-                <View style={styles.container}>
-                    <WalletCard/>
-                    <WalletCard/>
-                </View>
-            </ScrollView>
-        )
-    }
+const WalletView = ({navigation}) => {
+    
+
+    const storeId = navigation.getParam('id');
+    console.log("from wallet: "+storeId);
+    return (
+        <ScrollView>
+            <View style={styles.container}>
+                <WalletCard/>
+                <WalletCard/>
+            </View>
+        </ScrollView>
+    )
+    
     
 }
 
@@ -36,3 +36,5 @@ const styles = StyleSheet.create({
       alignItems: 'stretch',
     }
 });
+
+export default WalletView;
