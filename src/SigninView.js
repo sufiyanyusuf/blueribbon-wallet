@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import {
     AsyncStorage,
     View,
@@ -13,33 +13,29 @@ import SInfo from 'react-native-sensitive-info';
 
 const auth0 = new Auth0(credentials);
 
-  export default class SignInView extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { accessToken: null };
-    }
+  const SignInView = ({navigation}) => {
 
-    componentDidMount() {
+    const [accessToken, setAccessToken] = useState(null);
+
+    useEffect (()=>{
+      const checkToken = async() => {
         SInfo.getItem("accessToken", {}).then(accessToken => {
           if (accessToken) {
             auth0.auth
               .userInfo({ token: accessToken })
               .then(data => {
-                this.setState({
-                    accessToken: true
-                })
-                this.props.navigation.navigate('App');
+                setAccessToken(true)
+
+                navigation.navigate('App');
               })
               .catch(err => {
                 SInfo.getItem("refreshToken", {}).then(refreshToken => {
                   auth0.auth
                     .refreshToken({ refreshToken: refreshToken })
                     .then(newAccessToken => {
-                      SInfo.setItem("accessToken", newAccessToken, {});
-                      this.setState({
-                        accessToken: true
-                      })
-                      this.props.navigation.navigate('App');
+                      SInfo.setItem("accessToken", JSON.stringify(newAccessToken), {});
+                      setAccessToken(true)
+                      navigation.navigate('App');
                     })
                     .catch(err2 => {
                       console.log("err getting new access token");
@@ -48,16 +44,18 @@ const auth0 = new Auth0(credentials);
                 });
               });
           } else {
-            this.setState({
-              hasInitialized: true,
-              accessToken:false
-            });
+            setAccessToken(false)
             console.log("no access token");
           }
         });
       }
 
-    _onLogin = () => {
+      checkToken();
+      
+    },[])
+  
+
+    const _onLogin = () => {
         auth0.webAuth
             .authorize({
                 scope: 'offline_access profile token',
@@ -66,24 +64,24 @@ const auth0 = new Auth0(credentials);
             .then(credentials => {
                 SInfo.setItem("accessToken", credentials.accessToken, {});
                 SInfo.setItem("refreshToken", credentials.refreshToken, {});
-                this.setState({ accessToken: true });
-                this.props.navigation.navigate('App')
+                setAccessToken(true)
+                navigation.navigate('App')
             })
             .catch(error => console.log(error));
     };
 
-    render() {
-        let loggedIn = this.state.accessToken === null ? false : true;
-        return ( 
-        <View>
-            <Text> Auth0Sample - Login </Text>    
-            <Text>
-                You are { this.state.accessToken ? '' : 'not ' } logged in . </Text>    
-                <Button onPress = { this._onLogin }
-                title = { 'Log In' }/>   
-        </View >
-        );
-    }
+    return ( 
+      <View>
+          <Text> Auth0Sample - Login </Text>    
+          <Text>
+              You are { accessToken ? '' : 'not ' } logged in . </Text>    
+              <Button onPress = { _onLogin }
+              title = { 'Log In' }/>   
+      </View >
+    );
+    
 
 
 }
+
+export default SignInView;

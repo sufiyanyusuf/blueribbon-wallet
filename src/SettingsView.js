@@ -27,7 +27,6 @@ const SettingsView = ({navigation}) => {
                   auth0.auth
                     .refreshToken({ refreshToken: refreshToken })
                     .then(newAccessToken => {
-                      console.log(JSON.stringify(newAccessToken))
                       SInfo.setItem("accessToken", JSON.stringify(newAccessToken), {});
                       setAccessToken(true)
                       // RNRestart.Restart();
