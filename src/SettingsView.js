@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component,useState,useEffect } from 'react';
 import { Text, View , Button, Alert} from 'react-native';
 import Auth0 from 'react-native-auth0';
 import SInfo from 'react-native-sensitive-info';
@@ -7,21 +7,19 @@ import RNRestart from "react-native-restart";
 var credentials = require('./auth0-credentials');
 const auth0 = new Auth0(credentials);
 
-export default class SettingsView extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { accessToken: null };
-    }
+const SettingsView = ({navigation}) => {
 
-    componentDidMount() {
+  const [accessToken,setAccessToken] = useState(null)
+
+
+    useEffect (() => {
+      const checkToken = async () => {
         SInfo.getItem("accessToken", {}).then(accessToken => {
           if (accessToken) {
             auth0.auth
               .userInfo({ token: accessToken })
               .then(data => {
-                this.setState({
-                    accessToken: true
-                })
+                setAccessToken(true)
               })
               .catch(err => {
                 
@@ -31,9 +29,7 @@ export default class SettingsView extends Component {
                     .then(newAccessToken => {
                       console.log(JSON.stringify(newAccessToken))
                       SInfo.setItem("accessToken", JSON.stringify(newAccessToken), {});
-                      this.setState({
-                        accessToken: true
-                      })
+                      setAccessToken(true)
                       // RNRestart.Restart();
                     })
                     .catch(err2 => {
@@ -43,14 +39,14 @@ export default class SettingsView extends Component {
                 });
               });
           } else {
-            this.setState({
-              accessToken:false
-            });
+            setAccessToken(false)
             console.log("no access token");
-            this.props.navigation.navigate('Auth');
+            navigation.navigate('Auth');
           }
         });
       }
+      checkToken();
+    },[]);
 
     _onLoginPress = () => {
         auth0.webAuth
@@ -61,7 +57,7 @@ export default class SettingsView extends Component {
             .then(credentials => {
                 SInfo.setItem("accessToken", credentials.accessToken, {});
                 SInfo.setItem("refreshToken", credentials.refreshToken, {});
-                this.setState({ accessToken: true });
+                setAccessToken(true)
             })
             .catch(error => console.log(error));
     };
@@ -72,8 +68,8 @@ export default class SettingsView extends Component {
             .then(success => {
                 SInfo.deleteItem("accessToken", {});
                 SInfo.deleteItem("refreshToken", {});
-                this.setState({ accessToken: null });
-            this.props.navigation.navigate('Auth');
+                setAccessToken(null)
+            navigation.navigate('Auth');
             })
             .catch(error => {
                 console.log("Log out cancelled");
@@ -81,17 +77,19 @@ export default class SettingsView extends Component {
     };
 
     
-    render() {
-        let loggedIn = this.state.accessToken === null ? false : true;
-        return ( 
-        <View >
-            <Text > Auth0Sample - Login </Text>    
-            <Text>
-                You are { loggedIn ? '' : 'not ' } logged in . </Text>    
-                <Button onPress = { loggedIn ? this._onLogoutPress : this._onLoginPress }
-                title = { loggedIn ? 'Log Out' : 'Log In' }/>   
-        </View >
-        );
-    }
+
+    let loggedIn = accessToken === null ? false : true;
+    return ( 
+    <View >
+        <Text > Auth0Sample - Login </Text>    
+        <Text>
+            You are { loggedIn ? '' : 'not ' } logged in . </Text>    
+            <Button onPress = { loggedIn ? _onLogoutPress : _onLoginPress }
+            title = { loggedIn ? 'Log Out' : 'Log In' }/>   
+    </View >
+    );
+    
 
 }
+
+export default SettingsView;
