@@ -6,7 +6,6 @@ import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.gettipsi.stripe.StripeReactPackage;
 import com.oblador.keychain.KeychainPackage;
-import com.auth0.react.A0Auth0Package;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;

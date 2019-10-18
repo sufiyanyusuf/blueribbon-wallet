@@ -27,7 +27,7 @@ export default createAppContainer(
       Checkout: Subs
     },
     {
-      initialRouteName: 'Checkout',
+      initialRouteName: 'App',
     }
   )
 );

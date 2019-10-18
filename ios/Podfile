@@ -32,7 +32,6 @@ target 'BlueRibbon' do
 
 
 
-  pod 'A0Auth0', :path => '../node_modules/react-native-auth0'
 
   pod 'RNKeychain', :path => '../node_modules/react-native-keychain'
 

@@ -190,7 +190,6 @@ android {
 dependencies {
     implementation project(':tipsi-stripe')
     implementation project(':react-native-keychain')
-    implementation project(':react-native-auth0')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
 

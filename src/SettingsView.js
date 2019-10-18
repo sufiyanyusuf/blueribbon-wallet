@@ -24,15 +24,17 @@ export default class SettingsView extends Component {
                 })
               })
               .catch(err => {
+                
                 SInfo.getItem("refreshToken", {}).then(refreshToken => {
                   auth0.auth
                     .refreshToken({ refreshToken: refreshToken })
                     .then(newAccessToken => {
-                      SInfo.setItem("accessToken", newAccessToken, {});
+                      console.log(JSON.stringify(newAccessToken))
+                      SInfo.setItem("accessToken", JSON.stringify(newAccessToken), {});
                       this.setState({
                         accessToken: true
                       })
-                    //   RNRestart.Restart();
+                      // RNRestart.Restart();
                     })
                     .catch(err2 => {
                       console.log("err getting new access token");
