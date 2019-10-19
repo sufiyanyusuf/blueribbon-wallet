@@ -5,54 +5,50 @@ import globalStyles from '../../assets/GlobalStyles';
 import FitImage from 'react-native-fit-image';
 import { SvgUri } from 'react-native-svg';
 
-export default class SelectionCarouselItem extends Component {
-	constructor(props){
-		super(props);
-        this.state =  ({
-            checked:this.props.selected,
-            icon:this.props.icon
-        });
-
-    }
+const SelectionCarouselItem = ({selected,icon,onSelection,index,title}) => {
+	
     
-	toggleSelection=()=>{
-        if (this.props.selected == false){
-            this.props.onSelection(this.props.index);
+	const toggleSelection=()=>{
+
+        if (selected == false){
+            onSelection(index);
         }
+
 	}
 
+    const displayIcon = () => {
 
-
-	render() {
-
-		return (
-            <TouchableOpacity onPress={this.toggleSelection} activeOpacity={.7} >
-                <View style = {styles.rootContainer}>
-                    <View style={[styles.containerUnselected, this.props.selected&&styles.containerSelected]}>
-                            <View style={styles.container_text}>
-                                <Text numberOfLines={2} style={[styles.item_title, this.props.selected&&styles.item_title_checked]}>
-                                    {this.props.title}
-                                </Text>
-                            </View>
-                            <View style={styles.container_image}>
-                                
-                                <SvgUri
-                                    width="40px"
-                                    height="40px"
-                                    uri={this.props.icon}
-                                />
-                                {/* <FitImage
-                                    resizeMode="contain"
-                                    source={{ uri: this.props.icon ?? 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
-                                    style={styles.fitImage}
-                                />  */}
-                                
-                            </View>
-                    </View>
+        if (icon && icon.substr(icon.length-3) === 'svg'){
+            return <SvgUri
+                        width="40px"
+                        height="40px"
+                        uri={icon}
+                    />
+        }else{
+            return  <FitImage
+                        resizeMode="contain"
+                        source={{ uri: icon ?? 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
+                        style={styles.fitImage}
+                    />  
+        }
+    }
+    return (
+        <TouchableOpacity onPress={toggleSelection} activeOpacity={.7} >
+            <View style = {styles.rootContainer}>
+                <View style={[styles.containerUnselected, selected&&styles.containerSelected]}>
+                        <View style={styles.container_text}>
+                            <Text numberOfLines={2} style={[styles.item_title, selected&&styles.item_title_checked]}>
+                                {title}
+                            </Text>
+                        </View>
+                        <View style={styles.container_image}>
+                            {displayIcon()}
+                        </View>
                 </View>
-            </TouchableOpacity>
-		);
-	}
+            </View>
+        </TouchableOpacity>
+    );
+	
 }
 
 const styles = StyleSheet.create({
@@ -124,3 +120,5 @@ const styles = StyleSheet.create({
         height:40
     },
 });
+
+export default SelectionCarouselItem;
