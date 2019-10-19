@@ -1,15 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component , useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles from '../../assets/GlobalStyles';
 import FitImage from 'react-native-fit-image';
+import { SvgUri } from 'react-native-svg';
 
 export default class SelectionCarouselItem extends Component {
 	constructor(props){
 		super(props);
         this.state =  ({
             checked:this.props.selected,
+            icon:this.props.icon
         });
+
     }
     
 	toggleSelection=()=>{
@@ -18,7 +21,10 @@ export default class SelectionCarouselItem extends Component {
         }
 	}
 
+
+
 	render() {
+
 		return (
             <TouchableOpacity onPress={this.toggleSelection} activeOpacity={.7} >
                 <View style = {styles.rootContainer}>
@@ -29,11 +35,18 @@ export default class SelectionCarouselItem extends Component {
                                 </Text>
                             </View>
                             <View style={styles.container_image}>
-                                <FitImage
-                                    resizeMode="contain"
-                                    source={{ uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
-                                    style={styles.fitImage}
+                                
+                                <SvgUri
+                                    width="40px"
+                                    height="40px"
+                                    uri={this.props.icon}
                                 />
+                                {/* <FitImage
+                                    resizeMode="contain"
+                                    source={{ uri: this.props.icon ?? 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
+                                    style={styles.fitImage}
+                                />  */}
+                                
                             </View>
                     </View>
                 </View>
@@ -53,7 +66,7 @@ const styles = StyleSheet.create({
         flex:1,
         paddingRight:40,
         paddingLeft:20,
-        paddingBottom:20
+        paddingBottom:15
     },
     containerUnselected: {
         flex: 1,
@@ -80,14 +93,15 @@ const styles = StyleSheet.create({
     },
     item_title: {
         fontFamily: "TTCommons-Bold",
-        fontSize: 16,
+        fontSize: 20,
         letterSpacing: 0,
         color: "#4a4a4a",
     },
     container_text: {
         width:120,
         padding:15,
-        paddingBottom:25,
+        paddingTop:20,
+        paddingBottom:5,
         flex: 1,
         flexDirection: 'column',
         marginLeft: 4,
