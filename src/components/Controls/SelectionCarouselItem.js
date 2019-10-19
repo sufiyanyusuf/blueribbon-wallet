@@ -27,7 +27,7 @@ const SelectionCarouselItem = ({selected,icon,onSelection,index,title}) => {
         }else{
             return  <FitImage
                         resizeMode="contain"
-                        source={{ uri: icon ?? 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
+                        source={{ uri: icon}}
                         style={styles.fitImage}
                     />  
         }

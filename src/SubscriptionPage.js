@@ -66,7 +66,7 @@ const SubscriptionPage = ({navigation}) => {
                                 const icons = modifier.choice.map (choice => {
                                     return choice.icon
                                 })
-                                _modifiers = (_modifiers.concat([<SelectionCarousel key = {index.toString()} data = {choices} icons = {icons}/>]))
+                                _modifiers = (_modifiers.concat([<SelectionCarousel key = {index.toString()} data = {choices} icons = {icons} title = {modifier.title}/>]))
                             }else{
                                 _modifiers = (_modifiers.concat([<Selectionlist key = {index.toString()} data = {choices} title = {modifier.title}/>]))
                             }

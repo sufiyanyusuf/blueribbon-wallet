@@ -10,7 +10,7 @@ import SelectionListItem from '../Controls/SelectionListCell';
 import SelectionCarouselItem from '../Controls/SelectionCarouselItem';
 import globalStyles from '../../assets/GlobalStyles';
 
-const SelectionCarousel = ({icons,data}) => {
+const SelectionCarousel = ({icons,data,title}) => {
 
     const [selectedIndex,setIndex] = useState(0);
 
@@ -24,21 +24,25 @@ const SelectionCarousel = ({icons,data}) => {
  
     return (
         <View style = {styles.container}>
-        <View style = {globalStyles.spacer20}></View>
-        <Text style = {styles.title}>List selection prompt</Text>
-        <View style = {globalStyles.spacer20}></View>
+
+        <View style = {styles.subContainer}>
+            <View style = {globalStyles.spacer20}></View>
+            <Text style = {styles.title}>{title ?? 'List selection prompt'}</Text>
+            <View style = {globalStyles.spacer20}></View>
+            
+        </View>
         <FlatList
-            horizontal = {true}
-            extraData={selectedIndex}
-            showsHorizontalScrollIndicator={false}
-            data={data}
-            keyExtractor = {(item, index) => index.toString()}
-            renderItem={({ item, index }) => 
-                <SelectionCarouselItem title={item} index={index} icon={icons[index]} onSelection={cellSelected} selected={selectedIndex==index}/>
-            }
-            ListFooterComponent={<View style={{width:35}}></View>}
-            ListHeaderComponent={<View style={{width:35}}></View>}
-        />
+                horizontal = {true}
+                extraData={selectedIndex}
+                showsHorizontalScrollIndicator={false}
+                data={data}
+                keyExtractor = {(item, index) => index.toString()}
+                renderItem={({ item, index }) => 
+                    <SelectionCarouselItem title={item} index={index} icon={icons[index]} onSelection={cellSelected} selected={selectedIndex==index}/>
+                }
+                ListFooterComponent={<View style={{width:35}}></View>}
+                ListHeaderComponent={<View style={{width:35}}></View>}
+            />
         <View style = {globalStyles.spacer40}></View>
         <View style = {globalStyles.divider}></View>
         <View style = {globalStyles.spacer40}></View>
@@ -49,7 +53,10 @@ const SelectionCarousel = ({icons,data}) => {
 }
 
 const styles = StyleSheet.create({
-
+    subContainer:{
+        marginLeft:40,
+        marginRight:40,
+    },
     container: {
         flex: 1,
     },
@@ -79,7 +86,6 @@ const styles = StyleSheet.create({
         color: "#000000"
     },
     title:{
-        marginLeft:40,
         fontFamily:"TTCommons-Bold",
         fontSize: 24,
         fontStyle: "normal",
