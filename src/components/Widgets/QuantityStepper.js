@@ -16,6 +16,7 @@ export default class QuantityStepper extends Component {
     constructor(props) {
       super(props);
       this.state = ({
+          title:this.props.title,
           quantity : 1,
       });
     }
@@ -39,19 +40,29 @@ export default class QuantityStepper extends Component {
     render() {
         return (
           <View style = {styles.container}>
-            <Text style = {styles.title}>Stepper Prompt</Text>
-            <View style = {globalStyles.spacer30}></View>
-            <View style = {styles.row}>
-                <TouchableOpacity style={styles.cta} onPress={()=>this.decrementCount()}>
-                    <Text style={styles.ctaText}>-</Text>
-                </TouchableOpacity>
-                <Text style={styles.h1}> {this.state.quantity} </Text>
-                <TouchableOpacity style={styles.cta} onPress={()=>this.incrementCount()}>
-                    <Text style={styles.ctaText}>+</Text>
-                </TouchableOpacity>
+
+            <View style = {styles.subContainer}>
+
+                <View style = {globalStyles.spacer20}></View>
+                <Text style = {styles.title}>{this.state.title ?? "Stepper"}</Text>
+                <View style = {globalStyles.spacer30}></View>
+                <View style = {styles.row}>
+                    <TouchableOpacity style={styles.cta} onPress={()=>this.decrementCount()}>
+                        <Text style={styles.ctaText}>-</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.h1}> {this.state.quantity} </Text>
+                    <TouchableOpacity style={styles.cta} onPress={()=>this.incrementCount()}>
+                        <Text style={styles.ctaText}>+</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View style = {globalStyles.spacer40}></View>
+
             </View>
-            <View style = {globalStyles.spacer40}></View>
+            
             <View style = {globalStyles.divider}></View>
+            <View style = {globalStyles.spacer40}></View>
+            
 
           </View>
         );
@@ -60,6 +71,10 @@ export default class QuantityStepper extends Component {
 }
 
 const styles = StyleSheet.create({
+    subContainer:{
+        marginLeft:40,
+        marginRight:40,
+    },
     container:{
         flex:1,
     },

@@ -1,5 +1,5 @@
 PODS:
-  - A0Auth0 (1.5.0):
+  - A0Auth0 (1.6.0):
     - React
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
@@ -91,6 +91,8 @@ PODS:
     - React
   - RNReanimated (1.2.0):
     - React
+  - RNSVG (9.11.1):
+    - React
   - RNVectorIcons (6.6.0):
     - React
   - Stripe (14.0.0)
@@ -126,6 +128,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Stripe (~> 14.0.0)
   - tipsi-stripe (from `../node_modules/tipsi-stripe`)
@@ -189,6 +192,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-keychain"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   tipsi-stripe:
@@ -224,11 +229,12 @@ SPEC CHECKSUMS:
   RNGestureHandler: 311e3b1cef021a7c9ef31e97e7dc31970cc6288d
   RNKeychain: 5381e340056c23de103d73ae59cbddc6ffc21d97
   RNReanimated: 9f7976535c5cde50189acd84751871f5414190b9
+  RNSVG: 2e097b92aaa6d4e0f354fd7c49cbf3b17f8b3920
   RNVectorIcons: 66af4d5c8ff4f584c7b7cd9c4b0780920f27fce2
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
   tipsi-stripe: 237cab79699eb7d354bfc09238b3284e3b8dad84
   yoga: 88c514f310aff89b94a14c5fbf44b95735af0cb7
 
-PODFILE CHECKSUM: 9b491254f9d6105de58c815b87fc0dfd027be947
+PODFILE CHECKSUM: f78ff48f4e2bff86e7413a8d8101619566366f79
 
 COCOAPODS: 1.5.3

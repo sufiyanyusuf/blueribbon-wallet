@@ -1,16 +1,4 @@
 
-import React, {Fragment} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  ActivityIndicator,
-  AsyncStorage,
-  Button
-} from 'react-native';
 
 import { createAppContainer,createSwitchNavigator } from 'react-navigation';
 import CoreStack from './CoreNavigator';
@@ -27,7 +15,7 @@ export default createAppContainer(
       Checkout: Subs
     },
     {
-      initialRouteName: 'App',
+      initialRouteName: 'Checkout',
     }
   )
 );

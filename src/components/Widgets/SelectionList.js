@@ -14,6 +14,7 @@ export default class SelectionList extends Component {
     constructor(props) {
       super(props);
         this.state = ({
+            title:this.props.title,
             data:this.props.data,
             singleSelection:true,
             selectedIndex:0,
@@ -30,18 +31,20 @@ export default class SelectionList extends Component {
     render() {
         return (
           <View style = {styles.container}>
-            <View style = {globalStyles.spacer40}></View>
-            <Text style = {styles.title}>List selection prompt</Text>
-            <View style = {globalStyles.spacer20}></View>
-            <FlatList
-                data={this.state.data}
-                extraData={this.state.selectedIndex}
-                keyExtractor = {(item, index) => index.toString()}
-                renderItem={({ item, index }) => 
-                 <SelectionListItem title={item} index={index} onSelection={this.cellSelected} selected={this.state.selectedIndex==index}/>
-                }
-            />
-            <View style = {globalStyles.spacer40}></View>
+            <View style = {styles.subContainer}>
+                <View style = {globalStyles.spacer20}></View>
+                <Text style = {styles.title}>{this.state.title ?? "Title"}</Text>
+                <View style = {globalStyles.spacer20}></View>
+                <FlatList
+                    data={this.state.data}
+                    extraData={this.state.selectedIndex}
+                    keyExtractor = {(item, index) => index.toString()}
+                    renderItem={({ item, index }) => 
+                    <SelectionListItem title={item} index={index} onSelection={this.cellSelected} selected={this.state.selectedIndex==index}/>
+                    }
+                />
+                <View style = {globalStyles.spacer40}></View>
+            </View>
             <View style = {globalStyles.divider}></View>
             <View style = {globalStyles.spacer40}></View>
           </View>
@@ -51,7 +54,10 @@ export default class SelectionList extends Component {
 }
 
 const styles = StyleSheet.create({
-
+    subContainer:{
+        marginLeft:40,
+        marginRight:40,
+    },
     container: {
         flex: 1
     },

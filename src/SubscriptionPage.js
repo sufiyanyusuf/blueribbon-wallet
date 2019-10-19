@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Button,
     Platform,
@@ -15,8 +15,79 @@ import QuantityStepper from './components/Widgets/QuantityStepper';
 import Selectionlist from './components/Widgets/SelectionList';
 import AddressBadge from './components/Widgets/AddressBadge';
 import globalStyles from './assets/GlobalStyles';
+import axios from 'axios';
 
 const SubscriptionPage = ({navigation}) => {
+
+    const createListingModel = ({
+        title= '',
+        imageUrl= 'https://facebook.github.io/react-native/docs/assets/favicon.png',
+        description = '',
+        modifiers = []
+    }={})=>({
+        title,
+        imageUrl,
+        description,
+        modifiers
+    });
+
+    const [listing,setListing] = useState(createListingModel({}))
+    const [modifiers,setModifiers] = useState([])
+
+    useEffect (()=>{
+
+        const fetchListing = async () => {
+            try{
+                axios.get('http://localhost:4000/api/listing/4/')
+                .then(res => {
+                    console.log(res.data)
+                    const listingModel =  createListingModel({
+                        title:res.data.productInfo.title,
+                        imageUrl:res.data.productInfo.image_url,
+                        description:res.data.productInfo.description,
+                        modifiers:res.data.modifier
+                    })
+                    setListing(listingModel)
+                    // console.log(listingModel.modifiers);
+                    
+                    var _modifiers = []
+
+                    listingModel.modifiers.map ((modifier,index) => {
+
+                        if (modifier.stepper){
+                            _modifiers = (_modifiers.concat([<QuantityStepper key = {index.toString()} title = {modifier.title}/>]))
+                        }else if(modifier.multiOption){
+
+                            const choices = modifier.choice.map(choice =>{
+                                return choice.title
+                            })
+
+                            if (modifier.element_type == "Carousel"){
+                                const icons = modifier.choice.map (choice => {
+                                    return choice.icon
+                                })
+                                _modifiers = (_modifiers.concat([<SelectionCarousel key = {index.toString()} data = {choices} icons = {icons}/>]))
+                            }else{
+                                _modifiers = (_modifiers.concat([<Selectionlist key = {index.toString()} data = {choices} title = {modifier.title}/>]))
+                            }
+                            // console.log(modifier)
+                        }else if(modifier.textField){
+
+                        }
+
+                    })
+
+                    setModifiers(_modifiers)
+
+                });
+            }catch(e){
+                console.log(e);
+            }
+        }
+
+        fetchListing();
+
+    },[])
 
     const viewOrder = () => {
         navigation.navigate('OrderSummary');
@@ -35,13 +106,13 @@ const SubscriptionPage = ({navigation}) => {
                         style={styles.avatar}
                     />
                     <View style = {globalStyles.spacer20}></View>
-                    <Text style={styles.title}>Subscription Title</Text>
+                    <Text style={styles.title}>{listing.title}</Text>
                     <Text style={styles.subTitle}>Company Name {storeId}</Text>
                     <View style = {globalStyles.spacer20}></View>
                 </View>
                 <FitImage
-                    resizeMode="contain"
-                    source={{ uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
+                    resizeMode="cover"
+                    source={{ uri: listing.imageUrl }}
                 />
 
                 <View style={styles.addressBadge}>
@@ -50,13 +121,18 @@ const SubscriptionPage = ({navigation}) => {
                 
                 <View style = {styles.subContainer}>
                     <View style = {globalStyles.spacer20}></View>
-                    <Text>Product Description</Text>
+                    <Text>{listing.description}</Text>
                     <View style = {globalStyles.spacer40}></View>
                 </View>
-                    <SelectionCarousel data = {["Option 1","Option 2","Option 3"]}/>
+
+                <View>{modifiers}</View>
+
+                {/* <SelectionCarousel data = {["Option 1","Option 2","Option 3"]}/>
+                <QuantityStepper/>
+                <Selectionlist data = {["Option 1","Option 2","Option 3"]}/> */}
+
+
                 <View style = {styles.subContainer}>
-                    <QuantityStepper/>
-                    <Selectionlist data = {["Option 1","Option 2","Option 3"]}/>
                     <TouchableOpacity style={styles.cta} onPress={()=>viewOrder()}>
                         <Text style={styles.ctaText}> View Order </Text>
                     </TouchableOpacity>
@@ -81,6 +157,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     cta:{
+        marginTop:40,
         paddingTop:5,
         height: 60,
         borderRadius: 30,
