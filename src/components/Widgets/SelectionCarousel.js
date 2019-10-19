@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {
     StyleSheet,
     Text,
@@ -10,50 +10,41 @@ import SelectionListItem from '../Controls/SelectionListCell';
 import SelectionCarouselItem from '../Controls/SelectionCarouselItem';
 import globalStyles from '../../assets/GlobalStyles';
 
-export default class SelectionCarousel extends Component {
+const SelectionCarousel = ({icons,data}) => {
 
-    constructor(props) {
-      super(props);
-        this.state = ({
-            data:this.props.data,
-            selectedIndex:0,
-            multiSelect:false,
-            icons:this.props.icons
-        });
-    }
+    const [selectedIndex,setIndex] = useState(0);
+
 
     cellSelected=(index)=>{
-        this.setState({
-            selectedIndex:index,
-            data:this.props.data,
-        });
+        setIndex(index)
+       
         console.log("selected cell" + index);
     }
     
-    render() {
-        return (
-          <View style = {styles.container}>
-            <View style = {globalStyles.spacer20}></View>
-            <Text style = {styles.title}>List selection prompt</Text>
-            <View style = {globalStyles.spacer20}></View>
-            <FlatList
-                horizontal = {true}
-                extraData={this.state.selectedIndex}
-                showsHorizontalScrollIndicator={false}
-                data={this.state.data}
-                keyExtractor = {(item, index) => index.toString()}
-                renderItem={({ item, index }) => 
-                 <SelectionCarouselItem title={item} index={index} icon={this.state.icons[index]} onSelection={this.cellSelected} selected={this.state.selectedIndex==index}/>
-                }
-                ListFooterComponent={<View style={{width:35}}></View>}
-                ListHeaderComponent={<View style={{width:35}}></View>}
-            />
-            <View style = {globalStyles.spacer40}></View>
-            <View style = {globalStyles.divider}></View>
-            <View style = {globalStyles.spacer40}></View>
-          </View>
-        );
-    }
+ 
+    return (
+        <View style = {styles.container}>
+        <View style = {globalStyles.spacer20}></View>
+        <Text style = {styles.title}>List selection prompt</Text>
+        <View style = {globalStyles.spacer20}></View>
+        <FlatList
+            horizontal = {true}
+            extraData={selectedIndex}
+            showsHorizontalScrollIndicator={false}
+            data={data}
+            keyExtractor = {(item, index) => index.toString()}
+            renderItem={({ item, index }) => 
+                <SelectionCarouselItem title={item} index={index} icon={icons[index]} onSelection={cellSelected} selected={selectedIndex==index}/>
+            }
+            ListFooterComponent={<View style={{width:35}}></View>}
+            ListHeaderComponent={<View style={{width:35}}></View>}
+        />
+        <View style = {globalStyles.spacer40}></View>
+        <View style = {globalStyles.divider}></View>
+        <View style = {globalStyles.spacer40}></View>
+        </View>
+    );
+    
 
 }
 
@@ -97,3 +88,5 @@ const styles = StyleSheet.create({
         color: "#000000"
     },
 })
+
+export default SelectionCarousel;
