@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
     Text,
@@ -10,15 +10,17 @@ import SelectionListItem from '../Controls/SelectionListCell';
 import SelectionCarouselItem from '../Controls/SelectionCarouselItem';
 import globalStyles from '../../assets/GlobalStyles';
 
-const SelectionCarousel = ({id,icons,data,title,pricing}) => {
+const SelectionCarousel = ({id,icons,data,title,updateOrderState}) => {
 
     const [selectedIndex,setIndex] = useState(0);
-    const [price,setPrice] = useState(pricing[0]);
+
+    useEffect (()=>{
+        updateOrderState(id,selectedIndex)
+    },[])
 
     cellSelected=(index)=>{
         setIndex(index)
-        setPrice(pricing[index])
-        console.log(pricing[index])
+        updateOrderState(id,index)
     }
     
  

@@ -5,10 +5,7 @@ const subscriptions = [
  
 const state = {
     "subscriptions":subscriptions,
-    'currentProductInfo':{id:''},
-    'currentListing':{id:''},
-    'currentModifiers':[],
-    'currentServiceAreas':[]
+    'currentOrder':[]
 };
 
   export default state;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
     StyleSheet,
     Text,
@@ -7,18 +7,21 @@ import {
   } from 'react-native';
 import globalStyles from '../../assets/GlobalStyles';
 
-const QuantityStepper = ({id,min_value,max_value,title,pricing}) => {
+const QuantityStepper = ({id,min_value,max_value,title,updateOrderState}) => {
 
     const [quantity,setQuantity] = useState(1);
-    const [price,setPrice] = useState(pricing);
+
+    useEffect (()=>{
+        updateOrderState(id,quantity)
+    },[])
 
     const incrementCount = () => {
         var _quantity = quantity;
         if (_quantity < max_value) {
             _quantity = _quantity + 1;
             setQuantity(_quantity);
-            //move this out later
-            setPrice(pricing*_quantity);
+
+            updateOrderState(id,_quantity)
         }
     }
 
@@ -27,8 +30,8 @@ const QuantityStepper = ({id,min_value,max_value,title,pricing}) => {
         if (_quantity > min_value) {
             _quantity = _quantity - 1;
             setQuantity(_quantity);
-            //move this out later
-            setPrice(pricing*_quantity);
+
+            updateOrderState(id,_quantity)
         }
     }
 

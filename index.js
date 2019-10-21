@@ -7,12 +7,15 @@ import AppContainer from './src/AppContainer';
 import {name as appName} from './app.json';
 import React, { Component } from 'react';
 import { StateContext, DispatchContext } from './src/redux/contexts';
+
+import reducers from './src/redux/reducers';
+import globalState from './src/redux/state';
 import useCombinedReducers from 'use-combined-reducers';
 
 const App = () => {
 
     const [state, dispatch] = useCombinedReducers({
-
+        currentOrder: React.useReducer(reducers.orderReducer, globalState.currentOrder),
       });
 
     return(

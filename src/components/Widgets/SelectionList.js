@@ -1,4 +1,4 @@
-import React, { Component,useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
     StyleSheet,
     Text,
@@ -9,15 +9,18 @@ import {
 import SelectionListItem from '../Controls/SelectionListCell';
 import globalStyles from '../../assets/GlobalStyles';
 
-const SelectionList = ({id,title,data,pricing}) => {
+const SelectionList = ({id,title,data,updateOrderState}) => {
 
     const [selectedIndex,setSelectedIndex] = useState(0)
-    const [price,setPrice] = useState(pricing[0]);
+
+    useEffect (()=>{
+        updateOrderState(id,selectedIndex)
+    },[])
 
     const cellSelected=(index)=>{
         setSelectedIndex(index)
-        setPrice(pricing[index])
-        console.log(pricing[index])
+        
+        updateOrderState(id,index)
     }
     
     return (

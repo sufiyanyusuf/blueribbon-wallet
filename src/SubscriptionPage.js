@@ -16,8 +16,15 @@ import Selectionlist from './components/Widgets/SelectionList';
 import AddressBadge from './components/Widgets/AddressBadge';
 import globalStyles from './assets/GlobalStyles';
 import axios from 'axios';
+import Actions from './redux/action';
+import {StateContext,DispatchContext} from './redux/contexts';
+
+
 
 const SubscriptionPage = ({navigation}) => {
+
+    const state = React.useContext(StateContext);
+    const dispatch = React.useContext(DispatchContext);
 
     const createListingModel = ({
         title= '',
@@ -34,15 +41,25 @@ const SubscriptionPage = ({navigation}) => {
     const [listing,setListing] = useState(createListingModel({}))
     const [modifiers,setModifiers] = useState([])
 
+
+    const calculatePricing = () => {
+
+    }
+
+    const updateOrderState =  (id,val) => {
+
+        const order = {'id':id,'val':val}
+        dispatch({type:Actions.orders.updateCurrentOrder,order:order});
+    
+    }
     
     useEffect (()=>{
 
         const fetchListing = async () => {
             try{
-                
+                // https://f2b86c98.ngrok.io/api/listing/4/
                 axios.get('https://f2b86c98.ngrok.io/api/listing/4/')
                 .then(res => {
-                    console.log(res.data)
                     const listingModel =  createListingModel({
                         title:res.data.productInfo.title,
                         imageUrl:res.data.productInfo.image_url,
@@ -63,18 +80,13 @@ const SubscriptionPage = ({navigation}) => {
                                 title = {modifier.title}
                                 min_value = {modifier.stepper.min_value}
                                 max_value = {modifier.stepper.max_value}
-                                pricing = {modifier.stepper.price_multiplier}
+                                updateOrderState = {updateOrderState}
                                 />]))
                         }else if(modifier.multiOption){
 
                             const choices = modifier.choice.map(choice =>{
                                 return choice.title
                             })
-
-                            const prices = modifier.choice.map(choice =>{
-                                return choice.pricing_impact
-                            })
-                            
 
                             if (modifier.element_type == "Carousel"){
                                 const icons = modifier.choice.map (choice => {
@@ -84,17 +96,17 @@ const SubscriptionPage = ({navigation}) => {
                                     id = {modifier.id}
                                     key = {index.toString()} 
                                     data = {choices} 
-                                    icons = {icons} 
-                                    pricing = {prices} 
+                                    icons = {icons}
                                     title = {modifier.title}
+                                    updateOrderState = {updateOrderState}
                                 />]))
                             }else{
                                 _modifiers = (_modifiers.concat([<Selectionlist 
                                     id = {modifier.id}
                                     key = {index.toString()} 
-                                    data = {choices} 
-                                    pricing = {prices} 
+                                    data = {choices}
                                     title = {modifier.title}
+                                    updateOrderState = {updateOrderState}
                                 />]))
                             }
                           
@@ -103,7 +115,7 @@ const SubscriptionPage = ({navigation}) => {
                         }
 
                     })
-
+                  
                     setModifiers(_modifiers)
 
                 });
