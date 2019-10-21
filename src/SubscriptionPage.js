@@ -38,7 +38,8 @@ const SubscriptionPage = ({navigation}) => {
 
         const fetchListing = async () => {
             try{
-                axios.get('http://localhost:4000/api/listing/4/')
+                
+                axios.get('https://f2b86c98.ngrok.io/api/listing/4/')
                 .then(res => {
                     console.log(res.data)
                     const listingModel =  createListingModel({
@@ -62,15 +63,31 @@ const SubscriptionPage = ({navigation}) => {
                                 return choice.title
                             })
 
+                            const prices = modifier.choice.map(choice =>{
+                                return choice.pricing_impact
+                            })
+                            
+
                             if (modifier.element_type == "Carousel"){
                                 const icons = modifier.choice.map (choice => {
                                     return choice.icon
                                 })
-                                _modifiers = (_modifiers.concat([<SelectionCarousel key = {index.toString()} data = {choices} icons = {icons} title = {modifier.title}/>]))
+                                _modifiers = (_modifiers.concat([ <SelectionCarousel 
+                                    key = {index.toString()} 
+                                    data = {choices} 
+                                    icons = {icons} 
+                                    pricing = {prices} 
+                                    title = {modifier.title}
+                                />]))
                             }else{
-                                _modifiers = (_modifiers.concat([<Selectionlist key = {index.toString()} data = {choices} title = {modifier.title}/>]))
+                                _modifiers = (_modifiers.concat([<Selectionlist 
+                                    key = {index.toString()} 
+                                    data = {choices} 
+                                    pricing = {prices} 
+                                    title = {modifier.title}
+                                />]))
                             }
-                            // console.log(modifier)
+                          
                         }else if(modifier.textField){
 
                         }

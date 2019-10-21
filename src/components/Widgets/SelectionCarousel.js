@@ -10,15 +10,15 @@ import SelectionListItem from '../Controls/SelectionListCell';
 import SelectionCarouselItem from '../Controls/SelectionCarouselItem';
 import globalStyles from '../../assets/GlobalStyles';
 
-const SelectionCarousel = ({icons,data,title}) => {
+const SelectionCarousel = ({icons,data,title,pricing}) => {
 
     const [selectedIndex,setIndex] = useState(0);
-
+    const [price,setPrice] = useState(0);
 
     cellSelected=(index)=>{
         setIndex(index)
-       
-        console.log("selected cell" + index);
+        console.log(pricing)
+        //calculate price,send to parent/redux store
     }
     
  
