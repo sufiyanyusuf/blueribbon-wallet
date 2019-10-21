@@ -34,9 +34,6 @@ const SubscriptionPage = ({navigation}) => {
     const [listing,setListing] = useState(createListingModel({}))
     const [modifiers,setModifiers] = useState([])
 
-    const calculatePrice = () => {
-        
-    }
     
     useEffect (()=>{
 
@@ -60,7 +57,14 @@ const SubscriptionPage = ({navigation}) => {
                     listingModel.modifiers.map ((modifier,index) => {
 
                         if (modifier.stepper){
-                            _modifiers = (_modifiers.concat([<QuantityStepper key = {index.toString()} title = {modifier.title}/>]))
+                            _modifiers = (_modifiers.concat([<QuantityStepper 
+                                id = {modifier.id}
+                                key = {index.toString()} 
+                                title = {modifier.title}
+                                min_value = {modifier.stepper.min_value}
+                                max_value = {modifier.stepper.max_value}
+                                pricing = {modifier.stepper.price_multiplier}
+                                />]))
                         }else if(modifier.multiOption){
 
                             const choices = modifier.choice.map(choice =>{
@@ -77,6 +81,7 @@ const SubscriptionPage = ({navigation}) => {
                                     return choice.icon
                                 })
                                 _modifiers = (_modifiers.concat([ <SelectionCarousel 
+                                    id = {modifier.id}
                                     key = {index.toString()} 
                                     data = {choices} 
                                     icons = {icons} 
@@ -85,6 +90,7 @@ const SubscriptionPage = ({navigation}) => {
                                 />]))
                             }else{
                                 _modifiers = (_modifiers.concat([<Selectionlist 
+                                    id = {modifier.id}
                                     key = {index.toString()} 
                                     data = {choices} 
                                     pricing = {prices} 

@@ -9,7 +9,7 @@ import {
 import SelectionListItem from '../Controls/SelectionListCell';
 import globalStyles from '../../assets/GlobalStyles';
 
-const SelectionList = ({title,data,pricing}) => {
+const SelectionList = ({id,title,data,pricing}) => {
 
     const [selectedIndex,setSelectedIndex] = useState(0)
     const [price,setPrice] = useState(pricing[0]);

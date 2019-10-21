@@ -10,7 +10,7 @@ import SelectionListItem from '../Controls/SelectionListCell';
 import SelectionCarouselItem from '../Controls/SelectionCarouselItem';
 import globalStyles from '../../assets/GlobalStyles';
 
-const SelectionCarousel = ({icons,data,title,pricing}) => {
+const SelectionCarousel = ({id,icons,data,title,pricing}) => {
 
     const [selectedIndex,setIndex] = useState(0);
     const [price,setPrice] = useState(pricing[0]);

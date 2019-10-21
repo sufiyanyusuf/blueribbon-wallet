@@ -7,22 +7,28 @@ import {
   } from 'react-native';
 import globalStyles from '../../assets/GlobalStyles';
 
-const QuantityStepper = ({title}) => {
+const QuantityStepper = ({id,min_value,max_value,title,pricing}) => {
 
-    const [quantity,setQuantity] = useState(1)
-
+    const [quantity,setQuantity] = useState(1);
+    const [price,setPrice] = useState(pricing);
 
     const incrementCount = () => {
         var _quantity = quantity;
-        _quantity = _quantity + 1;
-        setQuantity(_quantity);
+        if (_quantity < max_value) {
+            _quantity = _quantity + 1;
+            setQuantity(_quantity);
+            //move this out later
+            setPrice(pricing*_quantity);
+        }
     }
 
     const decrementCount = () => {
         var _quantity = quantity;
-        if (_quantity > 1) {
+        if (_quantity > min_value) {
             _quantity = _quantity - 1;
             setQuantity(_quantity);
+            //move this out later
+            setPrice(pricing*_quantity);
         }
     }
 
