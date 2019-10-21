@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component,useState } from 'react';
 import {
     StyleSheet,
     Text,
@@ -9,47 +9,36 @@ import {
 import SelectionListItem from '../Controls/SelectionListCell';
 import globalStyles from '../../assets/GlobalStyles';
 
-export default class SelectionList extends Component {
+const SelectionList = ({title,data,pricing}) => {
 
-    constructor(props) {
-      super(props);
-        this.state = ({
-            title:this.props.title,
-            data:this.props.data,
-            singleSelection:true,
-            selectedIndex:0,
-        });
-    }
+    const [selectedIndex,setSelectedIndex] = useState(0)
 
-    cellSelected=(index)=>{
-        this.setState({
-            selectedIndex:index,
-            data:this.props.data
-        });
+    const cellSelected=(index)=>{
+        setSelectedIndex(index)
     }
     
-    render() {
-        return (
-          <View style = {styles.container}>
-            <View style = {styles.subContainer}>
-                <View style = {globalStyles.spacer20}></View>
-                <Text style = {styles.title}>{this.state.title ?? "Title"}</Text>
-                <View style = {globalStyles.spacer20}></View>
-                <FlatList
-                    data={this.state.data}
-                    extraData={this.state.selectedIndex}
-                    keyExtractor = {(item, index) => index.toString()}
-                    renderItem={({ item, index }) => 
-                    <SelectionListItem title={item} index={index} onSelection={this.cellSelected} selected={this.state.selectedIndex==index}/>
-                    }
-                />
-                <View style = {globalStyles.spacer40}></View>
-            </View>
-            <View style = {globalStyles.divider}></View>
+  
+    return (
+        <View style = {styles.container}>
+        <View style = {styles.subContainer}>
+            <View style = {globalStyles.spacer20}></View>
+            <Text style = {styles.title}>{title ?? "Title"}</Text>
+            <View style = {globalStyles.spacer20}></View>
+            <FlatList
+                data={data}
+                extraData={selectedIndex}
+                keyExtractor = {(item, index) => index.toString()}
+                renderItem={({ item, index }) => 
+                <SelectionListItem title={item} index={index} onSelection={cellSelected} selected={selectedIndex==index}/>
+                }
+            />
             <View style = {globalStyles.spacer40}></View>
-          </View>
-        );
-    }
+        </View>
+        <View style = {globalStyles.divider}></View>
+        <View style = {globalStyles.spacer40}></View>
+        </View>
+    );
+    
 
 }
 
@@ -95,3 +84,5 @@ const styles = StyleSheet.create({
         color: "#000000"
     },
 })
+
+export default SelectionList;
