@@ -34,6 +34,10 @@ const SubscriptionPage = ({navigation}) => {
     const [listing,setListing] = useState(createListingModel({}))
     const [modifiers,setModifiers] = useState([])
 
+    const calculatePrice = () => {
+        
+    }
+    
     useEffect (()=>{
 
         const fetchListing = async () => {

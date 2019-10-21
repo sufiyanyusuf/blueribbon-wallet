@@ -32,6 +32,7 @@ const SelectionCarouselItem = ({selected,icon,onSelection,index,title}) => {
                     />  
         }
     }
+    
     return (
         <TouchableOpacity onPress={toggleSelection} activeOpacity={.7} >
             <View style = {styles.rootContainer}>

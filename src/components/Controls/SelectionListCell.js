@@ -18,7 +18,6 @@ export default class SelectionListItem extends Component {
     }
 
 	render() {
-        console.log("index:",this.props.index,this.props.selected);
 		return (
             <View style={styles.container}>
                 <View style={styles.container_checkBox}>

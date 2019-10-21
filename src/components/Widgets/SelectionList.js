@@ -12,12 +12,14 @@ import globalStyles from '../../assets/GlobalStyles';
 const SelectionList = ({title,data,pricing}) => {
 
     const [selectedIndex,setSelectedIndex] = useState(0)
+    const [price,setPrice] = useState(pricing[0]);
 
     const cellSelected=(index)=>{
         setSelectedIndex(index)
+        setPrice(pricing[index])
+        console.log(pricing[index])
     }
     
-  
     return (
         <View style = {styles.container}>
         <View style = {styles.subContainer}>

@@ -13,12 +13,12 @@ import globalStyles from '../../assets/GlobalStyles';
 const SelectionCarousel = ({icons,data,title,pricing}) => {
 
     const [selectedIndex,setIndex] = useState(0);
-    const [price,setPrice] = useState(0);
+    const [price,setPrice] = useState(pricing[0]);
 
     cellSelected=(index)=>{
         setIndex(index)
-        console.log(pricing)
-        //calculate price,send to parent/redux store
+        setPrice(pricing[index])
+        console.log(pricing[index])
     }
     
  

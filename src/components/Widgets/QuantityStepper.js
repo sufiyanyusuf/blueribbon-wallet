@@ -1,9 +1,5 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {
-    Alert,
-    AppRegistry,
-    Button,
-    Platform,
     StyleSheet,
     Text,
     View,
@@ -11,62 +7,54 @@ import {
   } from 'react-native';
 import globalStyles from '../../assets/GlobalStyles';
 
-export default class QuantityStepper extends Component {
+const QuantityStepper = ({title}) => {
 
-    constructor(props) {
-      super(props);
-      this.state = ({
-          title:this.props.title,
-          quantity : 1,
-      });
-    }
+    const [quantity,setQuantity] = useState(1)
 
-    incrementCount(){
-        var _quantity = this.state.quantity;
+
+    const incrementCount = () => {
+        var _quantity = quantity;
         _quantity = _quantity + 1;
-        this.setState({
-            quantity: _quantity
-        });
+        setQuantity(_quantity);
     }
-    decrementCount(){
-        var _quantity = this.state.quantity;
+
+    const decrementCount = () => {
+        var _quantity = quantity;
         if (_quantity > 1) {
             _quantity = _quantity - 1;
-            this.setState({
-                quantity: _quantity
-            });
+            setQuantity(_quantity);
         }
     }
-    render() {
-        return (
-          <View style = {styles.container}>
 
-            <View style = {styles.subContainer}>
+    return (
+        <View style = {styles.container}>
 
-                <View style = {globalStyles.spacer20}></View>
-                <Text style = {styles.title}>{this.state.title ?? "Stepper"}</Text>
-                <View style = {globalStyles.spacer30}></View>
-                <View style = {styles.row}>
-                    <TouchableOpacity style={styles.cta} onPress={()=>this.decrementCount()}>
-                        <Text style={styles.ctaText}>-</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.h1}> {this.state.quantity} </Text>
-                    <TouchableOpacity style={styles.cta} onPress={()=>this.incrementCount()}>
-                        <Text style={styles.ctaText}>+</Text>
-                    </TouchableOpacity>
-                </View>
+        <View style = {styles.subContainer}>
 
-                <View style = {globalStyles.spacer40}></View>
-
+            <View style = {globalStyles.spacer20}></View>
+            <Text style = {styles.title}>{title ?? "Stepper"}</Text>
+            <View style = {globalStyles.spacer30}></View>
+            <View style = {styles.row}>
+                <TouchableOpacity style={styles.cta} onPress={decrementCount}>
+                    <Text style={styles.ctaText}>-</Text>
+                </TouchableOpacity>
+                <Text style={styles.h1}> {quantity} </Text>
+                <TouchableOpacity style={styles.cta} onPress={incrementCount}>
+                    <Text style={styles.ctaText}>+</Text>
+                </TouchableOpacity>
             </View>
-            
-            <View style = {globalStyles.divider}></View>
-            <View style = {globalStyles.spacer40}></View>
-            
 
-          </View>
-        );
-    }
+            <View style = {globalStyles.spacer40}></View>
+
+        </View>
+        
+        <View style = {globalStyles.divider}></View>
+        <View style = {globalStyles.spacer40}></View>
+        
+
+        </View>
+    );
+    
 
 }
 
@@ -116,3 +104,5 @@ const styles = StyleSheet.create({
         justifyContent:'space-between'
     },
 });
+
+export default QuantityStepper;
