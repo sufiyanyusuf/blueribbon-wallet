@@ -10,23 +10,39 @@ const calculatePricing = (order,modifiers) => {
 }
 
 const getProductPricing = (order,modifiers) => {
+    // get mods related to product
+
     const productModifiers = modifiers.filter(mod => mod.type === 'Product')
     var price = 0
 
+    
     productModifiers.map (modifier => {
+
+        // get order from modifier
         const _order = order.filter (order => order.id == modifier.id)[0]
 
         if (_order && _order.val != null){
-            //
-            const selectionIndex = _order.val
-            const modifierPrice = extractPricing(modifier)[selectionIndex]
-            if (modifierPrice != null) {
-                price = (price + modifierPrice)
+
+            const selection = _order.val
+            
+            if (modifier.stepper){
+                const modifierPrice = extractPricing(modifier)
+                if (modifierPrice != null) {
+                    price = (price + modifierPrice*selection)
+                }
             }
+            else{
+                const modifierPrice = extractPricing(modifier)[selection]
+                if (modifierPrice != null) {
+                    price = (price + modifierPrice)
+                }
+            }
+
             
         }
        
     })
+
     return price
 
 }
@@ -40,6 +56,7 @@ const getSchedulePricing = (order,modifiers) => {
 }
 
 const extractPricing = (modifier) => {
+
     if (modifier.multiOption && modifier.choice){
         return (
             modifier.choice.map (choice =>{
@@ -47,6 +64,11 @@ const extractPricing = (modifier) => {
             })
         )
     }
+
+    if (modifier.stepper && modifier.stepper.price_multiplier){
+        return (modifier.stepper.price_multiplier)
+    }
+
     return 0
 }
 export default calculatePricing;

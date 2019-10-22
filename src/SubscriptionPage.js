@@ -32,12 +32,14 @@ const SubscriptionPage = ({navigation}) => {
         title= '',
         imageUrl= 'https://facebook.github.io/react-native/docs/assets/favicon.png',
         description = '',
-        modifiers = []
+        modifiers = [],
+        currency = ''
     }={})=>({
         title,
         imageUrl,
         description,
-        modifiers
+        modifiers,
+        currency
     });
 
     const [listing,setListing] = useState(createListingModel({}))
@@ -65,7 +67,8 @@ const SubscriptionPage = ({navigation}) => {
                         title:res.data.productInfo.title,
                         imageUrl:res.data.productInfo.image_url,
                         description:res.data.productInfo.description,
-                        modifiers:res.data.modifier
+                        modifiers:res.data.modifier,
+                        currency:res.data.productInfo.currency
                     })
                     setListing(listingModel)
                     // console.log(listingModel.modifiers);
@@ -174,7 +177,7 @@ const SubscriptionPage = ({navigation}) => {
 
                 <View style = {styles.subContainer}>
                     <TouchableOpacity style={styles.cta} onPress={()=>viewOrder()}>
-                        <Text style={styles.ctaText}> Checkout - {pricing}</Text>
+                        <Text style={styles.ctaText}> Checkout - {listing.currency} {pricing}</Text>
                     </TouchableOpacity>
                 </View>
 
