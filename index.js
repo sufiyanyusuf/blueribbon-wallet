@@ -16,6 +16,7 @@ const App = () => {
 
     const [state, dispatch] = useCombinedReducers({
         currentOrder: React.useReducer(reducers.orderReducer, globalState.currentOrder),
+        pricing: React.useReducer(reducers.pricingReducer, globalState.currentPricing),
       });
 
     return(

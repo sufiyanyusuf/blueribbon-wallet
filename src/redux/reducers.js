@@ -1,22 +1,37 @@
 import Actions from './action';
+import calculatePricing from '../utils/Pricing'
 
 const orderReducer = (state,action) => {
-    
-    var order = Object.assign({},state);
 
     switch (action.type){
+
         case Actions.orders.updateCurrentOrder :
-            //remove existing id from state
             const _state = state.filter (order => order.id != action.order.id)
             return (_state.concat([action.order]))
+            
         default:
             return state
+
+    }
+
+}
+
+const pricingReducer = (state,action) => {
+
+    switch (action.type){
+
+        case Actions.orders.calculatePricing :
+            return calculatePricing(action.currentOrder,action.modifiers)
+        default:
+            return state
+
     }
 
 }
 
 const reducers = {
-    'orderReducer':orderReducer
+    'orderReducer':orderReducer,
+    'pricingReducer':pricingReducer
 };
 
 export default reducers;

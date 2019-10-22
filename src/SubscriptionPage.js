@@ -26,6 +26,8 @@ const SubscriptionPage = ({navigation}) => {
     const state = React.useContext(StateContext);
     const dispatch = React.useContext(DispatchContext);
 
+    const { currentOrder,pricing } = state; 
+
     const createListingModel = ({
         title= '',
         imageUrl= 'https://facebook.github.io/react-native/docs/assets/favicon.png',
@@ -40,21 +42,20 @@ const SubscriptionPage = ({navigation}) => {
 
     const [listing,setListing] = useState(createListingModel({}))
     const [modifiers,setModifiers] = useState([])
-
-
+   
     const calculatePricing = () => {
-
+        dispatch({type:Actions.orders.calculatePricing,currentOrder:currentOrder,modifiers:listing.modifiers})
+        //check and dispatch listing data, selection to reducer
     }
 
     const updateOrderState =  (id,val) => {
-
         const order = {'id':id,'val':val}
         dispatch({type:Actions.orders.updateCurrentOrder,order:order});
-    
     }
     
-    useEffect (()=>{
+    calculatePricing()
 
+    useEffect (()=>{
         const fetchListing = async () => {
             try{
                 // https://f2b86c98.ngrok.io/api/listing/4/
@@ -173,7 +174,7 @@ const SubscriptionPage = ({navigation}) => {
 
                 <View style = {styles.subContainer}>
                     <TouchableOpacity style={styles.cta} onPress={()=>viewOrder()}>
-                        <Text style={styles.ctaText}> View Order </Text>
+                        <Text style={styles.ctaText}> Checkout - {pricing}</Text>
                     </TouchableOpacity>
                 </View>
 
