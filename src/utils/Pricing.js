@@ -51,13 +51,18 @@ const getSubscriptionPricing = (productPrice = 0, order, modifiers) => {
 
     const multiplyByQuantity = (productPrice)=>{
 
+        var price = productPrice
+
         const modifier = modifiers.filter(mod => mod.type === 'Quantity')[0]
-    
+        
+        if (modifier == null) {
+            return price
+        }
+
         const _order = order.filter (order => order.id == modifier.id)[0]
 
         if (_order && _order.val != null){
 
-            var price = 0
             const selection = _order.val
     
             if (modifier.stepper){
@@ -70,25 +75,110 @@ const getSubscriptionPricing = (productPrice = 0, order, modifiers) => {
             else{
                 const modifierPrice = extractPricing(modifier)[selection]
                 if (modifierPrice != null) {
-                    price = (productPrice * modifierPrice * modifier.value)
+                    price = (productPrice * modifierPrice)
                     return price
                 }
             }
-
-            return price
     
         }
 
+        return price
+
     }
 
+    const multiplyByFrequency = (totalPrice)=>{
+
+        var price = totalPrice
+        const modifier = modifiers.filter(mod => mod.type === 'Frequency')[0]
+
+        if (modifier == null){
+            return price
+        }
+
+        const _order = order.filter (order => order.id == modifier.id)[0]
+
+        if (_order && _order.val != null){
+
+            const selection = _order.val
+    
+            if (modifier.stepper){
+                const modifierPrice = extractPricing(modifier)
+                if (modifierPrice != null) {
+                    price = (totalPrice * modifierPrice * selection)
+                    return price
+                }
+            }
+            else{
+                const modifierPrice = extractPricing(modifier)[selection]
+                //extract value
+                if (modifierPrice != null) {
+                    price = (totalPrice * modifierPrice )
+                    return price
+                }
+            }
+    
+        }
+
+        return price
+
+    }
+
+    const multiplyByLength = (totalPrice)=>{
+
+        var price = totalPrice
+        const modifier = modifiers.filter(mod => mod.type === 'Length')[0]
+
+        if (modifier == null){
+            return price
+        }
+        const _order = order.filter (order => order.id == modifier.id)[0]
+        
+        if (_order && _order.val != null){
+
+            const selection = _order.val
+            if (modifier.stepper){
+                const modifierPrice = extractPricing(modifier)
+                if (modifierPrice != null) {
+                    price = (totalPrice * modifierPrice * selection)
+                    return price
+                }
+            }
+            else{
+                const modifierPrice = extractPricing(modifier)[selection]
+                //extract value
+                if (modifierPrice != null) {
+                    price = (totalPrice * modifierPrice )
+                    return price
+                }
+            }
+    
+        }
+
+        return price
+
+    }
     
     
-    const price = multiplyByQuantity(productPrice)
+    var price = multiplyByQuantity(productPrice)
+    price = multiplyByFrequency(price)
+    price = multiplyByLength(price)
 
     return price
 
 }
 
+const extractValue = (modifier) => {
+
+    if (modifier.multiOption && modifier.choice){
+        return (
+            modifier.choice.map (choice =>{
+                return parseFloat(choice.value)
+            })
+        )
+    }
+
+    return 0
+}
 
 
 const extractPricing = (modifier) => {
@@ -107,5 +197,7 @@ const extractPricing = (modifier) => {
 
     return 0
 }
+
+
 
 export default calculatePricing;
