@@ -4,8 +4,7 @@ const calculatePricing = (order,modifiers) => {
     // calculate product unit pricing
     // calculate quantity pricing
     // calculate subscription pricing
-    totalPrice = totalPrice + getProductPricing(order,modifiers)
-    
+    totalPrice = getSubscriptionPricing (getProductPricing(order,modifiers),order,modifiers)
     return totalPrice
 }
 
@@ -47,13 +46,50 @@ const getProductPricing = (order,modifiers) => {
 
 }
 
-const getSubscriptionPricing = (order,modifiers) => {
-    return 0
+const getSubscriptionPricing = (productPrice = 0, order, modifiers) => {
+    //qty,freq,len
+
+    const multiplyByQuantity = (productPrice)=>{
+
+        const modifier = modifiers.filter(mod => mod.type === 'Quantity')[0]
+    
+        const _order = order.filter (order => order.id == modifier.id)[0]
+
+        if (_order && _order.val != null){
+
+            var price = 0
+            const selection = _order.val
+    
+            if (modifier.stepper){
+                const modifierPrice = extractPricing(modifier)
+                if (modifierPrice != null) {
+                    price = (productPrice * modifierPrice * selection)
+                    return price
+                }
+            }
+            else{
+                const modifierPrice = extractPricing(modifier)[selection]
+                if (modifierPrice != null) {
+                    price = (productPrice * modifierPrice * modifier.value)
+                    return price
+                }
+            }
+
+            return price
+    
+        }
+
+    }
+
+    
+    
+    const price = multiplyByQuantity(productPrice)
+
+    return price
+
 }
 
-const getSchedulePricing = (order,modifiers) => {
-    return 0
-}
+
 
 const extractPricing = (modifier) => {
 
@@ -71,4 +107,5 @@ const extractPricing = (modifier) => {
 
     return 0
 }
+
 export default calculatePricing;
