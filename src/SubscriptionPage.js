@@ -18,11 +18,18 @@ import globalStyles from './assets/GlobalStyles';
 import axios from 'axios';
 import Actions from './redux/action';
 import {StateContext,DispatchContext} from './redux/contexts';
+import stripe from 'tipsi-stripe'
 
 
 
 const SubscriptionPage = ({navigation}) => {
 
+    stripe.setOptions({
+        publishableKey: 'pk_test_3Rc7Jw1dt02Cb7vee5lllMah00R7mTNCCm',
+        merchantId: 'merchant.com.blueribbon', // Optional
+        androidPayMode: 'test', // Android only
+      })
+      
     const state = React.useContext(StateContext);
     const dispatch = React.useContext(DispatchContext);
 
@@ -130,13 +137,50 @@ const SubscriptionPage = ({navigation}) => {
 
         fetchListing();
 
+
     },[])
 
     const viewOrder = () => {
-        navigation.navigate('OrderSummary');
+        // navigation.navigate('OrderSummary');
+        requestApplePay()
+       
     }
 
     const storeId = navigation.getParam('id');
+
+    const requestApplePay = () => {
+        return stripe
+          .paymentRequestWithNativePay({
+            shippingMethods: [],
+            currencyCode: listing.currency,
+          },
+          [{
+            label: listing.title,
+            amount: pricing.toString(),
+          }])
+          .then(stripeTokenInfo => {
+
+            try{
+                axios.post('https://f2b86c98.ngrok.io/api/payment/new/applePay',{
+                    amount:(pricing*100),
+                    tokenId:stripeTokenInfo.tokenId
+                })
+                .then(res => {
+                    stripe.completeNativePayRequest()
+                })
+            }catch(e){
+                console.log(e)
+                stripe.completeNativePayRequest()
+            }
+
+            // this.props.navigation.navigate('Confirmation');
+          })
+          .catch(error => {
+            // console.warn('Payment failed', { error });
+            stripe.cancelNativePayRequest()
+            // this.props.navigation.navigate('Confirmation');
+          });
+    };
 
     return (
         <ScrollView>
@@ -169,11 +213,6 @@ const SubscriptionPage = ({navigation}) => {
                 </View>
 
                 <View>{modifiers}</View>
-
-                {/* <SelectionCarousel data = {["Option 1","Option 2","Option 3"]}/>
-                <QuantityStepper/>
-                <Selectionlist data = {["Option 1","Option 2","Option 3"]}/> */}
-
 
                 <View style = {styles.subContainer}>
                     <TouchableOpacity style={styles.cta} onPress={()=>viewOrder()}>

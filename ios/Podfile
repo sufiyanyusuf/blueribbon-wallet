@@ -35,7 +35,6 @@ target 'BlueRibbon' do
 
   pod 'RNKeychain', :path => '../node_modules/react-native-keychain'
 
-  pod 'tipsi-stripe', :path => '../node_modules/tipsi-stripe'
 
   target 'BlueRibbonTests' do
     inherit! :search_paths

@@ -80,7 +80,7 @@ export default class OrderSummary extends PureComponent {
     return stripe
       .paymentRequestWithCardForm()
       .then(stripeTokenInfo => {
-        // console.warn('Token created', { stripeTokenInfo });
+        console.warn('Token created', { stripeTokenInfo });
       })
       .catch(error => {
         // console.warn('Payment failed', { error });
@@ -203,7 +203,7 @@ export default class OrderSummary extends PureComponent {
               style={styles.cta} 
               disabledText="Not supported"
               disabled={!allowed}
-              onPress={this.requestApplePay}
+              onPress={this.requestPayment}
             >
               <Text style={styles.ctaText}>$ 120 - Pay with Pay </Text>
             </TouchableOpacity>
