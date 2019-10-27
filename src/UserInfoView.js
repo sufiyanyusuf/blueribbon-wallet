@@ -157,7 +157,7 @@ const UserInfoView = ({navigation}) => {
                     onCancel={hideDateTimePicker}
                 />
                 
-                <TouchableOpacity style={styles.cta} onPress={()=>switchVisible()}>
+                <TouchableOpacity style={styles.cta} onPress={next}>
                         <Text style={styles.ctaText}>Create Account</Text>
                 </TouchableOpacity>
 

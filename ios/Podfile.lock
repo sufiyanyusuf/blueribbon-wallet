@@ -55,6 +55,22 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
+  - Google-Maps-iOS-Utils (2.1.0):
+    - Google-Maps-iOS-Utils/Clustering (= 2.1.0)
+    - Google-Maps-iOS-Utils/Geometry (= 2.1.0)
+    - Google-Maps-iOS-Utils/Heatmap (= 2.1.0)
+    - Google-Maps-iOS-Utils/QuadTree (= 2.1.0)
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/Clustering (2.1.0):
+    - Google-Maps-iOS-Utils/QuadTree
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/Geometry (2.1.0):
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/Heatmap (2.1.0):
+    - Google-Maps-iOS-Utils/QuadTree
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/QuadTree (2.1.0):
+    - GoogleMaps
   - GoogleAppMeasurement (6.1.1):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
@@ -65,6 +81,11 @@ PODS:
   - GoogleDataTransportCCTSupport (1.2.1):
     - GoogleDataTransport (~> 3.0)
     - nanopb (~> 0.3.901)
+  - GoogleMaps (3.2.0):
+    - GoogleMaps/Maps (= 3.2.0)
+  - GoogleMaps/Base (3.2.0)
+  - GoogleMaps/Maps (3.2.0):
+    - GoogleMaps/Base
   - GoogleUtilities/AppDelegateSwizzler (6.3.1):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -138,6 +159,12 @@ PODS:
   - react-native-branch (4.2.1):
     - Branch (= 0.29.0)
     - React
+  - react-native-google-maps (0.26.1):
+    - Google-Maps-iOS-Utils (= 2.1.0)
+    - GoogleMaps (= 3.2.0)
+    - React
+  - react-native-maps (0.26.1):
+    - React
   - react-native-sensitive-info (5.5.1):
     - React
   - React-RCTActionSheet (0.60.5):
@@ -175,7 +202,7 @@ PODS:
     - React
   - RNKeychain (3.1.3):
     - React
-  - RNReanimated (1.2.0):
+  - RNReanimated (1.3.0):
     - React
   - RNSVG (9.11.1):
     - React
@@ -194,6 +221,8 @@ DEPENDENCIES:
   - Firebase/DynamicLinks
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - Google-Maps-iOS-Utils
+  - GoogleMaps
   - RCTRestart (from `../node_modules/react-native-restart/ios`)
   - React (from `../node_modules/react-native/`)
   - React-Core (from `../node_modules/react-native/React`)
@@ -203,6 +232,8 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-branch (from `../node_modules/react-native-branch`)
+  - react-native-google-maps (from `../node_modules/react-native-maps`)
+  - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-sensitive-info (from `../node_modules/react-native-sensitive-info`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -237,9 +268,11 @@ SPEC REPOS:
     - FirebaseCoreDiagnosticsInterop
     - FirebaseDynamicLinks
     - FirebaseInstanceID
+    - Google-Maps-iOS-Utils
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
+    - GoogleMaps
     - GoogleUtilities
     - nanopb
     - Stripe
@@ -271,6 +304,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-branch:
     :path: "../node_modules/react-native-branch"
+  react-native-google-maps:
+    :path: "../node_modules/react-native-maps"
+  react-native-maps:
+    :path: "../node_modules/react-native-maps"
   react-native-sensitive-info:
     :path: "../node_modules/react-native-sensitive-info"
   React-RCTActionSheet:
@@ -327,9 +364,11 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: d0eafcd8bdbd3447cd694594734078c3e3e77d8b
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
+  Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleAppMeasurement: 86a82f0e1f20b8eedf8e20326530138fd71409de
   GoogleDataTransport: 166f9b9f82cbf60a204e8fe2daa9db3e3ec1fb15
   GoogleDataTransportCCTSupport: f6ab1962e9dc05ab1fb938b795e5b310209edeec
+  GoogleMaps: 5046d7edfe381c1a0b20fdaf293915a375c3122b
   GoogleUtilities: f895fde57977df4e0233edda0dbeac490e3703b6
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   RCTRestart: e8aa63423a0c75d86c1beed566bb9829a754b81a
@@ -341,6 +380,8 @@ SPEC CHECKSUMS:
   React-jsiexecutor: e4b4717060a0cd8d0270323b5655a68c95432efd
   React-jsinspector: 044105eea064aec81adc5e4d777a8f6589e7d094
   react-native-branch: 289495df034365ddf75e826f95bdd28b64dbb914
+  react-native-google-maps: 67ff8da1df0d5b634c6cba632f2475ebe156c699
+  react-native-maps: bb480348a3fe1e5a811fed1ba3387b329161c5cc
   react-native-sensitive-info: 55dfb76a47e1d4131d5139c2168f2f345a423c81
   React-RCTActionSheet: 08864c609d9f959abf3d51fdd93f8bc6e91f21eb
   React-RCTAnimation: a4547e9fac2627ded3df9d302f5558b475faf819
@@ -363,6 +404,6 @@ SPEC CHECKSUMS:
   tipsi-stripe: 237cab79699eb7d354bfc09238b3284e3b8dad84
   yoga: 88c514f310aff89b94a14c5fbf44b95735af0cb7
 
-PODFILE CHECKSUM: edd667ade9056ef7ff50f4df1625770a7da13b2f
+PODFILE CHECKSUM: 8e55526af8e6f9efad826baf6bc1fd5b52ce3e24
 
 COCOAPODS: 1.5.3

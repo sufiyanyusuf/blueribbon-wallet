@@ -8,20 +8,19 @@ import { createStackNavigator } from 'react-navigation-stack';
 const ProfileSetupStack = createStackNavigator(
   { 
 
+    TermsPage: {
+      screen: TermsPage
+    },
     UserInfoPage: {
       screen: UserInfoPage
-  },
-    TermsPage: {
-        screen: TermsPage
     },
     AddLocationView: {
-        screen: AddLocationView
+      screen: AddLocationView
     },
-
   },
   {
     mode: 'card',
-    headerMode: 'none',
+    // headerMode: 'none',
   }
 );
 

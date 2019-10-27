@@ -14,7 +14,7 @@
 #import <react-native-branch/RNBranch/RNBranch.h>
 #import <FirebaseAnalytics/FirebaseAnalytics.h>
 #import <FirebaseDynamicLinks/FirebaseDynamicLinks.h>
-
+#import <GoogleMaps/GoogleMaps.h>
 
 @import Firebase;
 
@@ -22,13 +22,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [GMSServices provideAPIKey:@"AIzaSyBe12m5Dr_Nl4Npazinei3sQoJKr3MbuuY"];
+  
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"BlueRibbon"
                                             initialProperties:nil];
 
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
-
+  
+  
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;

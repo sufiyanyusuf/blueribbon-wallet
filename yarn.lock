@@ -5283,6 +5283,11 @@ react-native-keychain@^3.1.3:
   resolved "https://registry.yarnpkg.com/react-native-keychain/-/react-native-keychain-3.1.3.tgz#fce176e7b95243cecda1896a7e6bdfe0335d778a"
   integrity sha512-eWUbjYJge4icX8FhWJk/OPlyGxPnW9bZDysBX3WwOG37iurdH692HKnM2Ih+S+0te65RytImvUrcVnHVBbumYg==
 
+react-native-maps@0.26.1:
+  version "0.26.1"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.26.1.tgz#6ec316259b38d259c8974448d894bd7a23101da4"
+  integrity sha512-p4VTB8YB5ZmOmDRCUpoHZkm05amZwhIo04AJMBbB9+JAR2PNNfpo0vceoWX0Mag4wnePkdzPomeWMplr/wimTg==
+
 react-native-modal-datetime-picker@^7.6.0:
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-7.6.0.tgz#6818f221010d0f61a6396a956b303fee65726fee"
@@ -5308,10 +5313,10 @@ react-native-phone-input@^0.2.4:
     lodash "^4.17.4"
     prop-types "^15.5.10"
 
-react-native-reanimated@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.2.0.tgz#9219227a52a5dfa4d34c324596d6726ccd874293"
-  integrity sha512-vkWRHrPK5qfHP/ZawlRoo38oeYe9NZaaOH/lmFxRcsKzaSK6x3H5ZPXI8lK6MfTLveqwo1QhJje3zIKXO4nQQw==
+react-native-reanimated@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.3.0.tgz#581cdb0bd1ff05e7304b116af712ded0c7665ede"
+  integrity sha512-KFno6D0q09kx71IDuPa4qeC1t1msALsCMuli3/EN3YDf8XoM2CG53yzhVHMFtmcW0IUCySugHgxQiuT5BzwOPA==
 
 react-native-restart@^0.0.12:
   version "0.0.12"
@@ -5503,6 +5508,11 @@ realpath-native@^1.1.0:
   integrity sha512-wlgPA6cCIIg9gKz0fgAPjnzh4yR/LnXovwuo9hvyGvx3h8nX4+/iLZplfUWasXpqD8BdnGnP5njOFjkUwPzvjA==
   dependencies:
     util.promisify "^1.0.0"
+
+reanimated-bottom-sheet@^1.0.0-alpha.15:
+  version "1.0.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/reanimated-bottom-sheet/-/reanimated-bottom-sheet-1.0.0-alpha.15.tgz#448d596354e6ea0955953ab4f4b2dea1805ad4a9"
+  integrity sha512-QLNkf3joZa3SGfYmKYCqmFfEBNet+304NRX3KhxkCKYWfqkWeqGZZuRsPz6OXWIVuMmF413O7Qf4E/28Vv2jTw==
 
 rechoir@^0.6.2:
   version "0.6.2"

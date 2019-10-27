@@ -30,6 +30,10 @@ target 'BlueRibbon' do
   pod 'Firebase/DynamicLinks'
   pod 'Firebase/Analytics'
 
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'react-native-google-maps', :path => rn_maps_path
+  pod 'GoogleMaps'
+  pod 'Google-Maps-iOS-Utils'
 
 
 
@@ -39,6 +43,9 @@ target 'BlueRibbon' do
 
 
   pod 'react-native-branch', :path => '../node_modules/react-native-branch'
+
+
+  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
 
 
   target 'BlueRibbonTests' do

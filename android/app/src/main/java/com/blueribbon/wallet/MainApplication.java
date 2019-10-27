@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.maps.MapsPackage;
 import io.branch.rnbranch.RNBranchPackage;
 import com.oblador.keychain.KeychainPackage;
 import com.facebook.react.ReactNativeHost;
