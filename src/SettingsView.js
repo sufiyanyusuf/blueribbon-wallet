@@ -11,9 +11,11 @@ const SettingsView = ({navigation}) => {
 
   const [accessToken,setAccessToken] = useState(null)
 
-
+    
     useEffect (() => {
+
       const checkToken = async () => {
+
         SInfo.getItem("accessToken", {}).then(accessToken => {
           if (accessToken) {
             auth0.auth
@@ -22,13 +24,19 @@ const SettingsView = ({navigation}) => {
                 setAccessToken(true)
               })
               .catch(err => {
-                
+                console.log(err)
                 SInfo.getItem("refreshToken", {}).then(refreshToken => {
                   auth0.auth
                     .refreshToken({ refreshToken: refreshToken })
                     .then(newAccessToken => {
-                      SInfo.setItem("accessToken", JSON.stringify(newAccessToken), {});
+                      SInfo.setItem("accessToken", newAccessToken.accessToken, {});
                       setAccessToken(true)
+
+                      // auth0.auth
+                      //   .userInfo({token: newAccessToken})
+                      //   .then(console.log)
+                      //   .catch(console.error);
+
                       // RNRestart.Restart();
                     })
                     .catch(err2 => {
@@ -45,12 +53,12 @@ const SettingsView = ({navigation}) => {
         });
       }
       checkToken();
-    },[]);
+    });
 
     _onLoginPress = () => {
         auth0.webAuth
             .authorize({
-                scope: 'offline_access profile token',
+                scope: 'offline_access email profile token',
                 audience: 'https://' + credentials.domain + '/userinfo'
             })
             .then(credentials => {

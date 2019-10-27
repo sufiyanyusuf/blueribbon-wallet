@@ -1,6 +1,7 @@
 
 import { createAppContainer,createSwitchNavigator } from 'react-navigation';
 import CoreStack from './CoreNavigator';
+import ProfileSetupStack from './ProfileSetupNavigator';
 import SignInView from './SigninView';
 import SubsriptionFlow from './SubscriptionPage';
 
@@ -12,10 +13,11 @@ export default createAppContainer(
         path: 'subscribe',
       },
       Auth: {screen:SignInView},
-      Checkout: SubsriptionFlow
+      Checkout: SubsriptionFlow,
+      ProfileSetup: ProfileSetupStack,
     },
     {
-      initialRouteName: 'Checkout',
+      initialRouteName: 'ProfileSetup',
     }
   )
 );

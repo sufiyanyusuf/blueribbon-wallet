@@ -27,6 +27,8 @@ target 'BlueRibbon' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+  pod 'Firebase/DynamicLinks'
+  pod 'Firebase/Analytics'
 
 
 
@@ -34,6 +36,9 @@ target 'BlueRibbon' do
 
 
   pod 'RNKeychain', :path => '../node_modules/react-native-keychain'
+
+
+  pod 'react-native-branch', :path => '../node_modules/react-native-branch'
 
 
   target 'BlueRibbonTests' do

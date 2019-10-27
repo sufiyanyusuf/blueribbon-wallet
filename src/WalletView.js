@@ -9,12 +9,34 @@ import { Text,
 
 import WalletCard from './components/WalletCard';
 
+import { firebase } from '@react-native-firebase/dynamic-links';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 const WalletView = ({navigation}) => {
-    
+    firebase.dynamicLinks()
+    .getInitialLink()
+    .then((url) => {
+        if (url) {
+            console.log('dynamic link ',url)
+            // app opened from a dynamic link URL
+        } else {
+           // use deep link to handle the URL.
+          if (Platform.OS === 'android') {
+            Linking.getInitialURL()
+              .then((url) => {
+                 // do something with the URL
+              })
+              .catch(err => err);
+          } else {
+              console.log('deep link ',url)
+            // handle case for iOS 
+          }
+        }
+    });
 
     const storeId = navigation.getParam('id');
     console.log("from wallet: "+storeId);
+
     return (
         <ScrollView>
             <View style={styles.container}>

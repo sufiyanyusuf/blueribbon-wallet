@@ -6,7 +6,16 @@ const subscriptions = [
 const state = {
     "subscriptions":subscriptions,
     'currentOrder':[],
-    'currentPricing':0
+    'currentPricing':0,
+    'user':{
+        'loggedIn':false,
+        'subscriptions':[],
+        'newUser':false,
+        'savedSubscriptions':[],
+        'upcomingOrders':[],
+        
+    }
+
 };
 
   export default state;
