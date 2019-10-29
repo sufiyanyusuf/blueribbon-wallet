@@ -10,7 +10,6 @@ import {
     Keyboard,
     Platform,
     DatePickerIOS
-    
   } from 'react-native';
 
 import DateTimePicker from "react-native-modal-datetime-picker";

@@ -6,7 +6,9 @@ import {
     StyleSheet,
     TouchableOpacity,
     SafeAreaView,
-    Image
+    Image,
+    KeyboardAvoidingView,
+    Dimensions
   } from 'react-native';
 
 import axios from 'axios'
@@ -29,7 +31,8 @@ const AddLocationView = ({navigation}) => {
 
   const [address,setAddress] = useState('')
   const [locationSaved,setLocationSaved] = useState(false)
-
+  const [BottomSheetHeight,setBottomSheetHeight] = useState(0)
+  
   const onRegionChange = (region) => {
 
     setRegion(region)
@@ -66,22 +69,23 @@ const AddLocationView = ({navigation}) => {
     if (locationSaved == false){
       setLocationSaved(true)
     }else{
-      
+      navigation.navigate('App');
     }
-    navigation.navigate('AddLocationView');
   }
    
 
   const renderHeader = () => {
     return (
-      <View style={styles.content}>
-        <Text style={styles.subTitle}>Add An Address</Text>
-        
-        <TextInput
-          style={styles.textInput}
-          value={address}
-          editable = {false}
-        />
+      
+      <View 
+        style={styles.content}
+        onLayout={(event) => {
+          var {x, y, width, height} = event.nativeEvent.layout;
+          setBottomSheetHeight(height)
+        }}
+      >
+        <Text style={styles.title}>Select Your Address</Text>
+        <Text style={styles.subTitle}>{address}</Text>
 
         { locationSaved == true &&
           <TextInput
@@ -107,35 +111,43 @@ const AddLocationView = ({navigation}) => {
   }
 
   return (
-    <View style={styles.container}>
-
-    <BottomSheet
-        snapPoints = {[locationSaved ? 445:270, 50]}
-        renderHeader = {renderHeader}
-      />
-
-    <MapView
-      provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-      style={styles.map}
-      onRegionChangeComplete={onRegionChange}
-      showsUserLocation={true}
-      showsMyLocationButton = {true}
-      showsBuildings = {true}
-      loadingEnabled = {true}
-     >
-    
-        <View pointerEvents="none" style={styles.markerFixed}>
-          <Image pointerEvents="none" source={marker}/>
-        </View>
-
-      {/* <Marker draggable
-        coordinate={region}
-        // onDragEnd={(e) => setRegion(e.nativeEvent.coordinate)}
-      /> */}
   
-     </MapView>
+    <View style={styles.container}>
+      
 
-    </View>
+      <BottomSheet
+            snapPoints = {[BottomSheetHeight]}
+            renderHeader = {renderHeader}
+        />
+
+        {/* <View style = {{height:1000}}> */}
+        <MapView
+            provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: BottomSheetHeight
+            }}
+            onRegionChangeComplete={onRegionChange}
+            showsUserLocation={true}
+            showsMyLocationButton = {true}
+            showsBuildings = {true}
+            loadingEnabled = {true}
+          >
+        
+            <View pointerEvents="none" style={styles.markerFixed}>
+              <Image pointerEvents="none" source={marker}/>
+            </View>
+      
+        </MapView>
+
+
+      <View style = {StyleSheet.bottomSheetContainer}></View>
+    
+     </View>
+    // </View>
   )
 
 
@@ -143,10 +155,30 @@ const AddLocationView = ({navigation}) => {
 
 
 const styles = StyleSheet.create({
- 
+
+  bottomSheetContainer:{
+    flex:1,
+    backgroundColor:'black'
+  },
+
+  map: {
+    // ...StyleSheet.absoluteFillObject
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 500
+  },
+
+  container: {
+    flex:1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+
   markerFixed: {
     position: 'absolute', 
-    top: -50, 
+    top: 0, 
     bottom: 0, 
     left: 0, 
     right: 0, 
@@ -172,9 +204,15 @@ const styles = StyleSheet.create({
     color: "#000000",
     marginBottom:20
   },
+  title:{
+    fontFamily: "TTCommons-Bold",
+    fontSize: 24,
+    paddingBottom:20,
+    color: "#000000"
+  },
   subTitle:{
       fontFamily: "TTCommons-Regular",
-      fontSize: 24,
+      fontSize: 20,
       paddingBottom:25,
       color: "#000000"
   },
@@ -187,20 +225,9 @@ const styles = StyleSheet.create({
   },
   content:{
     backgroundColor:'white',
-    borderTopLeftRadius:20,
-    borderTopRightRadius:20,
     shadowRadius:10,
-    shadowOpacity:0.2,
+    shadowOpacity:0.0,
     padding:30
-  },
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    flex:1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
   },
   cta:{
       marginTop:20,

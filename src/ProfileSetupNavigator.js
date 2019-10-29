@@ -7,7 +7,6 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 const ProfileSetupStack = createStackNavigator(
   { 
-
     TermsPage: {
       screen: TermsPage
     },
@@ -20,7 +19,7 @@ const ProfileSetupStack = createStackNavigator(
   },
   {
     mode: 'card',
-    // headerMode: 'none',
+    headerMode: 'none',
   }
 );
 
