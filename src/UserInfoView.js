@@ -8,8 +8,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     Keyboard,
-    Platform,
-    DatePickerIOS
+    KeyboardAvoidingView
   } from 'react-native';
 
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -19,7 +18,7 @@ import { CountryCode, Country } from './types';
 const UserInfoView = ({navigation}) => {
 
     const [chosenDate,setChosenDate] = useState(new Date());
-    const [formattedDate,setFormattedDate]=useState('Your Date Of Birth');
+    const [formattedDate,setFormattedDate]=useState('Date Of Birth');
     const [shouldShowDatePicker,setShowDatePicker]=useState(false);
  
     const [countryCode, setCountryCode] = useState('AE')
@@ -59,7 +58,6 @@ const UserInfoView = ({navigation}) => {
         setShowDatePicker(true);
     }
 
-
     const hideDateTimePicker = () => {
         setShowDatePicker(false);
     };
@@ -72,97 +70,100 @@ const UserInfoView = ({navigation}) => {
 
 
     return ( 
-        <View style={styles.container}>
-            <SafeAreaView >
-
+        
+            <SafeAreaView style={styles.container}>
+     
                 <ScrollView 
                     style={styles.scrollView}
                     onScroll = {Keyboard.dismiss}
                 >
 
-                    <Text style={styles.title}>Welcome To BlueRibbon</Text> 
-                    <Text style={styles.subTitle}>Let's set you up for an amazing experience</Text> 
+                    <KeyboardAvoidingView style={styles.subContainer} behavior="position" enabled>
 
-                    <View style = {styles.subContainer}>
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder='Your First Name'
-                        />
-                         <TextInput
-                            style={styles.textInput}
-                            placeholder='Your Last Name'
-                        />
-                        
-                        <TouchableOpacity
-                            style={styles.textInput}
-                            value={formattedDate}
-                            onPress = {showDatePicker}
-                        >
-                            <Text style={(formattedDate == 'Your Date Of Birth') ? styles.placeHolderDateText:styles.activeDateText}> {formattedDate} </Text>
-                        </TouchableOpacity>
 
-                        <View style={styles.phoneField}>
+                        <Text style={styles.title}>Welcome To BlueRibbon</Text> 
+                        <Text style={styles.subTitle}>Let's set you up for an amazing experience</Text> 
 
+                        <View style = {styles.subContainer}>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='First Name'
+                            />
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='Last Name'
+                            />
+                            
                             <TouchableOpacity
-                                style={styles.countryCodeButton}
-                                onPress = {()=>switchVisible()}
+                                style={styles.textInput}
+                                value={formattedDate}
+                                onPress = {showDatePicker}
                             >
-
-                                <Text
-                                    style={styles.countryCodeText}
-                                >
-                                    {'+'+callingCode}
-                                </Text>
-
+                                <Text style={(formattedDate == 'Date Of Birth') ? styles.placeHolderDateText:styles.activeDateText}> {formattedDate} </Text>
                             </TouchableOpacity>
 
-                            <TextInput
-                                style={styles.phoneTextInput}
-                                placeholder={ '  Your Mobile Number'}
-                                keyboardType = 'phone-pad'
-                            />
-                        </View>
+                            <View style={styles.phoneField}>
 
-                        <CountryPicker
-                                {...{
-                                countryCode,
-                                withFilter,
-                                withFlag,
-                                withCountryNameButton,
-                                withAlphaFilter,
-                                withCallingCode,
-                                withEmoji,
-                                onSelect,
-                                modalProps:{
-                                    visible
-                                },
-                                onOpen: ()=>setVisible(true),
-                                onClose: ()=>setVisible(false)
-                                }}
-                                withFlagButton = {false}
-                            />
-                        
-                    </View>
+                                <TouchableOpacity
+                                    style={styles.countryCodeButton}
+                                    onPress = {()=>switchVisible()}
+                                >
+
+                                    <Text
+                                        style={styles.countryCodeText}
+                                    >
+                                        {'+'+callingCode}
+                                    </Text>
+
+                                </TouchableOpacity>
+
+                                <TextInput
+                                    style={styles.phoneTextInput}
+                                    placeholder={ 'Mobile Number'}
+                                    keyboardType = 'phone-pad'
+                                />
+
+                            </View>
+
+                            <CountryPicker
+                                    {...{
+                                    countryCode,
+                                    withFilter,
+                                    withFlag,
+                                    withCountryNameButton,
+                                    withAlphaFilter,
+                                    withCallingCode,
+                                    withEmoji,
+                                    onSelect,
+                                    modalProps:{
+                                        visible
+                                    },
+                                    onOpen: ()=>setVisible(true),
+                                    onClose: ()=>setVisible(false)
+                                    }}
+                                    withFlagButton = {false}
+                                />
+                            
+                        </View>
+                    </KeyboardAvoidingView>
 
                 </ScrollView>
 
-            </SafeAreaView>
 
-            <SafeAreaView >
-               
                 <DateTimePicker
                     isVisible={shouldShowDatePicker}
                     onConfirm={handleDatePicked}
                     onCancel={hideDateTimePicker}
                 />
-                
-                <TouchableOpacity style={styles.cta} onPress={next}>
-                        <Text style={styles.ctaText}>Create Account</Text>
-                </TouchableOpacity>
+
+                <View styles = {styles.ctaContainer}>
+                    <TouchableOpacity style={styles.cta} onPress={next}>
+                            <Text style={styles.ctaText}>Create Account</Text>
+                    </TouchableOpacity>
+                </View>
 
             </SafeAreaView>
 
-        </View >
       );
 
 }
@@ -285,7 +286,6 @@ const styles = StyleSheet.create({
         color: "#000000"
     },
     cta:{
-        marginTop:40,
         marginLeft:40,
         marginRight:40,
         paddingTop:5,
@@ -295,7 +295,9 @@ const styles = StyleSheet.create({
         color: "#4a4a4a",
         flexDirection:'row',
         alignItems:'center',
-        justifyContent:"center"
+        justifyContent:"center",
+        marginTop:20,
+        marginBottom:20
     },
     ctaText:{
         fontFamily:"TTCommons-Bold",
@@ -303,6 +305,9 @@ const styles = StyleSheet.create({
         textAlign: "center",
         color: "#ffffff",
     },
+    ctaContainer:{
+        justifyContent:'center'
+    }
 
 })
 

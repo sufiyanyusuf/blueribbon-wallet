@@ -8,13 +8,14 @@ import {
     SafeAreaView,
     Image,
     KeyboardAvoidingView,
+    Keyboard,
     Dimensions
   } from 'react-native';
 
 import axios from 'axios'
 import BottomSheet from 'reanimated-bottom-sheet'
 import MapView, {PROVIDER_GOOGLE, Marker, Overlay} from 'react-native-maps';
-import { TextInput } from 'react-native-gesture-handler';
+import { TextInput, ScrollView } from 'react-native-gesture-handler';
 import marker from './assets/pin.png'
 
 const AddLocationView = ({navigation}) => {
@@ -76,52 +77,57 @@ const AddLocationView = ({navigation}) => {
 
   const renderHeader = () => {
     return (
-      
-      <View 
-        style={styles.content}
-        onLayout={(event) => {
-          var {x, y, width, height} = event.nativeEvent.layout;
-          setBottomSheetHeight(height)
-        }}
+      <ScrollView
+        onScroll = {Keyboard.dismiss}
       >
-        <Text style={styles.title}>Select Your Address</Text>
-        <Text style={styles.subTitle}>{address}</Text>
+        
+        <View 
+          style={styles.content}
+          onLayout={(event) => {
+            var {x, y, width, height} = event.nativeEvent.layout;
+            setBottomSheetHeight(height)
+          }}
+        >
+          <Text style={styles.title}>Select Your Address</Text>
+          <Text style={styles.subTitle}>{address}</Text>
 
-        { locationSaved == true &&
-          <TextInput
-            style={styles.textInput}
-            placeholder = 'Your Complete Address - Building/Villa Name, Unit Number, etc'
-            multiline
-          />
-        }
+          { locationSaved == true &&
+            <TextInput
+              style={styles.textInput}
+              placeholder = 'Your Complete Address - Building/Villa Name, Unit Number, etc'
+              blurOnSubmit={true}
+              multiline
+            />
+          }
 
-        { locationSaved == true &&
-          <TextInput
-            style={styles.textInput}
-            placeholder = 'Home/Office/Other'
-          />
-        }
+          { locationSaved == true &&
+            <TextInput
+              style={styles.textInput}
+              placeholder = 'Home/Office/Other'
+            />
+          }
 
-        <TouchableOpacity style={styles.cta} onPress={next}>
-          <Text style={styles.ctaText}>Continue</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.cta} onPress={next}>
+            <Text style={styles.ctaText}>Continue</Text>
+          </TouchableOpacity>
 
-      </View>
-    )
+        </View>
+    
+      </ScrollView>
+     )
   }
 
   return (
-  
-    <View style={styles.container}>
-      
+    <KeyboardAvoidingView style={styles.container} behavior='padding' enabled>
 
-      <BottomSheet
-            snapPoints = {[BottomSheetHeight]}
-            renderHeader = {renderHeader}
+
+        <BottomSheet
+          snapPoints = {[BottomSheetHeight]}
+          renderContent = {renderHeader}
         />
+        
 
-        {/* <View style = {{height:1000}}> */}
-        <MapView
+      <MapView
             provider={PROVIDER_GOOGLE} // remove if not using Google Maps
             style={{
               position: "absolute",
@@ -143,11 +149,8 @@ const AddLocationView = ({navigation}) => {
       
         </MapView>
 
-
-      <View style = {StyleSheet.bottomSheetContainer}></View>
-    
-     </View>
-    // </View>
+ 
+    </KeyboardAvoidingView> 
   )
 
 
@@ -158,11 +161,9 @@ const styles = StyleSheet.create({
 
   bottomSheetContainer:{
     flex:1,
-    backgroundColor:'black'
   },
 
   map: {
-    // ...StyleSheet.absoluteFillObject
     position: "absolute",
     top: 0,
     left: 0,
