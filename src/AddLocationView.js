@@ -9,7 +9,8 @@ import {
     Image,
     KeyboardAvoidingView,
     Keyboard,
-    Dimensions
+    Dimensions,
+    ActivityIndicator
   } from 'react-native';
 
 import axios from 'axios'
@@ -17,23 +18,87 @@ import BottomSheet from 'reanimated-bottom-sheet'
 import MapView, {PROVIDER_GOOGLE, Marker, Overlay} from 'react-native-maps';
 import { TextInput, ScrollView } from 'react-native-gesture-handler';
 import marker from './assets/pin.png'
+import Auth0 from 'react-native-auth0';
+import SInfo from 'react-native-sensitive-info';
+import getUserId from './utils/GetUserIdHook'
+import useUserID from './utils/GetUserIdHook';
 
 const AddLocationView = ({navigation}) => {
- 
+  var credentials = require('./auth0-credentials');
+  const auth0 = new Auth0(credentials);
+
   const googleApiKey = 'AIzaSyBe12m5Dr_Nl4Npazinei3sQoJKr3MbuuY'
 
   const [region,setRegion] = useState({
       latitude: 25.27652914015569,
       longitude: 55.29358830302954,
       latitudeDelta: 1.1126353632416794,
-      longitudeDelta: 0.56854248046875,
-    
+      longitudeDelta: 0.56854248046875, 
   });
 
   const [address,setAddress] = useState('')
   const [locationSaved,setLocationSaved] = useState(false)
   const [BottomSheetHeight,setBottomSheetHeight] = useState(0)
-  
+  const [coordinates,setCoordinates] = useState({})
+  const [loading,setLoading] = useState(false)
+  const [tag,setTag] = useState ('')
+  const [completeAddress,setCompleteAddress] = useState ('')
+
+  // const userId = useUserID();
+
+
+  const getUserId = async (token) => {
+    console.log('getting')
+    return new Promise ((resolve, reject) => {
+
+        auth0.auth
+            .userInfo({ token: token })
+            .then(data => {
+              console.log(data)
+                if (data.sub){
+                    resolve(data.sub)
+                }else{
+                    reject('error')
+                }
+            })
+            .catch(err => {
+                console.log(err)
+                reject(err)
+            })
+            
+    })
+}
+
+const getToken = new Promise (async (resolve, reject) => {
+
+    SInfo.getItem("accessToken", {}).then(accessToken => {
+        if (accessToken) {
+          auth0.auth
+            .userInfo({ token: accessToken })
+            .then(data => {
+                resolve(token.accessToken)
+            })
+            .catch(err => {
+              SInfo.getItem("refreshToken", {}).then(refreshToken => {
+                auth0.auth
+                    .refreshToken({ refreshToken: refreshToken })
+                    .then(newAccessToken => {
+                        // SInfo.setItem("accessToken", newAccessToken.accessToken, {});
+                        resolve(newAccessToken.accessToken)
+                    })
+                    .catch(err2 => {
+                        reject(err2)
+                    });
+                });
+            });
+        } else {
+          setAccessToken(false)
+          reject('No token')
+        }
+    });
+
+})
+
   const onRegionChange = (region) => {
 
     setRegion(region)
@@ -47,16 +112,36 @@ const AddLocationView = ({navigation}) => {
               if (responseJson.data.results[0] != null ){
                 const result = responseJson.data.results[0];
                 setAddress(result.formatted_address);
+                setCoordinates(result.geometry.location);
               }
             }
           }
         }
       })
     }catch (e){
-
+      console.log(e);
     }
 
   }
+
+
+
+  const addUserLocation = async (id) => {
+    console.log(coordinates)
+    return new Promise ((resolve, reject) => {
+        axios.post('https://2d9ab7a4.ngrok.io/api/user/addLocation',{
+            'user_id':id,
+            'complete_address':completeAddress,
+            'tag':tag,
+            'latitude':coordinates.lat,
+            'longitude':coordinates.lng
+        }).then(response => {
+            resolve(response)
+        }).catch(err => {
+            reject(err)
+        })
+    })
+}
 
   const renderContent = () => {
     return (
@@ -67,14 +152,53 @@ const AddLocationView = ({navigation}) => {
   }
 
   const next = () => {
+    console.log(locationSaved)
+
     if (locationSaved == false){
       setLocationSaved(true)
     }else{
-      navigation.navigate('App');
-    }
-  }
-   
+      setLoading(true)
 
+      // if (userId){
+      //   addUserLocation(userId)
+      //   .then(response => {
+      //       //show toast
+      //       console.log(response)
+      //       setLoading(false)
+      //       setLocationSaved(true)
+      //       navigation.navigate('App');
+      //   }).catch(e=>{
+      //       console.log(e)
+      //       setLoading(false)
+      //       //show error message in UI
+      //   })
+      // }else{
+      //   setLoading(false)
+      // }
+
+      getToken.then(token =>{
+        console.log(token)
+        return getUserId(token)
+      }).then(userId=>{
+          console.log(userId)
+          return addUserLocation(userId)
+      })
+      .then(response => {
+          //show toast
+          console.log(response)
+          setLoading(false)
+          setLocationSaved(true)
+          navigation.navigate('App');
+      }).catch(e=>{
+          console.log(e)
+          setLoading(false)
+          //show error message in UI
+      })
+      
+    }
+
+  }
+  
   const renderHeader = () => {
     return (
       <ScrollView
@@ -96,6 +220,9 @@ const AddLocationView = ({navigation}) => {
               style={styles.textInput}
               placeholder = 'Your Complete Address - Building/Villa Name, Unit Number, etc'
               blurOnSubmit={true}
+              onChangeText={(value) => {
+                  setCompleteAddress(value)
+              }}
               multiline
             />
           }
@@ -104,11 +231,15 @@ const AddLocationView = ({navigation}) => {
             <TextInput
               style={styles.textInput}
               placeholder = 'Home/Office/Other'
+              onChangeText={(value) => {
+                  setTag(value)
+              }}
             />
           }
 
           <TouchableOpacity style={styles.cta} onPress={next}>
-            <Text style={styles.ctaText}>Continue</Text>
+            {!loading && <Text style={styles.ctaText}>Continue</Text>}
+            {loading && <ActivityIndicator size="large" color="#ffffff" />}
           </TouchableOpacity>
 
         </View>
@@ -120,15 +251,13 @@ const AddLocationView = ({navigation}) => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior='padding' enabled>
 
-
         <BottomSheet
           snapPoints = {[BottomSheetHeight]}
           renderContent = {renderHeader}
         />
         
-
       <MapView
-            provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+            provider={PROVIDER_GOOGLE} 
             style={{
               position: "absolute",
               top: 0,
