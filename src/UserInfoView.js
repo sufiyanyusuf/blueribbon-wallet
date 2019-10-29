@@ -8,17 +8,24 @@ import {
     StyleSheet,
     TouchableOpacity,
     Keyboard,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    ActivityIndicator
   } from 'react-native';
 
 import DateTimePicker from "react-native-modal-datetime-picker";
 import CountryPicker from 'react-native-country-picker-modal'
+import axios from 'axios';
+import Auth0 from 'react-native-auth0';
+import SInfo from 'react-native-sensitive-info';
+
 import { CountryCode, Country } from './types';
+
+var credentials = require('./auth0-credentials');
+const auth0 = new Auth0(credentials);
 
 const UserInfoView = ({navigation}) => {
 
     const [chosenDate,setChosenDate] = useState(new Date());
-    const [formattedDate,setFormattedDate]=useState('Date Of Birth');
     const [shouldShowDatePicker,setShowDatePicker]=useState(false);
  
     const [countryCode, setCountryCode] = useState('AE')
@@ -33,7 +40,80 @@ const UserInfoView = ({navigation}) => {
     const [withCallingCode, setWithCallingCode] = useState(true)
     const [visible, setVisible] = useState(false)
 
+    const [loading,setLoading] = useState(false)
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [formattedDate,setFormattedDate] = useState('Date Of Birth')
+    const [mobileNumber, setMobileNumber] = useState('')
+
+
+
     const switchVisible = () => setVisible(!visible)
+
+    const getUserId = async (token) => {
+        return new Promise ((resolve, reject) => {
+         
+            auth0.auth
+                .userInfo({ token: token })
+                .then(data => {
+                    if (data.sub){
+                        resolve(data.sub)
+                    }else{
+                        reject('error')
+                    }
+                })
+                .catch(err => {
+                    reject(err)
+                })
+                
+        })
+    }
+
+    const getToken = new Promise (async (resolve, reject) => {
+
+        SInfo.getItem("accessToken", {}).then(accessToken => {
+            if (accessToken) {
+              auth0.auth
+                .userInfo({ token: accessToken })
+                .then(data => {
+                    resolve(token.accessToken)
+                })
+                .catch(err => {
+                  SInfo.getItem("refreshToken", {}).then(refreshToken => {
+                    auth0.auth
+                        .refreshToken({ refreshToken: refreshToken })
+                        .then(newAccessToken => {
+                            SInfo.setItem("accessToken", newAccessToken.accessToken, {});
+                            resolve(newAccessToken.accessToken)
+                        })
+                        .catch(err2 => {
+                            reject(err2)
+                        });
+                    });
+                });
+            } else {
+              setAccessToken(false)
+              reject('No token')
+            }
+        });
+
+    })
+    
+    const updateProfile = async (id) => {
+        return new Promise ((resolve, reject) => {
+            axios.post('https://2d9ab7a4.ngrok.io/api/user/updateInfo',{
+                'user_id':id,
+                'first_name':firstName,
+                'last_name':lastName,
+                'birthday':formattedDate,
+                'phone_number':callingCode + mobileNumber
+            }).then(response => {
+                resolve(response)
+            }).catch(err => {
+                reject(err)
+            })
+        })
+    }
 
     const onSelect = (country: Country) => {
         setCountryCode(country.cca2)
@@ -43,7 +123,24 @@ const UserInfoView = ({navigation}) => {
 
 
     const next = () => {
-        navigation.navigate('AddLocationView');
+
+        setLoading(true)
+
+        getToken.then(token => {
+            return getUserId(token)
+        }).then(id => {
+            return updateProfile(id)
+        }).then(response => {
+            //show toast
+            setLoading(false)
+            navigation.navigate('AddLocationView');
+        }).catch(e=>{
+            setLoading(false)
+            //show error message in UI
+        })
+
+        //send request , then navigate on success
+        // navigation.navigate('AddLocationView');
     }
 
     const updateDate = (newDate) => {
@@ -88,16 +185,25 @@ const UserInfoView = ({navigation}) => {
                             <TextInput
                                 style={styles.textInput}
                                 placeholder='First Name'
+                                editable = {!loading}
+                                onChangeText={(value) => {
+                                    setFirstName(value)
+                                }}
                             />
                             <TextInput
                                 style={styles.textInput}
                                 placeholder='Last Name'
+                                editable = {!loading}
+                                onChangeText={(value) => {
+                                    setLastName(value)
+                                }}
                             />
                             
                             <TouchableOpacity
                                 style={styles.textInput}
                                 value={formattedDate}
                                 onPress = {showDatePicker}
+                                disabled = {loading}
                             >
                                 <Text style={(formattedDate == 'Date Of Birth') ? styles.placeHolderDateText:styles.activeDateText}> {formattedDate} </Text>
                             </TouchableOpacity>
@@ -107,6 +213,7 @@ const UserInfoView = ({navigation}) => {
                                 <TouchableOpacity
                                     style={styles.countryCodeButton}
                                     onPress = {()=>switchVisible()}
+                                    disabled = {loading}
                                 >
 
                                     <Text
@@ -121,6 +228,10 @@ const UserInfoView = ({navigation}) => {
                                     style={styles.phoneTextInput}
                                     placeholder={ 'Mobile Number'}
                                     keyboardType = 'phone-pad'
+                                    editable = {!loading}
+                                    onChangeText={(value) => {
+                                        setMobileNumber(value)
+                                    }}
                                 />
 
                             </View>
@@ -158,7 +269,8 @@ const UserInfoView = ({navigation}) => {
 
                 <View styles = {styles.ctaContainer}>
                     <TouchableOpacity style={styles.cta} onPress={next}>
-                            <Text style={styles.ctaText}>Create Account</Text>
+                            {!loading && <Text style={styles.ctaText}>Create Account</Text>}
+                            {loading && <ActivityIndicator size="large" color="#ffffff" />}
                     </TouchableOpacity>
                 </View>
 
