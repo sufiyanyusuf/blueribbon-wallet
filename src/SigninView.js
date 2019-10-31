@@ -59,10 +59,11 @@ const SignInView = ({navigation}) => {
     auth0.webAuth
         .authorize({
             scope: 'offline_access email openid profile token',
-            audience: 'https://' + credentials.domain + '/userinfo'
+            // audience: 'https://' + credentials.domain + '/userinfo',
+            audience: 'https://blueribbon.io/api/user'
         })
         .then(credentials => {
-
+            console.log(credentials, credentials.accessToken)
             auth0.auth
             .userInfo({ token: credentials.accessToken })
             .then(data => {
