@@ -20,28 +20,30 @@ const SignInView = ({navigation}) => {
     const checkToken = async() => {
 
       SInfo.getItem("accessToken", {}).then(accessToken => {
+        console.log(accessToken);
+
         if (accessToken) {
           auth0.auth
             .userInfo({ token: accessToken })
             .then(data => {
-              console.log(userInfo)
               setAccessToken(true)
               navigation.navigate('App');
             })
             .catch(err => {
-              SInfo.getItem("refreshToken", {}).then(refreshToken => {
-                auth0.auth
-                  .refreshToken({ refreshToken: refreshToken })
-                  .then(newAccessToken => {
-                    SInfo.setItem("accessToken", JSON.stringify(newAccessToken), {});
-                    setAccessToken(true)
-                    navigation.navigate('App');
-                  })
-                  .catch(err2 => {
-                    console.log("err getting new access token");
-                    console.log(err2);
-                  });
-              });
+              console.log(err)
+              // SInfo.getItem("refreshToken", {}).then(refreshToken => {
+              //   auth0.auth
+              //     .refreshToken({ refreshToken: refreshToken })
+              //     .then(newAccessToken => {
+              //       SInfo.setItem("accessToken", JSON.stringify(newAccessToken), {});
+              //       setAccessToken(true)
+              //       navigation.navigate('App');
+              //     })
+              //     .catch(err2 => {
+              //       console.log("err getting new access token");
+              //       console.log(err2);
+              //     });
+              // });
             });
         } else {
           setAccessToken(false)
@@ -59,21 +61,23 @@ const SignInView = ({navigation}) => {
     auth0.webAuth
         .authorize({
             scope: 'offline_access email openid profile token',
-            // audience: 'https://' + credentials.domain + '/userinfo',
+            audience: 'https://' + credentials.domain + '/userinfo',
             audience: 'https://blueribbon.io/api/user'
         })
         .then(credentials => {
             console.log(credentials, credentials.accessToken)
+
+
+            SInfo.setItem("accessToken", credentials.accessToken, {});
+            setAccessToken(true)
+            navigation.navigate('App')
+
             auth0.auth
             .userInfo({ token: credentials.accessToken })
             .then(data => {
               console.log(data)
             })
 
-            SInfo.setItem("accessToken", credentials.accessToken, {});
-            SInfo.setItem("refreshToken", credentials.refreshToken, {});
-            setAccessToken(true)
-            navigation.navigate('App')
 
         })
         .catch(error => console.log(error));

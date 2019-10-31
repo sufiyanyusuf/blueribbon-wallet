@@ -7,6 +7,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 const ProfileSetupStack = createStackNavigator(
   { 
+    
     TermsPage: {
       screen: TermsPage
     },

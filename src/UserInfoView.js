@@ -20,6 +20,7 @@ import SInfo from 'react-native-sensitive-info';
 
 import { CountryCode, Country } from './types';
 
+
 var credentials = require('./auth0-credentials');
 const auth0 = new Auth0(credentials);
 
@@ -45,8 +46,7 @@ const UserInfoView = ({navigation}) => {
     const [lastName, setLastName] = useState('')
     const [formattedDate,setFormattedDate] = useState('Date Of Birth')
     const [mobileNumber, setMobileNumber] = useState('')
-
-
+    
 
     const switchVisible = () => setVisible(!visible)
 
@@ -73,24 +73,7 @@ const UserInfoView = ({navigation}) => {
 
         SInfo.getItem("accessToken", {}).then(accessToken => {
             if (accessToken) {
-              auth0.auth
-                .userInfo({ token: accessToken })
-                .then(data => {
-                    resolve(token.accessToken)
-                })
-                .catch(err => {
-                  SInfo.getItem("refreshToken", {}).then(refreshToken => {
-                    auth0.auth
-                        .refreshToken({ refreshToken: refreshToken })
-                        .then(newAccessToken => {
-                            SInfo.setItem("accessToken", newAccessToken.accessToken, {});
-                            resolve(newAccessToken.accessToken)
-                        })
-                        .catch(err2 => {
-                            reject(err2)
-                        });
-                    });
-                });
+                resolve (accessToken)
             } else {
               setAccessToken(false)
               reject('No token')
@@ -99,15 +82,20 @@ const UserInfoView = ({navigation}) => {
 
     })
     
-    const updateProfile = async (id) => {
+    const updateProfile = async (token) => {
+        var config = {
+            headers: {'Authorization': "bearer " + token}
+          };
+      
+          var bodyParameters = {
+            'first_name':firstName,
+            'last_name':lastName,
+            'birthday':formattedDate,
+            'phone_number':callingCode + mobileNumber
+         }
+
         return new Promise ((resolve, reject) => {
-            axios.post('https://2d9ab7a4.ngrok.io/api/user/updateInfo',{
-                'user_id':id,
-                'first_name':firstName,
-                'last_name':lastName,
-                'birthday':formattedDate,
-                'phone_number':callingCode + mobileNumber
-            }).then(response => {
+            axios.post('https://2d9ab7a4.ngrok.io/api/user/updateInfo',bodyParameters,config).then(response => {
                 resolve(response)
             }).catch(err => {
                 reject(err)
@@ -126,11 +114,10 @@ const UserInfoView = ({navigation}) => {
 
         setLoading(true)
 
-        getToken.then(token => {
-            return getUserId(token)
-        }).then(id => {
-            return updateProfile(id)
-        }).then(response => {
+        getToken.then(token =>{
+            return updateProfile(token)
+        })
+        .then(response => {
             //show toast
             setLoading(false)
             navigation.navigate('AddLocationView');

@@ -17,6 +17,7 @@ const SettingsView = ({navigation}) => {
       const checkToken = async () => {
 
         SInfo.getItem("accessToken", {}).then(accessToken => {
+          console.log('accesstoken ', accessToken)
           if (accessToken) {
             auth0.auth
               .userInfo({ token: accessToken })
@@ -25,25 +26,25 @@ const SettingsView = ({navigation}) => {
               })
               .catch(err => {
                 console.log(err)
-                SInfo.getItem("refreshToken", {}).then(refreshToken => {
-                  auth0.auth
-                    .refreshToken({ refreshToken: refreshToken })
-                    .then(newAccessToken => {
-                      SInfo.setItem("accessToken", newAccessToken.accessToken, {});
-                      setAccessToken(true)
+                // SInfo.getItem("refreshToken", {}).then(refreshToken => {
+                //   auth0.auth
+                //     .refreshToken({ refreshToken: refreshToken })
+                //     .then(newAccessToken => {
+                //       SInfo.setItem("accessToken", newAccessToken.accessToken, {});
+                //       setAccessToken(true)
 
-                      // auth0.auth
-                      //   .userInfo({token: newAccessToken})
-                      //   .then(console.log)
-                      //   .catch(console.error);
+                //       // auth0.auth
+                //       //   .userInfo({token: newAccessToken})
+                //       //   .then(console.log)
+                //       //   .catch(console.error);
 
-                      // RNRestart.Restart();
-                    })
-                    .catch(err2 => {
-                      console.log("err getting new access token");
-                      console.log(err2);
-                    });
-                });
+                //       // RNRestart.Restart();
+                //     })
+                //     .catch(err2 => {
+                //       console.log("err getting new access token");
+                //       console.log(err2);
+                //     });
+                // });
               });
           } else {
             setAccessToken(false)

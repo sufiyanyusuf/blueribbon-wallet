@@ -28,7 +28,7 @@ const SubscriptionPage = ({navigation}) => {
         publishableKey: 'pk_test_3Rc7Jw1dt02Cb7vee5lllMah00R7mTNCCm',
         merchantId: 'merchant.com.blueribbon', // Optional
         androidPayMode: 'test', // Android only
-      })
+    })
       
     const state = React.useContext(StateContext);
     const dispatch = React.useContext(DispatchContext);
@@ -68,7 +68,7 @@ const SubscriptionPage = ({navigation}) => {
         const fetchListing = async () => {
             try{
                 // https://f2b86c98.ngrok.io/api/listing/4/
-                axios.get('https://f2b86c98.ngrok.io/api/listing/4/')
+                axios.get('https://2d9ab7a4.ngrok.io/api/listing/4/')
                 .then(res => {
                     const listingModel =  createListingModel({
                         title:res.data.productInfo.title,
@@ -161,7 +161,7 @@ const SubscriptionPage = ({navigation}) => {
           .then(stripeTokenInfo => {
 
             try{
-                axios.post('https://f2b86c98.ngrok.io/api/payment/new/applePay',{
+                axios.post('https://2d9ab7a4.ngrok.io/api/payment/new/applePay',{
                     amount:(pricing*100),
                     tokenId:stripeTokenInfo.tokenId
                 })
