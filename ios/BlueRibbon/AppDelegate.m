@@ -19,6 +19,7 @@
 #import <AppCenterReactNative.h>
 #import <AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNativeCrashes.h>
+#import "RNFirebaseLinks.h"
 
 @import Firebase;
 
@@ -45,30 +46,38 @@
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
   [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
 
-  [RNBranch initSessionWithLaunchOptions:launchOptions isReferrable:YES]; // <-- add this
   
-
+  [FIROptions defaultOptions].deepLinkURLScheme = @"com.blueribbon.wallet";
     
   [FIRApp configure];
   return YES;
 }
 
-- (BOOL)application:(UIApplication *)application
-continueUserActivity:(nonnull NSUserActivity *)userActivity
- restorationHandler:
-#if defined(__IPHONE_12_0) && (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_12_0)
-(nonnull void (^)(NSArray<id<UIUserActivityRestoring>> *_Nullable))restorationHandler {
-#else
-    (nonnull void (^)(NSArray *_Nullable))restorationHandler {
-#endif  // __IPHONE_12_0
-  BOOL handled = [[FIRDynamicLinks dynamicLinks] handleUniversalLink:userActivity.webpageURL
-                                                          completion:^(FIRDynamicLink * _Nullable dynamicLink,
-                                                                       NSError * _Nullable error) {
-                                                            // ...
-                                                          }];
-  return handled;
-}
+//- (BOOL)application:(UIApplication *)application
+//continueUserActivity:(nonnull NSUserActivity *)userActivity
+// restorationHandler:
+//#if defined(__IPHONE_12_0) && (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_12_0)
+//(nonnull void (^)(NSArray<id<UIUserActivityRestoring>> *_Nullable))restorationHandler {
+//#else
+//    (nonnull void (^)(NSArray *_Nullable))restorationHandler {
+//#endif  // __IPHONE_12_0
+//  BOOL handled = [[FIRDynamicLinks dynamicLinks] handleUniversalLink:userActivity.webpageURL
+//                                                          completion:^(FIRDynamicLink * _Nullable dynamicLink,
+//                                                                       NSError * _Nullable error) {
+//                                                            // ...
+//                                                          }];
+//  return handled;
+//}
+//
+//- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
+// restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
+//{
+//  return [RCTLinkingManager application:application
+//                   continueUserActivity:userActivity
+//                     restorationHandler:restorationHandler];
+//}
   
+
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
@@ -87,16 +96,52 @@ continueUserActivity:(nonnull NSUserActivity *)userActivity
                       sourceApplication:sourceApplication annotation:annotation];
 }
 
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+            options:(NSDictionary<NSString *, id> *)options {
   
+  BOOL handled = [RCTLinkingManager application:application
+             openURL:url
+   sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+          annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
   
-  - (BOOL)application:(UIApplication *)app
-              openURL:(NSURL *)url
-              options:(NSDictionary<NSString *, id> *)options {
-    return [self application:app
-                     openURL:url
-           sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-                  annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+  if (!handled) {
+      handled = [[RNFirebaseLinks instance] application:application openURL:url options:options];
   }
+
+  return handled;
+  
+}
+
+- (BOOL)application:(UIApplication *)application
+continueUserActivity:(NSUserActivity *)userActivity
+ restorationHandler:(void (^)(NSArray *))restorationHandler {
+  
+  BOOL handled = [RCTLinkingManager application:application
+                     continueUserActivity:userActivity
+                       restorationHandler:restorationHandler];
+  
+  if (!handled) {
+    handled = [[RNFirebaseLinks instance] application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
+  }
+    
+  return handled;
+  
+}
+  
+  
+//  - (BOOL)application:(UIApplication *)app
+//              openURL:(NSURL *)url
+//              options:(NSDictionary<NSString *, id> *)options {
+//
+//
+//    return [self application:app
+//                     openURL:url
+//           sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+//                  annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+//  }
+
+
 
   
   

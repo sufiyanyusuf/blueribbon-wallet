@@ -12,6 +12,8 @@
 		<string>applinks:links.blueribbon.io</string>
 		<string>applinks:5wikl.app.link</string>
 		<string>applinks:5wikl-alternate.app.link</string>
+		<string>applinks:blueribbon.io</string>
+		<string>activitycontinuation:blueribbon.io</string>
 	</array>
 	<key>com.apple.developer.in-app-payments</key>
 	<array>

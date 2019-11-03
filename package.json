@@ -7,8 +7,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@react-native-firebase/app": "^6.0.2",
-    "@react-native-firebase/dynamic-links": "^6.0.2",
+    "@react-native-firebase/app": "^6.0.3",
+    "@react-native-firebase/dynamic-links": "^6.0.3",
     "appcenter": "2.5.0",
     "appcenter-analytics": "2.5.0",
     "appcenter-crashes": "2.5.0",
@@ -19,6 +19,7 @@
     "react-native-auth0": "^1.5.0",
     "react-native-branch": "^4.2.1",
     "react-native-country-picker-modal": "^1.8.1",
+    "react-native-firebase": "^5.5.6",
     "react-native-fit-image": "^1.5.4",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-keychain": "^3.1.3",

@@ -15,32 +15,39 @@ import { firebase } from '@react-native-firebase/dynamic-links';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 const WalletView = ({navigation}) => {
-    // firebase.dynamicLinks()
-    // .getInitialLink()
-    // .then((url) => {
-    //     if (url) {
-    //         console.log('dynamic link ',url)
-    //         // app opened from a dynamic link URL
-    //     } else {
-    //        // use deep link to handle the URL.
-    //       if (Platform.OS === 'android') {
-    //         Linking.getInitialURL()
-    //           .then((url) => {
-    //              // do something with the URL
-    //           })
-    //           .catch(err => err);
-    //       } else {
-    //           console.log('deep link ',url)
-    //         // handle case for iOS 
-    //       }
-    //     }
-    // });
+
+    firebase.dynamicLinks().getInitialLink()
+    .then((url) => {
+        if (url) {
+            console.log('dynamic link ',url)
+            // app opened from a dynamic link URL
+        } else {
+           // use deep link to handle the URL.
+          if (Platform.OS === 'android') {
+            Linking.getInitialURL()
+              .then((url) => {
+                 // do something with the URL
+              })
+              .catch(err => err);
+          } else {
+              console.log('deep link ',url)
+            // handle case for iOS 
+          }
+        }
+    });
+
+    const handleDynamicLink = (link) => {
+        // Handle dynamic link inside your own application
+        console.log(link)
+        if (link.url === 'https://invertase.io/offer') return navigateTo('/offers')
+      };
+
+    console.log(navigation.getParam('id'));
 
     const [subscriptions,setSubscriptions] = useState([])
 
     useEffect (()=>{
-        
-
+       
         const fetchSubscriptions = async () => {
 
             SInfo.getItem("accessToken", {}).then(accessToken => {
@@ -84,6 +91,10 @@ const WalletView = ({navigation}) => {
         }
 
         fetchSubscriptions()
+         
+        const unsubscribe = firebase.dynamicLinks().onLink(handleDynamicLink);
+        // When the component unmounts, remove the listener
+        return unsubscribe;
 
     },[])
 

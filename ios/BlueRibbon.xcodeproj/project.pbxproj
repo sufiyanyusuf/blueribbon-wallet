@@ -54,6 +54,7 @@
 		0335CBF47F5C459785A49261 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		0587D857C16A4641A3572826 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		068B532E236EDF2100F0995A /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "AppCenter-Config.plist"; path = "../AppCenter-Config.plist"; sourceTree = "<group>"; };
+		068B5331236EE8FE00F0995A /* libRNFBDynamicLinks.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNFBDynamicLinks.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		068C9D6E23202DFF00DC53BD /* BlueRibbon.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = BlueRibbon.entitlements; path = BlueRibbon/BlueRibbon.entitlements; sourceTree = "<group>"; };
 		06EB6F4D2362793100165CFD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		06EB6F5023633C2100165CFD /* libreact-native-branch.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-branch.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -172,6 +173,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				068B5331236EE8FE00F0995A /* libRNFBDynamicLinks.a */,
 				06EB6F5023633C2100165CFD /* libreact-native-branch.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,

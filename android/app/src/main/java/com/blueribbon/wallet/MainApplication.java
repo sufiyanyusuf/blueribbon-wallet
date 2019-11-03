@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.dynamiclinks.ReactNativeFirebaseDynamicLinksPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import io.branch.rnbranch.RNBranchPackage;
 import com.oblador.keychain.KeychainPackage;

@@ -71,6 +71,7 @@
 	<key>FirebaseDynamicLinksCustomDomains</key>
 	<array>
 		<string>https://links.blueribbon.io</string>
+		<string>https://blueribbon.io</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

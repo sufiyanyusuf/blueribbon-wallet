@@ -42,10 +42,7 @@ target 'BlueRibbon' do
   pod 'RNKeychain', :path => '../node_modules/react-native-keychain'
 
 
-  pod 'react-native-branch', :path => '../node_modules/react-native-branch'
 
-
-  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
 
 
   target 'BlueRibbonTests' do
@@ -63,5 +60,7 @@ target 'BlueRibbon-tvOS' do
     inherit! :search_paths
     # Pods for testing
   end
+  
+  
 
 end
