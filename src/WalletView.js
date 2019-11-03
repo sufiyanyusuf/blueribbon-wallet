@@ -36,6 +36,8 @@ const WalletView = ({navigation}) => {
     //     }
     // });
 
+    const [subscriptions,setSubscriptions] = useState([])
+
     useEffect (()=>{
         
 
@@ -51,8 +53,26 @@ const WalletView = ({navigation}) => {
                 };
                 try{
                     axios.get('https://2d9ab7a4.ngrok.io/api/subscriptions/',config)
-                        .then(subscriptions => {
-                            console.log(subscriptions)
+                        .then(response => {
+                            console.log(response.data)
+
+                            var _subscriptions = []
+
+                            response.data.map ((subscription,index) => {
+
+                                _subscriptions = (_subscriptions.concat([<WalletCard 
+                                    id = {subscription.id}
+                                    key = {index.toString()} 
+                                    productTitle = {subscription.title}
+                                    brandName = {subscription.brand_name}
+                                    logoUrl = {subscription.brand_logo}
+                                    remainingValue = {subscription.value}
+                                />]))
+                                
+                            })
+
+                            setSubscriptions(_subscriptions)
+
                         }
     
                     )
@@ -64,20 +84,13 @@ const WalletView = ({navigation}) => {
         }
 
         fetchSubscriptions()
-        // const getToken = async () => {
-        //     SInfo.getItem("accessToken", {}).then(accessToken => {
-        //         setAccessToken(accessToken)
-        //     })
-        // } 
-        
-        //fetch data and update state for subscriptions
+
     },[])
 
     return (
         <ScrollView>
             <View style={styles.container}>
-                <WalletCard/>
-                <WalletCard/>
+                {subscriptions}
             </View>
         </ScrollView>
     )
