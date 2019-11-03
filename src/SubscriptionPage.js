@@ -19,11 +19,11 @@ import axios from 'axios';
 import Actions from './redux/action';
 import {StateContext,DispatchContext} from './redux/contexts';
 import stripe from 'tipsi-stripe'
-
+import SInfo from 'react-native-sensitive-info';
 
 
 const SubscriptionPage = ({navigation}) => {
-
+    
     stripe.setOptions({
         publishableKey: 'pk_test_3Rc7Jw1dt02Cb7vee5lllMah00R7mTNCCm',
         merchantId: 'merchant.com.blueribbon', // Optional
@@ -51,6 +51,7 @@ const SubscriptionPage = ({navigation}) => {
 
     const [listing,setListing] = useState(createListingModel({}))
     const [modifiers,setModifiers] = useState([])
+    const [accessToken,setAccessToken] = useState('')
    
     const calculatePricing = () => {
         dispatch({type:Actions.orders.calculatePricing,currentOrder:currentOrder,modifiers:listing.modifiers})
@@ -64,11 +65,23 @@ const SubscriptionPage = ({navigation}) => {
     
     calculatePricing()
 
+    const listingId = navigation.getParam('id');
+    const storeId = navigation.getParam('store');
+
+    console.log(listingId);
+
     useEffect (()=>{
+        
+        const getToken = async () => {
+            SInfo.getItem("accessToken", {}).then(accessToken => {
+                setAccessToken(accessToken)
+            })
+        }
+
         const fetchListing = async () => {
+            
             try{
-                // https://f2b86c98.ngrok.io/api/listing/4/
-                axios.get('https://2d9ab7a4.ngrok.io/api/listing/4/')
+                axios.get('https://2d9ab7a4.ngrok.io/api/listing/'+listingId)
                 .then(res => {
                     const listingModel =  createListingModel({
                         title:res.data.productInfo.title,
@@ -136,7 +149,7 @@ const SubscriptionPage = ({navigation}) => {
         }
 
         fetchListing();
-
+        getToken();
 
     },[])
 
@@ -146,40 +159,55 @@ const SubscriptionPage = ({navigation}) => {
        
     }
 
-    const storeId = navigation.getParam('id');
 
     const requestApplePay = () => {
-        return stripe
-          .paymentRequestWithNativePay({
-            shippingMethods: [],
-            currencyCode: listing.currency,
-          },
-          [{
-            label: listing.title,
-            amount: pricing.toString(),
-          }])
-          .then(stripeTokenInfo => {
+
+        if (accessToken){
+
+            var config = {
+                headers: {'Authorization': "bearer " + accessToken}
+            };
+
+
+
+            return stripe
+                .paymentRequestWithNativePay({
+                    shippingMethods: [],
+                    currencyCode: listing.currency,
+                },
+                [{
+                    label: listing.title,
+                    amount: pricing.toString(),
+                }])
+            .then(stripeTokenInfo => {
 
             try{
                 axios.post('https://2d9ab7a4.ngrok.io/api/payment/new/applePay',{
                     amount:(pricing*100),
-                    tokenId:stripeTokenInfo.tokenId
-                })
+                    tokenId:stripeTokenInfo.tokenId,
+                    listingId:listingId
+                },config)
                 .then(res => {
+                    console.log(res)
                     stripe.completeNativePayRequest()
+                    navigation.navigate('Home');
                 })
             }catch(e){
                 console.log(e)
-                stripe.completeNativePayRequest()
+                stripe.cancelNativePayRequest()
             }
 
             // this.props.navigation.navigate('Confirmation');
-          })
-          .catch(error => {
+            })
+            .catch(error => {
             // console.warn('Payment failed', { error });
             stripe.cancelNativePayRequest()
             // this.props.navigation.navigate('Confirmation');
-          });
+            });
+
+
+        }
+
     };
 
     return (

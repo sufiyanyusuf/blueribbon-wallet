@@ -27,7 +27,11 @@ const SignInView = ({navigation}) => {
             .userInfo({ token: accessToken })
             .then(data => {
               setAccessToken(true)
+
+              //check for new user & profile setup flow here
+
               navigation.navigate('App');
+              
             })
             .catch(err => {
               console.log(err)

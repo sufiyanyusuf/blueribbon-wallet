@@ -36,14 +36,14 @@ const TabNavigator = createBottomTabNavigator({
     },
   }
 );
-  
+
 
 const CoreStack = createStackNavigator(
   { 
     Home:TabNavigator,
     LandingPage: {
       screen: SubscriptionPage,
-      path: 'stores/:id',
+      path: 'stores/:store/:id',
     },
     OrderSummary:OrderSummary,
     Confirmation:PaymentConfirmation
