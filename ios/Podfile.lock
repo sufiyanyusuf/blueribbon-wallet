@@ -1,6 +1,24 @@
 PODS:
   - A0Auth0 (1.6.0):
     - React
+  - appcenter (2.5.0):
+    - AppCenterReactNativeShared
+    - React
+  - appcenter-analytics (2.5.0):
+    - AppCenter/Analytics
+    - AppCenterReactNativeShared
+    - React
+  - appcenter-crashes (2.5.0):
+    - AppCenter/Crashes
+    - AppCenterReactNativeShared
+    - React
+  - AppCenter/Analytics (2.5.0):
+    - AppCenter/Core
+  - AppCenter/Core (2.5.0)
+  - AppCenter/Crashes (2.5.0):
+    - AppCenter/Core
+  - AppCenterReactNativeShared (2.5.0):
+    - AppCenter/Core (= 2.5.0)
   - boost-for-react-native (1.63.0)
   - Branch (0.29.0):
     - Branch/Core (= 0.29.0)
@@ -216,6 +234,9 @@ PODS:
 
 DEPENDENCIES:
   - A0Auth0 (from `../node_modules/react-native-auth0`)
+  - appcenter (from `../node_modules/appcenter/ios`)
+  - appcenter-analytics (from `../node_modules/appcenter-analytics/ios`)
+  - appcenter-crashes (from `../node_modules/appcenter-crashes/ios`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Firebase/Analytics
   - Firebase/DynamicLinks
@@ -258,6 +279,8 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - AppCenter
+    - AppCenterReactNativeShared
     - boost-for-react-native
     - Branch
     - Firebase
@@ -280,6 +303,12 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   A0Auth0:
     :path: "../node_modules/react-native-auth0"
+  appcenter:
+    :path: "../node_modules/appcenter/ios"
+  appcenter-analytics:
+    :path: "../node_modules/appcenter-analytics/ios"
+  appcenter-crashes:
+    :path: "../node_modules/appcenter-crashes/ios"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   Folly:
@@ -351,6 +380,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   A0Auth0: d0dd8ed9cbeba3a81db7ea65a1c9d6ce2d52e779
+  AppCenter: 637f180deefc61e8ab3f94223869ee50f61dabea
+  appcenter: bea143e5f472e8ad0260ee902c7fbcec60b5d11f
+  appcenter-analytics: aee3bd5864ce4b6ceaf7d0d69ea79114ea137887
+  appcenter-crashes: fa659fb9d919992b159da88463bfd94a6433eed1
+  AppCenterReactNativeShared: 99e7f662ec66b1cb41306ecf357aabac35931c08
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Branch: 6e7421e1f3c0adebdf80008a40a74969b2603cf8
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
@@ -404,6 +438,6 @@ SPEC CHECKSUMS:
   tipsi-stripe: 237cab79699eb7d354bfc09238b3284e3b8dad84
   yoga: 88c514f310aff89b94a14c5fbf44b95735af0cb7
 
-PODFILE CHECKSUM: 8e55526af8e6f9efad826baf6bc1fd5b52ce3e24
+PODFILE CHECKSUM: f94c71bb5b060d3deba77627518d69679d90dc9b
 
 COCOAPODS: 1.5.3

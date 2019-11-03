@@ -15,6 +15,10 @@
 #import <FirebaseAnalytics/FirebaseAnalytics.h>
 #import <FirebaseDynamicLinks/FirebaseDynamicLinks.h>
 #import <GoogleMaps/GoogleMaps.h>
+#import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
+#import <AppCenterReactNative.h>
+#import <AppCenterReactNativeAnalytics.h>
+#import <AppCenterReactNativeCrashes.h>
 
 @import Firebase;
 
@@ -37,7 +41,10 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  
+  [AppCenterReactNative register];
+  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
+  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
+
   [RNBranch initSessionWithLaunchOptions:launchOptions isReferrable:YES]; // <-- add this
   
 
