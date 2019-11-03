@@ -1,9 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
-    Alert,
-    AppRegistry,
-    Button,
-    Platform,
     StyleSheet,
     Text,
     View,
@@ -11,40 +7,37 @@ import {
   } from 'react-native';
 import FitImage from 'react-native-fit-image';
 
-export default class WalletCard extends Component {
-    constructor(props) {
-      super(props);
-    }
+const WalletCard = ({id,productTitle,brandName,logoUrl,remainingValue}) => {
 
-    showOptions(){
+    showOptions = ()=>{
         console.log("showoptions");
     }
 
-    render() {
-        return (
-          <View style={styles.CardContainer}>
-            <View style={styles.contentContainer}>
-                <View style={styles.cardHeader}>
-                    <View style = {styles.cardHeaderTextContainer}>
-                        <Text style={styles.h3}>Brand Name</Text>
-                        <Text style={styles.caption}>Product Name</Text>
-                    </View>
-
-                    <FitImage
-                      resizeMode="contain"
-                      source={{ uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
-                      style={styles.fitImage}
-                    />
+    return (
+      <View style={styles.CardContainer}>
+        <View style={styles.contentContainer}>
+            <View style={styles.cardHeader}>
+                <View style = {styles.cardHeaderTextContainer}>
+                    <Text style={styles.h3}>{brandName}</Text>
+                    <Text style={styles.caption}>{productTitle}</Text>
                 </View>
-              <Text style={styles.h1}>Remaining Value</Text>
+
+                <FitImage
+                  resizeMode="contain"
+                  source={{ uri: logoUrl }}
+                  style={styles.fitImage}
+                />
+
             </View>
-              <TouchableOpacity style={styles.cta} onPress={()=>this.showOptions()}>
-               <Text style={styles.ctaText}> Manage Subscription </Text>
-             </TouchableOpacity>
-          </View>
-        );
-    }
+          <Text style={styles.h1}>{remainingValue} Remaining</Text>
+        </View>
+          <TouchableOpacity style={styles.cta} onPress={()=>this.showOptions()}>
+            <Text style={styles.ctaText}> Manage Subscription </Text>
+          </TouchableOpacity>
+      </View>
+    );
 }
+
 
 const styles = StyleSheet.create({
     CardContainer: {
@@ -136,3 +129,5 @@ const styles = StyleSheet.create({
       width: 60
     },
   });
+
+export default WalletCard;
