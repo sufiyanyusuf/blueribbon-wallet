@@ -94,7 +94,8 @@ const getToken = new Promise (async (resolve, reject) => {
       'complete_address':completeAddress,
       'tag':tag,
       'latitude':coordinates.lat,
-      'longitude':coordinates.lng
+      'longitude':coordinates.lng,
+      'base_address':address
    }
 
     return new Promise ((resolve, reject) => {
