@@ -20,7 +20,6 @@ const SignInView = ({navigation}) => {
     const checkToken = async() => {
 
       SInfo.getItem("accessToken", {}).then(accessToken => {
-        console.log(accessToken);
 
         if (accessToken) {
           auth0.auth
@@ -31,7 +30,7 @@ const SignInView = ({navigation}) => {
               //check for new user & profile setup flow here
 
               navigation.navigate('App');
-              
+
             })
             .catch(err => {
               console.log(err)

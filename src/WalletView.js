@@ -39,7 +39,11 @@ const WalletView = ({navigation}) => {
     const handleDynamicLink = (link) => {
         // Handle dynamic link inside your own application
         console.log(link)
-        if (link.url === 'https://invertase.io/offer') return navigateTo('/offers')
+        console.log(navigation)
+        if (link.url.includes('https://links.blueribbon.io/listing/')) {
+            const id = link.url.replace('https://links.blueribbon.io/listing/','');
+            return navigation.push('LandingPage',{id:id})
+        }
       };
 
     console.log(navigation.getParam('id'));
@@ -52,8 +56,6 @@ const WalletView = ({navigation}) => {
 
             SInfo.getItem("accessToken", {}).then(accessToken => {
             
-                console.log('fetching')
-                console.log(accessToken)
     
                 var config = {
                     headers: {'Authorization': "bearer " + accessToken}
