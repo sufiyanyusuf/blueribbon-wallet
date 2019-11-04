@@ -186,7 +186,7 @@ PODS:
     - React
   - react-native-maps (0.26.1):
     - React
-  - react-native-sensitive-info (5.5.1):
+  - react-native-sensitive-info (5.5.3):
     - React
   - React-RCTActionSheet (0.60.5):
     - React-Core (= 0.60.5)
@@ -211,7 +211,7 @@ PODS:
     - React-Core (= 0.60.5)
   - React-RCTWebSocket (0.60.5):
     - React-Core (= 0.60.5)
-  - RNFBApp (6.0.2):
+  - RNFBApp (6.0.3):
     - Firebase/Core (~> 6.8.1)
     - React
   - RNFBDynamicLinks (6.0.3):
@@ -228,13 +228,13 @@ PODS:
     - Fabric
     - Firebase/Core
     - React
-  - RNGestureHandler (1.4.1):
+  - RNGestureHandler (1.5.0):
     - React
   - RNKeychain (3.1.3):
     - React
-  - RNReanimated (1.3.0):
+  - RNReanimated (1.4.0):
     - React
-  - RNSVG (9.11.1):
+  - RNSVG (9.13.3):
     - React
   - RNVectorIcons (6.6.0):
     - React
@@ -451,13 +451,13 @@ SPEC CHECKSUMS:
   RNFirebase: ca408d6bee0ca9383bd0cfe84f40b01370b8ad4d
   RNGestureHandler: 311e3b1cef021a7c9ef31e97e7dc31970cc6288d
   RNKeychain: 5381e340056c23de103d73ae59cbddc6ffc21d97
-  RNReanimated: 9f7976535c5cde50189acd84751871f5414190b9
+  RNReanimated: 438b025d37de68a20188ead653ad5a5050b65990
   RNSVG: 2e097b92aaa6d4e0f354fd7c49cbf3b17f8b3920
   RNVectorIcons: 66af4d5c8ff4f584c7b7cd9c4b0780920f27fce2
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
   tipsi-stripe: 237cab79699eb7d354bfc09238b3284e3b8dad84
   yoga: 88c514f310aff89b94a14c5fbf44b95735af0cb7
 
-PODFILE CHECKSUM: 87dd39d345913887ad0050b26e29499f2755330e
+PODFILE CHECKSUM: f7115cfb4c8ad39c1a93bf150941a5abc205eb11
 
 COCOAPODS: 1.5.3

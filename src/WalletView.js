@@ -5,7 +5,9 @@ import {
     AsyncStorage, 
     View,
     StyleSheet,
-    ScrollView
+    ScrollView,
+    RefreshControl,
+    SafeAreaView
 } from 'react-native';
 
 import WalletCard from './components/WalletCard';
@@ -38,59 +40,71 @@ const WalletView = ({navigation}) => {
 
     const handleDynamicLink = (link) => {
         // Handle dynamic link inside your own application
-        console.log(link)
-        console.log(navigation)
+      
         if (link.url.includes('https://links.blueribbon.io/listing/')) {
             const id = link.url.replace('https://links.blueribbon.io/listing/','');
             return navigation.push('LandingPage',{id:id})
         }
       };
 
-    console.log(navigation.getParam('id'));
 
     const [subscriptions,setSubscriptions] = useState([])
+    const [refreshing, setRefreshing] = React.useState(false);
 
+    function wait(timeout) {
+        return new Promise(resolve => {
+            fetchSubscriptions()
+            setTimeout(resolve, timeout);
+        });
+    }
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+    }, [refreshing]);
+
+    
+    const fetchSubscriptions = async () => {
+
+        SInfo.getItem("accessToken", {}).then(accessToken => {
+        
+            var config = {
+                headers: {'Authorization': "bearer " + accessToken}
+            };
+            try{
+                axios.get('https://2d9ab7a4.ngrok.io/api/subscriptions/',config)
+                    .then(response => {
+                        console.log(response.data)
+
+                        var _subscriptions = []
+
+                        response.data.map ((subscription,index) => {
+
+                            _subscriptions = (_subscriptions.concat([<WalletCard 
+                                id = {subscription.id}
+                                key = {index.toString()} 
+                                productTitle = {subscription.title}
+                                brandName = {subscription.brand_name}
+                                logoUrl = {subscription.brand_logo}
+                                remainingValue = {subscription.value}
+                            />]))
+                            
+                        })
+
+                        setSubscriptions(_subscriptions)
+
+                    }
+
+                )
+            }catch(e){
+                console.log(e)
+            }
+
+        })
+    }  
+      
     useEffect (()=>{
        
-        const fetchSubscriptions = async () => {
-
-            SInfo.getItem("accessToken", {}).then(accessToken => {
-            
-    
-                var config = {
-                    headers: {'Authorization': "bearer " + accessToken}
-                };
-                try{
-                    axios.get('https://2d9ab7a4.ngrok.io/api/subscriptions/',config)
-                        .then(response => {
-                            console.log(response.data)
-
-                            var _subscriptions = []
-
-                            response.data.map ((subscription,index) => {
-
-                                _subscriptions = (_subscriptions.concat([<WalletCard 
-                                    id = {subscription.id}
-                                    key = {index.toString()} 
-                                    productTitle = {subscription.title}
-                                    brandName = {subscription.brand_name}
-                                    logoUrl = {subscription.brand_logo}
-                                    remainingValue = {subscription.value}
-                                />]))
-                                
-                            })
-
-                            setSubscriptions(_subscriptions)
-
-                        }
-    
-                    )
-                }catch(e){
-                    console.log(e)
-                }
-
-            })
-        }
 
         fetchSubscriptions()
          
@@ -101,11 +115,17 @@ const WalletView = ({navigation}) => {
     },[])
 
     return (
-        <ScrollView>
-            <View style={styles.container}>
-                {subscriptions}
-            </View>
-        </ScrollView>
+        <SafeAreaView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
+            >
+                <View style={styles.container}>
+                    {subscriptions}
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     )
     
     
@@ -114,7 +134,7 @@ const WalletView = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      marginTop:80,
+      marginTop:60,
       marginBottom:40,
       justifyContent: 'center',
       alignItems: 'stretch',

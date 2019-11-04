@@ -6,7 +6,9 @@ import {
     Text,
     View,
     TouchableOpacity,
-    ScrollView
+    ScrollView,
+    Dimensions,
+    SafeAreaView
   } from 'react-native';
 
 import FitImage from 'react-native-fit-image';
@@ -21,6 +23,7 @@ import {StateContext,DispatchContext} from './redux/contexts';
 import stripe from 'tipsi-stripe'
 import SInfo from 'react-native-sensitive-info';
 
+const screenWidth = Math.round(Dimensions.get('window').width);
 
 const SubscriptionPage = ({navigation}) => {
     
@@ -37,12 +40,16 @@ const SubscriptionPage = ({navigation}) => {
 
     const createListingModel = ({
         title= '',
-        imageUrl= 'https://facebook.github.io/react-native/docs/assets/favicon.png',
+        brandName = '',
+        brandLogo = null,
+        imageUrl= null,
         description = '',
         modifiers = [],
         currency = ''
     }={})=>({
         title,
+        brandName,
+        brandLogo,
         imageUrl,
         description,
         modifiers,
@@ -52,6 +59,7 @@ const SubscriptionPage = ({navigation}) => {
     const [listing,setListing] = useState(createListingModel({}))
     const [modifiers,setModifiers] = useState([])
     const [accessToken,setAccessToken] = useState('')
+    const [locationEligibility,setLocationEligibility] = useState('')
    
     const calculatePricing = () => {
         dispatch({type:Actions.orders.calculatePricing,currentOrder:currentOrder,modifiers:listing.modifiers})
@@ -68,88 +76,155 @@ const SubscriptionPage = ({navigation}) => {
     const listingId = navigation.getParam('id');
     const storeId = navigation.getParam('store');
 
-    console.log(listingId);
-
-    useEffect (()=>{
-        
-        const getToken = async () => {
-            SInfo.getItem("accessToken", {}).then(accessToken => {
-                setAccessToken(accessToken)
-            })
-        }
-
-        const fetchListing = async () => {
+    const fetchListing = async () => {
             
-            try{
-                axios.get('https://2d9ab7a4.ngrok.io/api/listing/'+listingId)
-                .then(res => {
-                    const listingModel =  createListingModel({
-                        title:res.data.productInfo.title,
-                        imageUrl:res.data.productInfo.image_url,
-                        description:res.data.productInfo.description,
-                        modifiers:res.data.modifier,
-                        currency:res.data.productInfo.currency
-                    })
-                    setListing(listingModel)
-                    // console.log(listingModel.modifiers);
-                    
-                    var _modifiers = []
+        try{
+            axios.get('https://2d9ab7a4.ngrok.io/api/listing/'+listingId)
+            .then(res => {
+                const listingModel =  createListingModel({
+                    title:res.data.productInfo.title,
+                    imageUrl:decodeURI(res.data.productInfo.image_url),
+                    description:res.data.productInfo.description,
+                    modifiers:res.data.modifier,
+                    currency:res.data.productInfo.currency,
+                    brandLogo:decodeURI(res.data.organization.logo),
+                    brandName:res.data.organization.title,
+                })
+                setListing(listingModel)
+                
+                
+                var _modifiers = []
 
-                    listingModel.modifiers.map ((modifier,index) => {
+                listingModel.modifiers.map ((modifier,index) => {
 
-                        if (modifier.stepper){
-                            _modifiers = (_modifiers.concat([<QuantityStepper 
+                    if (modifier.stepper){
+                        _modifiers = (_modifiers.concat([<QuantityStepper 
+                            id = {modifier.id}
+                            key = {index.toString()} 
+                            title = {modifier.title}
+                            min_value = {modifier.stepper.min_value}
+                            max_value = {modifier.stepper.max_value}
+                            updateOrderState = {updateOrderState}
+                            />]))
+                    }else if(modifier.multiOption){
+
+                        const choices = modifier.choice.map(choice =>{
+                            return choice.title
+                        })
+
+                        if (modifier.element_type == "Carousel"){
+                            const icons = modifier.choice.map (choice => {
+                                return choice.icon
+                            })
+                            _modifiers = (_modifiers.concat([ <SelectionCarousel 
                                 id = {modifier.id}
                                 key = {index.toString()} 
+                                data = {choices} 
+                                icons = {icons}
                                 title = {modifier.title}
-                                min_value = {modifier.stepper.min_value}
-                                max_value = {modifier.stepper.max_value}
                                 updateOrderState = {updateOrderState}
-                                />]))
-                        }else if(modifier.multiOption){
-
-                            const choices = modifier.choice.map(choice =>{
-                                return choice.title
-                            })
-
-                            if (modifier.element_type == "Carousel"){
-                                const icons = modifier.choice.map (choice => {
-                                    return choice.icon
-                                })
-                                _modifiers = (_modifiers.concat([ <SelectionCarousel 
-                                    id = {modifier.id}
-                                    key = {index.toString()} 
-                                    data = {choices} 
-                                    icons = {icons}
-                                    title = {modifier.title}
-                                    updateOrderState = {updateOrderState}
-                                />]))
-                            }else{
-                                _modifiers = (_modifiers.concat([<Selectionlist 
-                                    id = {modifier.id}
-                                    key = {index.toString()} 
-                                    data = {choices}
-                                    title = {modifier.title}
-                                    updateOrderState = {updateOrderState}
-                                />]))
-                            }
-                          
-                        }else if(modifier.textField){
-
+                            />]))
+                        }else{
+                            _modifiers = (_modifiers.concat([<Selectionlist 
+                                id = {modifier.id}
+                                key = {index.toString()} 
+                                data = {choices}
+                                title = {modifier.title}
+                                updateOrderState = {updateOrderState}
+                            />]))
                         }
+                      
+                    }else if(modifier.textField){
 
-                    })
-                  
-                    setModifiers(_modifiers)
+                    }
 
-                });
-            }catch(e){
-                console.log(e);
-            }
+                })
+              
+                setModifiers(_modifiers)
+
+            });
+        }catch(e){
+            console.log(e);
         }
+    }
 
+     
+    const getToken = async () => {
+        return new Promise ((resolve, reject) => {
+            try {
+                SInfo.getItem("accessToken", {}).then(accessToken => {
+                    setAccessToken(accessToken)
+                    resolve(accessToken)
+                })
+            }catch(e){
+                reject(e)
+            }
+        })
+    }
+
+    const getUserLocations = async (token) => {
+        
+        return new Promise ((resolve, reject) => {
+
+            try{
+                var config = {
+                    headers: {'Authorization': "bearer " + token}
+                  };
+    
+                axios.get('https://2d9ab7a4.ngrok.io/api/user/savedLocations',config)
+                .then(res => {
+                    console.log(res)
+                    resolve(res.data)
+                })
+            }catch(e){
+                reject(e)
+            }
+        })
+    }
+
+    const checkLocationEligibility = async (location,token) => {
+
+    
+        return new Promise ((resolve, reject) => {
+
+            try{
+                var config = {
+                    headers: {'Authorization': "bearer " + token}
+                  };
+
+                var bodyParams = {
+                 
+                        'listingId':listingId,
+                        'coordinate':location
+                    
+                }
+                
+                axios.post('https://2d9ab7a4.ngrok.io/api/user/checkLocationEligibility',bodyParams,config)
+                .then(res => {
+                    console.log(res)
+                    resolve(res.data)
+                })
+            }catch(e){
+                reject(e)
+            }
+        })
+    }
+
+    updateLocationEligibility = async() => {
+
+        const token = await getToken()
+        const locations = await getUserLocations(token)
+        const coordinate = [locations[0].coordinates.x,locations[0].coordinates.y]
+        const eligible = await checkLocationEligibility(coordinate,token)
+        console.log('eligibility',eligible)
+
+    }
+    
+
+    useEffect (()=>{
+     
         fetchListing();
-        getToken();
+        updateLocationEligibility();
 
     },[])
 
@@ -211,23 +286,27 @@ const SubscriptionPage = ({navigation}) => {
     };
 
     return (
-        <ScrollView>
+        <SafeAreaView>
+            <ScrollView>
             <View>
                 <View style = {styles.subContainer}>
                     <View style = {globalStyles.spacer60}></View>
                     <FitImage
                         resizeMode="contain"
-                        source={{ uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
+                        indicator = {true}
+                        source={{ uri: listing.brandLogo }}
                         style={styles.avatar}
                     />
                     <View style = {globalStyles.spacer20}></View>
                     <Text style={styles.title}>{listing.title}</Text>
-                    <Text style={styles.subTitle}>Company Name {storeId}</Text>
+                    <Text style={styles.subTitle}>{listing.brandName}{storeId}</Text>
                     <View style = {globalStyles.spacer20}></View>
                 </View>
                 <FitImage
                     resizeMode="cover"
+                    indicator = {true}
                     source={{ uri: listing.imageUrl }}
+                    style={styles.productImage}
                 />
 
                 <View style={styles.addressBadge}>
@@ -252,6 +331,7 @@ const SubscriptionPage = ({navigation}) => {
 
             </View>
         </ScrollView>
+        </SafeAreaView>
     )
     
 }
@@ -261,10 +341,14 @@ const styles = StyleSheet.create({
         flex:1,
     },
     avatar:{
-        width:40,
-        height:40,
-        borderRadius: 20,
+        width:60,
+        height:60,
+        borderRadius: 30,
         overflow: 'hidden',
+    },
+    productImage:{
+        height:300,
+        width:screenWidth
     },
     cta:{
         marginTop:40,

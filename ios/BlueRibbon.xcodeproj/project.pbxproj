@@ -10,6 +10,7 @@
 		00E356F31AD99517003FC87E /* BlueRibbonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* BlueRibbonTests.m */; };
 		068B532F236EDF2100F0995A /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 068B532E236EDF2100F0995A /* AppCenter-Config.plist */; };
 		068B5330236EDF2100F0995A /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 068B532E236EDF2100F0995A /* AppCenter-Config.plist */; };
+		068B5337237086C600F0995A /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 008F07F21AC5B25A0029DE68 /* main.jsbundle */; };
 		06EB6F4E2362793100165CFD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 06EB6F4D2362793100165CFD /* GoogleService-Info.plist */; };
 		06EB6F4F236285F300165CFD /* BlueRibbon.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 068C9D6E23202DFF00DC53BD /* BlueRibbon.entitlements */; };
 		06EB6F5123633C2100165CFD /* libreact-native-branch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06EB6F5023633C2100165CFD /* libreact-native-branch.a */; };
@@ -47,7 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.jsbundle; path = BlueRibbon/main.jsbundle; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* BlueRibbonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlueRibbonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* BlueRibbonTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlueRibbonTests.m; sourceTree = "<group>"; };
@@ -55,6 +56,7 @@
 		0587D857C16A4641A3572826 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		068B532E236EDF2100F0995A /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "AppCenter-Config.plist"; path = "../AppCenter-Config.plist"; sourceTree = "<group>"; };
 		068B5331236EE8FE00F0995A /* libRNFBDynamicLinks.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNFBDynamicLinks.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		068B533323707F0500F0995A /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNSVG.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		068C9D6E23202DFF00DC53BD /* BlueRibbon.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = BlueRibbon.entitlements; path = BlueRibbon/BlueRibbon.entitlements; sourceTree = "<group>"; };
 		06EB6F4D2362793100165CFD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		06EB6F5023633C2100165CFD /* libreact-native-branch.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-branch.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,6 +175,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				068B533323707F0500F0995A /* libRNSVG.a */,
 				068B5331236EE8FE00F0995A /* libRNFBDynamicLinks.a */,
 				06EB6F5023633C2100165CFD /* libreact-native-branch.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
@@ -428,6 +431,7 @@
 				06EB6F4E2362793100165CFD /* GoogleService-Info.plist in Resources */,
 				E4523487B952402FA50742D0 /* TTCommons-Bold.ttf in Resources */,
 				B11899E9555241F18F83EFA1 /* TTCommons-Regular.ttf in Resources */,
+				068B5337237086C600F0995A /* main.jsbundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
