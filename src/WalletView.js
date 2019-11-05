@@ -43,7 +43,7 @@ const WalletView = ({navigation}) => {
       
         if (link.url.includes('https://links.blueribbon.io/listing/')) {
             const id = link.url.replace('https://links.blueribbon.io/listing/','');
-            return navigation.push('LandingPage',{id:id})
+            return navigation.navigate('LandingPage',{id:id})
         }
       };
 

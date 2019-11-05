@@ -21,6 +21,7 @@ import marker from './assets/pin.png'
 import Auth0 from 'react-native-auth0';
 import SInfo from 'react-native-sensitive-info';
 
+
 const AddLocationView = ({navigation}) => {
   var credentials = require('./auth0-credentials');
   const auth0 = new Auth0(credentials);
@@ -132,7 +133,19 @@ const getToken = new Promise (async (resolve, reject) => {
           console.log(response)
           setLoading(false)
           setLocationSaved(true)
-          navigation.navigate('App');
+     
+          if ( navigation.state.params){
+            if (navigation.state.params.lastScreen){
+              if (navigation.state.params.lastScreen.routeName){
+                if (navigation.state.params.lastScreen.routeName == 'LandingPage'){
+                  navigation.pop();
+                }
+              }
+            }
+          }else{
+            navigation.navigate('App');
+          }
+
       }).catch(e=>{
           console.log(e)
           setLoading(false)

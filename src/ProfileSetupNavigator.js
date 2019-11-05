@@ -7,15 +7,14 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 const ProfileSetupStack = createStackNavigator(
   { 
-    
-    AddLocationView: {
-      screen: AddLocationView
-    },
     TermsPage: {
       screen: TermsPage
     },
     UserInfoPage: {
       screen: UserInfoPage
+    },
+    AddLocationView: {
+      screen: AddLocationView
     },
   },
   {

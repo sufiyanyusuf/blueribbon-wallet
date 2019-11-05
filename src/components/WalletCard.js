@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
     },
     cardHeaderTextContainer:{
-        flexGrow:2
+        flexGrow:1
     },
     caption:{
         fontFamily:"TTCommons-Regular",

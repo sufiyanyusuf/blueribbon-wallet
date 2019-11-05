@@ -8,6 +8,7 @@ import SubscriptionPage from './SubscriptionPage';
 import OrderSummary from './OrderSummary';
 import { createStackNavigator } from 'react-navigation-stack';
 import PaymentConfirmation from './PaymentConfirmation'
+import AddLocationView from './AddLocationView'
 
 const TabNavigator = createBottomTabNavigator({
     Wallet:WalletView,
@@ -44,9 +45,13 @@ const CoreStack = createStackNavigator(
     LandingPage: {
       screen: SubscriptionPage,
       path: 'stores/:store/:id',
+      
     },
     OrderSummary:OrderSummary,
-    Confirmation:PaymentConfirmation
+    Confirmation:PaymentConfirmation,
+    AddLocation: {
+      screen: AddLocationView,
+    }
   },
   {
     mode: 'card',

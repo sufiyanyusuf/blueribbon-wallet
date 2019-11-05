@@ -17,7 +17,7 @@ export default createAppContainer(
       ProfileSetup: ProfileSetupStack,
     },
     {
-      initialRouteName: 'ProfileSetup',
+      initialRouteName: 'Auth',
     }
   )
 );

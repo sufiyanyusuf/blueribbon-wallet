@@ -9,11 +9,13 @@ const state = {
     'currentPricing':0,
     'user':{
         'loggedIn':false,
+        'token':'',
         'subscriptions':[],
         'newUser':false,
         'savedSubscriptions':[],
         'upcomingOrders':[],
-        
+        'savedLocations':[],
+        'defaultLocation':{}
     }
 
 };
