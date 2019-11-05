@@ -26,7 +26,7 @@ constAddressChecker = ({showLocations,address,eligibility,loading}) => {
       (!eligibility && styles.containerInEligible),
       ((loading==true) && styles.containerLoading),
     ]}>
-      <Text numberOfLines={3} style = {styles.textContainer}>{message}</Text>
+      <Text numberOfLines={2} style = {styles.textContainer}>{message}</Text>
         {!loading && 
           <TouchableOpacity style={styles.cta} onPress = {showLocations}>
             <Text style={styles.ctaText}> Change </Text>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     flex:3,
     flexDirection:"row",
     justifyContent:"space-between",
-    borderRadius:30,
+    borderRadius:40,
     paddingLeft:10,
   },
   containerInEligible:{
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     paddingRight:15,
     borderBottomLeftRadius:0,
     borderTopLeftRadius:0,
-    borderRadius: 30,
+    borderRadius: 40,
     backgroundColor: "#000000",
     flexDirection:'row',
     alignItems:'center',

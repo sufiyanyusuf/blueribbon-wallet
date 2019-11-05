@@ -61,7 +61,6 @@ const SubscriptionPage = ({navigation}) => {
 
     const [listing,setListing] = useState(createListingModel({}))
     const [modifiers,setModifiers] = useState([])
-    const [accessToken,setAccessToken] = useState('')
     const [locationEligibility,setLocationEligibility] = useState(false)
     const [selectedLocation,setSelectedLocation] = useState({})
     const [userAddresses,setUserAddresses] = useState([])
@@ -197,15 +196,15 @@ const SubscriptionPage = ({navigation}) => {
        
     }
 
-    const requestApplePay = () => {
+    const requestApplePay = async() => {
 
-        if (accessToken){
+        const token = await api.getToken()
+
+        if (token){
 
             var config = {
-                headers: {'Authorization': "bearer " + accessToken}
+                headers: {'Authorization': "bearer " + token}
             };
-
-
 
             return stripe
                 .paymentRequestWithNativePay({
@@ -237,12 +236,13 @@ const SubscriptionPage = ({navigation}) => {
             // this.props.navigation.navigate('Confirmation');
             })
             .catch(error => {
-            // console.warn('Payment failed', { error });
+                console.warn('Payment failed', { error });
             stripe.cancelNativePayRequest()
             // this.props.navigation.navigate('Confirmation');
             });
 
-
+        }else{
+            console.log('no access token')
         }
 
     };
