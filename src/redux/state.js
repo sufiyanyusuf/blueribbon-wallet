@@ -6,6 +6,7 @@ const subscriptions = [
 const state = {
     "subscriptions":subscriptions,
     'currentOrder':[],
+    'currentOrderSemantics':[],
     'currentPricing':0,
     'user':{
         'loggedIn':false,

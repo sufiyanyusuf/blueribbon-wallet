@@ -1,6 +1,7 @@
 const actions = {
     orders:{
         updateCurrentOrder:'UPDATE_CURRENT_ORDER',
+        updateCurrentOrderSemantics:'UPDATE_CURRENT_ORDER_SEMANTICS',
         calculatePricing:'CALCULATE_PRICING',
         checkLocationEligibility:'CHECK_LOCATION_ELIGIBILITY'
     },

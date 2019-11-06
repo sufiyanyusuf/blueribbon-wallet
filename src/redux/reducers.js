@@ -16,6 +16,20 @@ const orderReducer = (state,action) => {
 
 }
 
+const orderSemanticsReducer = (state,action) => {
+
+    switch (action.type){
+
+        case Actions.orders.updateCurrentOrderSemantics :
+            return action.semantics
+          
+        default:
+            return state
+
+    }
+
+}
+
 const pricingReducer = (state,action) => {
 
     switch (action.type){
@@ -50,7 +64,8 @@ const userReducer = (state,action) => {
 const reducers = {
     'orderReducer':orderReducer,
     'pricingReducer':pricingReducer,
-    'userReducer':userReducer
+    'userReducer':userReducer,
+    'orderSemanticsReducer':orderSemanticsReducer,
 };
 
 export default reducers;

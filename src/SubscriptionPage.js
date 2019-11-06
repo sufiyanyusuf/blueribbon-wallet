@@ -39,7 +39,7 @@ const SubscriptionPage = ({navigation}) => {
     const state = React.useContext(StateContext);
     const dispatch = React.useContext(DispatchContext);
 
-    const { currentOrder,pricing } = state; 
+    const { currentOrder,pricing,currentOrderSemantics } = state; 
 
     const createListingModel = ({
         title= '',
@@ -65,20 +65,109 @@ const SubscriptionPage = ({navigation}) => {
     const [selectedLocation,setSelectedLocation] = useState({})
     const [userAddresses,setUserAddresses] = useState([])
     const [locationsSheetVisible,setLocationsSheetVisible] = useState(false)
-
     const [SavedLocationsSheetHeight,setSavedLocationsSheetHeight] = useState(0)
     const [showLocationLoader,setLocationLoader] = useState(false)
 
+
     const calculatePricing = () => {
         dispatch({type:Actions.orders.calculatePricing,currentOrder:currentOrder,modifiers:listing.modifiers})
+        
+        //check and dispatch listing data, selection to reducer
+    }
+
+    const extractOrder = () => {
+    
+        const extractSemantics = (order,modifiers) => {
+            if (modifiers && modifiers.length > 0){
+                const semantics = modifiers.map (modifier => {
+                    // get order from modifier
+                    const _order = order.filter (order => order.id == modifier.id)[0]
+            
+                    if (_order && _order.val != null){
+            
+                        const selection = _order.val
+                    
+                        if (modifier.stepper){
+
+                            if (modifier.type === "Product"){
+                                params = {[modifier.title]:selection}
+                                const obj = {[type]:params}
+                                return obj
+                            }else{
+                                const type = modifier.type
+                                const value = selection
+                                const obj = {[type]:value}
+                                return obj
+                            }
+
+                        }
+
+                        else if (modifier.choice){
+
+                            const choice = modifier.choice[selection]
+                            const type = modifier.type
+
+                            if (type === "Product"){
+                                const unit = choice.unit
+                                params = {[unit]:choice.title}
+                                const obj = {[type]:params}
+                                return obj
+                            }else{
+                                const value = choice.value
+                                const unit = choice.unit
+                                const params = {'unit':unit,'value':value}
+                                const obj = {[type]:params} 
+                                return obj
+                            }
+                    
+                        }
+            
+                    }
+                
+                })
+                if (! semantics.includes(undefined)){
+                    // console.log(semantics)
+                    return semantics
+                }
+            }
+        }
+
+        const getOrderValue = (semantics) => {
+            if (semantics){
+
+                var value = {}
+                console.log(semantics)
+                semantics.map(detail => {
+                    if (detail.Quantity){
+                        value = {...value, quantity:detail.Quantity}
+                    }
+                    if (detail.Length){
+                        value = {...value, unit:detail.Length.unit}
+                        value = {...value, period:detail.Length.value}
+                    }
+                })
+                return value
+            }
+        }
+
+        const semantics = extractSemantics (currentOrder,listing.modifiers)
+        
+
+        if (JSON.stringify(currentOrderSemantics) != JSON.stringify(semantics)){
+
+            console.log(getOrderValue(semantics))
+            dispatch({type:Actions.orders.updateCurrentOrderSemantics,semantics:semantics})
+        }
         //check and dispatch listing data, selection to reducer
     }
 
     const updateOrderState =  (id,val) => {
         const order = {'id':id,'val':val}
         dispatch({type:Actions.orders.updateCurrentOrder,order:order});
+
+        // dispatch({type:Actions.orders.updateCurrentOrderSemantics,order:order});
     }
-    
+    extractOrder()
     calculatePricing()
 
     const listingId = navigation.getParam('id');
@@ -175,7 +264,6 @@ const SubscriptionPage = ({navigation}) => {
                 const coordinate = [locations[0].coordinates.x,locations[0].coordinates.y]
                 const eligible = await api.checkLocationEligibility(coordinate,token,listingId)
                 setLocationEligibility(eligible)
-                console.log('eligibility',eligible)
                 setLocationLoader(false)
             }
 
@@ -196,7 +284,34 @@ const SubscriptionPage = ({navigation}) => {
        
     }
 
+    const getOrderDetailsJSON = (orderDetails) => {
+        var json = {}
+        orderDetails.map (detail => {
+            json = [...json, detail]
+        })
+        return json
+    }
+
     const requestApplePay = async() => {
+
+        const getOrderValue = (semantics) => {
+            if (semantics){
+
+                var value = {}
+                console.log(semantics)
+                semantics.map(detail => {
+                    if (detail.Quantity){
+                        value = {...value, quantity:detail.Quantity}
+                    }
+                    if (detail.Length){
+                        value = {...value, unit:detail.Length.unit}
+                        value = {...value, period:detail.Length.value}
+                    }
+                })
+                return value
+            }
+        }
+
 
         const token = await api.getToken()
 
@@ -217,12 +332,20 @@ const SubscriptionPage = ({navigation}) => {
                 }])
             .then(stripeTokenInfo => {
 
+            const value = getOrderValue(currentOrderSemantics) 
+
+            const bodyParams = {
+                amount:(pricing*100),
+                tokenId:stripeTokenInfo.tokenId,
+                listingId:listingId,
+                orderDetails:JSON.stringify(currentOrderSemantics),//{...currentOrderSemantics},
+                deliveryAddress:selectedLocation.base_address,
+                quantity:value.quantity,
+                period:value.period,
+                unit:value.unit
+            }
             try{
-                axios.post('https://2d9ab7a4.ngrok.io/api/payment/new/applePay',{
-                    amount:(pricing*100),
-                    tokenId:stripeTokenInfo.tokenId,
-                    listingId:listingId
-                },config)
+                axios.post('https://2d9ab7a4.ngrok.io/api/payment/new/applePay',bodyParams,config)
                 .then(res => {
                     console.log(res)
                     stripe.completeNativePayRequest()
