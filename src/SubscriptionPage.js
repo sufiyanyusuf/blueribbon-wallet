@@ -142,8 +142,10 @@ const SubscriptionPage = ({navigation}) => {
                         value = {...value, quantity:detail.Quantity}
                     }
                     if (detail.Length){
-                        value = {...value, unit:detail.Length.unit}
-                        value = {...value, period:detail.Length.value}
+                        value = {...value, length:{unit:detail.Length.unit,value:detail.Length.value}}
+                    }
+                    if (detail.Frequency){
+                        value = {...value, frequency:{unit:detail.Frequency.unit,value:detail.Frequency.value}}
                     }
                 })
                 return value
@@ -174,9 +176,9 @@ const SubscriptionPage = ({navigation}) => {
     const storeId = navigation.getParam('store');
 
     const fetchListing = async () => {
-            
+        
         try{
-            axios.get('https://2d9ab7a4.ngrok.io/api/listing/'+listingId)
+            axios.get('https://3458a3ef.ngrok.io/api/listing/'+listingId)
             .then(res => {
                 const listingModel =  createListingModel({
                     title:res.data.productInfo.title,
@@ -296,7 +298,6 @@ const SubscriptionPage = ({navigation}) => {
 
         const getOrderValue = (semantics) => {
             if (semantics){
-
                 var value = {}
                 console.log(semantics)
                 semantics.map(detail => {
@@ -304,8 +305,10 @@ const SubscriptionPage = ({navigation}) => {
                         value = {...value, quantity:detail.Quantity}
                     }
                     if (detail.Length){
-                        value = {...value, unit:detail.Length.unit}
-                        value = {...value, period:detail.Length.value}
+                        value = {...value, length:{unit:detail.Length.unit,value:detail.Length.value}}
+                    }
+                    if (detail.Frequency){
+                        value = {...value, frequency:{unit:detail.Frequency.unit,value:detail.Frequency.value}}
                     }
                 })
                 return value
@@ -341,11 +344,11 @@ const SubscriptionPage = ({navigation}) => {
                 orderDetails:JSON.stringify(currentOrderSemantics),//{...currentOrderSemantics},
                 deliveryAddress:selectedLocation.base_address,
                 quantity:value.quantity,
-                period:value.period,
-                unit:value.unit
+                length:value.length,
+                frequency:value.frequency
             }
             try{
-                axios.post('https://2d9ab7a4.ngrok.io/api/payment/new/applePay',bodyParams,config)
+                axios.post('https://3458a3ef.ngrok.io/api/payment/new/applePay',bodyParams,config)
                 .then(res => {
                     console.log(res)
                     stripe.completeNativePayRequest()
