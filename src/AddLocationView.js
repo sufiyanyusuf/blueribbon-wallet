@@ -98,9 +98,9 @@ const getToken = new Promise (async (resolve, reject) => {
       'longitude':coordinates.lng,
       'base_address':address
    }
-
+   
     return new Promise ((resolve, reject) => {
-        axios.post('https://2d9ab7a4.ngrok.io/api/user/addLocation',bodyParameters,config).then(response => {
+        axios.post('https://3458a3ef.ngrok.io/api/user/addLocation',bodyParameters,config).then(response => {
             resolve(response)
         }).catch(err => {
             reject(err)

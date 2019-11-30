@@ -930,24 +930,36 @@
     eslint-plugin-react-native "3.6.0"
     prettier "1.16.4"
 
-"@react-native-firebase/app-types@6.0.3":
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app-types/-/app-types-6.0.3.tgz#a420ac2b8f274e9c638d4ef36350b1d9abcc1403"
-  integrity sha512-DphELbf5A6AuIPf1HIGFvfpaUlSIXdVlrSHisTHWLNpFP45lLmpD13Ak6oMamGDIxFMLjRQz3jkTR6pCjVk4NQ==
-
-"@react-native-firebase/app@^6.0.3":
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-6.0.3.tgz#3c8b01587a374132fc0df14ebf2a24ae3369a992"
-  integrity sha512-PQYcs16Mpdy+FLCYpepUiIrfzbMLS+wrDhvXOHhOJ8up15ak5wrepVWaHg+P0Bw9xI4gbq4zYy4bTh4ZMkBbzA==
+"@react-native-community/push-notification-ios@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.0.3.tgz#cd2c7f29aeeb431942eda0bd729738fd2b444ae9"
+  integrity sha512-f+Y3lFLt5OBWHDtGHE+PiZH4aLeS8w2D47c0G/S5XpzeGoEeggOiALtou/r6raiVLP+D5CrLkIBMs2U2+LGJhw==
   dependencies:
-    "@react-native-firebase/app-types" "6.0.3"
+    invariant "^2.2.4"
+
+"@react-native-firebase/app-types@6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app-types/-/app-types-6.1.0.tgz#b7a2cd678e7c54f0b17d1e2faa7b8131333facdb"
+  integrity sha512-w5VxtgMyqx0DU5y2vKzBT8f313ruaykC4T14P/vp8sQwVeitUolLrD7SLOZW9SUm7epExrQDPrdW7M3SFeze0g==
+
+"@react-native-firebase/app@^6.0.4":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-6.1.0.tgz#c7b9b70f9aea65ba3fa68d9a25005ee5a746424a"
+  integrity sha512-ZNnb9kgJxpohW+S5zGF3HECSdktmFuozIiuK5rkghpnzO9ZMgPIudIjOYX4P/wdm8w1gj5wXH4sQDtyJ2ryE9w==
+  dependencies:
+    "@react-native-firebase/app-types" "6.1.0"
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
-"@react-native-firebase/dynamic-links@^6.0.3":
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/dynamic-links/-/dynamic-links-6.0.3.tgz#58aef2bb8de90dddb12b3793b010b657cfb54421"
-  integrity sha512-6g0FltEfXDk8tOjDjRv4Hv79nUMPXuUL/C2yX6jzCThGUFYhsrvGUz5Gfq30GI5pNGXyIbX52R3TuwHwhXD3eQ==
+"@react-native-firebase/dynamic-links@^6.0.4":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/dynamic-links/-/dynamic-links-6.1.0.tgz#da644df204a72da4f6d4f9b89030472391788361"
+  integrity sha512-7XUYUdGdGPJS/g41OjYVmfir6YUx8uChlO7banRyqyTTYHtVPFV6s6zkr3jn/6Dmo7EsTmt/vFPX9pVosOmcBQ==
+
+"@react-native-firebase/messaging@^6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-6.1.0.tgz#5af1eeb341d59f95bb2f7539d2c11fefe106845f"
+  integrity sha512-cKzns0PoHiMl7EHEOPzUcgatxNBeTyRB8mFr2dROXbp6Pu8gS1+9fzit+68LHObGOPK9F9wPBU2wyWA7vyQQvQ==
 
 "@react-navigation/core@^3.5.1":
   version "3.5.1"
@@ -3148,7 +3160,7 @@ interpret@^1.0.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.2.0.tgz#d5061a6224be58e8083985f5014d844359576296"
   integrity sha512-mT34yGKMNceBQUoVn7iCDKDntA7SC6gycMAWzGx1z/CMCTV7b2AAtXlo3nRyHZ1FelRkQbQjprHSYGwzLtkVbw==
 
-invariant@^2.2.4:
+invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -3164,11 +3176,6 @@ invert-kv@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-2.0.0.tgz#7393f5afa59ec9ff5f67a27620d11c226e3eec02"
   integrity sha512-wPVv/y/QQ/Uiirj/vh3oP+1Ww+AWehmi1g5fFWGPF6IpCBCDVrhgHRMvrLfdYcwDh3QJbGXDW4JAuzxElLSqKA==
-
-ios-deploy@^1.9.4:
-  version "1.9.4"
-  resolved "https://registry.yarnpkg.com/ios-deploy/-/ios-deploy-1.9.4.tgz#5aa6b198feabcf53f912639fc2d9e11b4923079d"
-  integrity sha512-pgyc19zgtwGrfx3GL8yV0c0dAPucTpJ0VZkuS3DcqxIZYC48+UW+tBTxI43u1ZDk17mop0ABLs1SkAy5SUQ6pQ==
 
 is-accessor-descriptor@^0.1.6:
   version "0.1.6"
@@ -5339,11 +5346,6 @@ react-native-auth0@^1.5.0:
     base-64 "^0.1.0"
     url "^0.11.0"
 
-react-native-branch@^4.2.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/react-native-branch/-/react-native-branch-4.2.1.tgz#3ed1a071c053b420d11af8aa368142b19e2d5129"
-  integrity sha512-wwBCsj3VslS0zG8UAZjx+nNrWgd3CuA24r5muFDzS38oQ4S9oB0NJPafEcWcUT7TPxw/rfpdPLb+JccGvS2/Lg==
-
 react-native-country-picker-modal@^1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/react-native-country-picker-modal/-/react-native-country-picker-modal-1.8.1.tgz#fb99ac089b424b788e5fa0eacb05c8bbefc4cceb"
@@ -5407,6 +5409,21 @@ react-native-modal@^11.0.2:
   dependencies:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
+
+react-native-notifications@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-2.1.6.tgz#de6c08218f84c9f699dfc8c6fbc39e867d63bfea"
+  integrity sha512-N7zPrFuYe7Cesf8c8P2P60osmC8c89wIXKREC67/xU9sB9x1BRoFavu9t3t3N9vaxI4wKdvX2URzazQVEey+pg==
+  dependencies:
+    core-js "^1.0.0"
+    uuid "^2.0.3"
+
+react-native-onesignal@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-3.5.0.tgz#7f4ab2fae32c52fc1a5f34efdba6bbb53d04e6bb"
+  integrity sha512-Ww2d1na7SOpZ0DEVb+8BGpTt5Ty0Nuak/YqjY3YCauHFBdNOdI7Cz5CtSWLJMjKiyniJmWWHkvLu6HDE9zGZng==
+  dependencies:
+    invariant "^2.2.2"
 
 react-native-phone-input@^0.2.4:
   version "0.2.4"
@@ -6706,6 +6723,11 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
+
+uuid@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
+  integrity sha1-Z+LoY3lyFVMN/zGOW/nc6/1Hsho=
 
 uuid@^3.3.2:
   version "3.3.3"

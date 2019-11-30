@@ -1,10 +1,6 @@
-const subscriptions = [
-    {key:1,date:"date",title:"title",status:"live",count:"232"},
-    {key:2,date:"date",title:"title",status:"live",count:"233"}
-];
- 
+
 const state = {
-    "subscriptions":subscriptions,
+    "subscriptions":[],
     'currentOrder':[],
     'currentOrderSemantics':[],
     'currentPricing':0,
@@ -12,11 +8,16 @@ const state = {
         'loggedIn':false,
         'token':'',
         'subscriptions':[],
-        'newUser':false,
         'savedSubscriptions':[],
         'upcomingOrders':[],
         'savedLocations':[],
-        'defaultLocation':{}
+        'defaultLocation': {},
+        'newUser':false,
+        'promptedForNotifications':true,
+        'registeredForNotifications': false,
+        'listenForNotifications': true,
+        'notificationToken':'',
+        'notificationTokenUploaded':false,
     }
 
 };

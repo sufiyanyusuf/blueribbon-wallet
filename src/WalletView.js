@@ -2,22 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { 
     Text, 
     Button, 
-    AsyncStorage, 
     View,
     StyleSheet,
     ScrollView,
     RefreshControl,
     SafeAreaView
 } from 'react-native';
-
+import SInfo from 'react-native-sensitive-info';
 import WalletCard from './components/WalletCard';
 import axios from 'axios';
-import SInfo from 'react-native-sensitive-info';
 import { firebase } from '@react-native-firebase/dynamic-links';
-import dynamicLinks from '@react-native-firebase/dynamic-links';
+import * as api from './utils/Api'
+import {StateContext,DispatchContext} from './redux/contexts';
+import Actions from './redux/action';
 
-const WalletView = ({navigation}) => {
-
+const WalletView = ({ navigation }) => {
+    
+    const state = React.useContext(StateContext);
+    const dispatch = React.useContext(DispatchContext);
+    
     firebase.dynamicLinks().getInitialLink()
     .then((url) => {
         if (url) {
@@ -45,7 +48,7 @@ const WalletView = ({navigation}) => {
             const id = link.url.replace('https://links.blueribbon.io/listing/','');
             return navigation.navigate('LandingPage',{id:id})
         }
-      };
+    };
 
 
     const [subscriptions,setSubscriptions] = useState([])
@@ -72,7 +75,7 @@ const WalletView = ({navigation}) => {
                 headers: {'Authorization': "bearer " + accessToken}
             };
             try{
-                axios.get('https://2d9ab7a4.ngrok.io/api/subscriptions/',config)
+                axios.get('https://3458a3ef.ngrok.io/api/subscriptions/',config)
                     .then(response => {
                         console.log(response.data)
 
@@ -102,18 +105,60 @@ const WalletView = ({navigation}) => {
 
         })
     }  
+
+    const onReceived = (notification) => {
+        console.log("Notification received: ", notification);
+    }
+
+    onOpened = (openResult) => {
+        console.log('Message: ', openResult.notification.payload.body);
+        console.log('Data: ', openResult.notification.payload.additionalData);
+        console.log('isActive: ', openResult.notification.isAppInFocus);
+        console.log('openResult: ', openResult);
+    }
+
+    onIds = (device) => {
+        console.log('Device info: ', device);
+    }
       
     useEffect (()=>{
-       
-
         fetchSubscriptions()
-         
-        const unsubscribe = firebase.dynamicLinks().onLink(handleDynamicLink);
-        // When the component unmounts, remove the listener
+        const unsubscribe = firebase.dynamicLinks().onLink(handleDynamicLink);  
         return unsubscribe;
 
+    }, [])
+    
+    useEffect(() => {
+
+        const checkNewUser = async () => {
+
+            try {
+
+                const token = await api.getToken()
+                var config = {
+                    headers: {'Authorization': "bearer " + token}
+                };
+
+                axios.get('https://3458a3ef.ngrok.io/api/user/isNew', config).then(response => {
+
+                    // update notification token on server
+                    const newUser = response.data
+                    if (newUser == true) {
+                      return navigation.navigate('ProfileSetup')
+                    }
+
+                })
+      
+            } catch (e) {
+                
+            }
+        }
+
+        checkNewUser()
+    
     },[])
 
+    
     return (
         <SafeAreaView>
             <ScrollView

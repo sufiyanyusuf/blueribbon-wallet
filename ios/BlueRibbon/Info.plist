@@ -2,19 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <key>branch_key</key>
-  <string>key_live_ppPqZ6ckGOcsKG6Cfurf9ednvslahT00</string>
-  <key>branch_app_domain</key>
-  <string>5wikl.app.link</string>
-  <key>CFBundleURLTypes</key>
-  <array>
-    <dict>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>com.blueribbon.wallet</string>
-      </array>
-    </dict>
-  </array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -111,6 +98,10 @@
 		<string>TTCommons-Bold.ttf</string>
 		<string>TTCommons-Regular.ttf</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -123,5 +114,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>branch_app_domain</key>
+	<string>5wikl.app.link</string>
+	<key>branch_key</key>
+	<string>key_live_ppPqZ6ckGOcsKG6Cfurf9ednvslahT00</string>
 </dict>
 </plist>

@@ -9,6 +9,7 @@ import OrderSummary from './OrderSummary';
 import { createStackNavigator } from 'react-navigation-stack';
 import PaymentConfirmation from './PaymentConfirmation'
 import AddLocationView from './AddLocationView'
+import ProfileSetupStack from './ProfileSetupNavigator';
 
 const TabNavigator = createBottomTabNavigator({
     Wallet:WalletView,
@@ -47,7 +48,8 @@ const CoreStack = createStackNavigator(
       path: 'stores/:store/:id',
       
     },
-    OrderSummary:OrderSummary,
+    OrderSummary: OrderSummary,
+    ProfileSetup: ProfileSetupStack,
     Confirmation:PaymentConfirmation,
     AddLocation: {
       screen: AddLocationView,

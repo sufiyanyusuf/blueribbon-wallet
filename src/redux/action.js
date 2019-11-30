@@ -10,6 +10,10 @@ const actions = {
         setSavedLocations:'SET_SAVED_LOCATIONS',
         setSubscriptions:'SET_SUBSCRIPTIONS',
         setDefaultLocation:'SET_DEFAULT_LOCATION',
+        setRegisteredForNotifications: 'SET_REGISTERED_FOR_NOTIFICATIONS',
+        setListenForNotifications: 'LISTEN_FOR_NOTIFICATIONS',
+        setNotificationToken: 'SET_NOTIFICATION_TOKEN',
+        setNotificationTokenUploaded: 'SET_NOTIFICATION_TOKEN_UPLOADED'
     }
 }
 export default actions;

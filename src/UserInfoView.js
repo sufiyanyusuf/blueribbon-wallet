@@ -95,7 +95,7 @@ const UserInfoView = ({navigation}) => {
          }
 
         return new Promise ((resolve, reject) => {
-            axios.post('https://2d9ab7a4.ngrok.io/api/user/updateInfo',bodyParameters,config).then(response => {
+            axios.post('https://3458a3ef.ngrok.io/api/user/updateInfo',bodyParameters,config).then(response => {
                 resolve(response)
             }).catch(err => {
                 reject(err)

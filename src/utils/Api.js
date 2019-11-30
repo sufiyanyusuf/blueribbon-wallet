@@ -2,11 +2,79 @@ import axios from 'axios';
 import SInfo from 'react-native-sensitive-info';
 
 export const getToken = async () => {
-    return new Promise ((resolve, reject) => {
+    return new Promise (async (resolve, reject) => {
         try {
             SInfo.getItem("accessToken", {}).then(accessToken => {
                 resolve(accessToken)
             })
+        }catch(e){
+            reject(e)
+        }
+    })
+}
+
+export const getDeviceToken = async () => {
+    return new Promise (async (resolve, reject) => {
+        try {
+            SInfo.getItem("deviceToken", {}).then(deviceToken => {
+                resolve(deviceToken)
+            })
+        }catch(e){
+            reject(e)
+        }
+    })
+}
+
+export const setDeviceToken = (token) => {
+    SInfo.setItem("deviceToken", token, {});
+}
+
+export const uploadDeviceToken = async (deviceToken) => {
+    return new Promise (async (resolve, reject) => {
+        try {
+
+            const token = await getToken()
+
+            var config = {
+                headers: {'Authorization': "bearer " + token}
+            };
+    
+            var bodyParams = {
+                token:deviceToken
+            }
+
+            axios.post('https://3458a3ef.ngrok.io/api/user/addNotificationToken',bodyParams,config)
+                .then(res => {
+                    console.log('uploaded')
+                    resolve(true)
+            })
+
+        }catch(e){
+            reject(e)
+        }
+    })
+}
+
+export const removeDeviceToken = async () => {
+
+    return new Promise (async (resolve, reject) => {
+        try {
+
+            const token = await getToken()
+
+            var config = {
+                headers: {'Authorization': "bearer " + token}
+            };
+
+            var bodyParams = {}
+    
+            axios.post('https://3458a3ef.ngrok.io/api/user/removeNotificationToken',bodyParams, config)
+                .then(res => {
+                
+                    console.log('removed')
+                    resolve(true)
+            })
+
         }catch(e){
             reject(e)
         }
@@ -22,7 +90,7 @@ export const getUserLocations = async (token) => {
                 headers: {'Authorization': "bearer " + token}
                 };
 
-            axios.get('https://2d9ab7a4.ngrok.io/api/user/savedLocations',config)
+            axios.get('https://3458a3ef.ngrok.io/api/user/savedLocations',config)
             .then(res => {
                 console.log(res)
                 resolve(res.data)
@@ -48,7 +116,7 @@ export const checkLocationEligibility = async (location,token,listingId) => {
                 'coordinate':location
             }
             
-            axios.post('https://2d9ab7a4.ngrok.io/api/user/checkLocationEligibility',bodyParams,config)
+            axios.post('https://3458a3ef.ngrok.io/api/user/checkLocationEligibility',bodyParams,config)
             .then(res => {
                 console.log(res)
                 resolve(res.data)

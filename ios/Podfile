@@ -27,7 +27,7 @@ target 'BlueRibbon' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
-  pod 'Firebase/DynamicLinks'
+  # pod 'Firebase/DynamicLinks'
   pod 'Firebase/Analytics'
 
   rn_maps_path = '../node_modules/react-native-maps'
@@ -47,10 +47,18 @@ target 'BlueRibbon' do
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
+
+
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
+  
+
+
+
   target 'BlueRibbonTests' do
     inherit! :search_paths
     # Pods for testing
   end
+  
 
   use_native_modules!
 end

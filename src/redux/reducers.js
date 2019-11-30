@@ -54,11 +54,23 @@ const userReducer = (state,action) => {
                 return { ...state, savedLocations: action.savedLocations }
         case Actions.user.setDefaultLocation :
                 return { ...state, defaultLocation: action.defaultLocation }
+        case Actions.user.setRegisteredForNotifications :
+                return { ...state, registeredForNotifications: action.registeredForNotifications }
+        case Actions.user.setListenForNotifications:
+                return { ...state, listenForNotifications: action.listenForNotifications }
+        case Actions.user.setNotificationToken:
+                console.log(action)
+                return { ...state, notificationToken: action.notificationToken }
+        case Actions.user.setNotificationTokenUploaded:
+                console.log(action)
+                return { ...state, notificationTokenUploaded: action.status }
+                        
         default:
             return state
 
     }
 }
+
 
 
 const reducers = {
