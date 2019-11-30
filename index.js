@@ -66,26 +66,21 @@ const App = () => {
         console.log(deviceToken);
 
         const savedDeviceToken = await api.getDeviceToken()
+        console.log(savedDeviceToken)
 
         if (!savedDeviceToken) {
-            
             // update notification token on server
-            if (!state.user.notificationTokenUploaded) {
-                try {
-                    const deviceTokenUploaded = await api.uploadDeviceToken(deviceToken)
-                    dispatch({ type: Actions.user.setNotificationTokenUploaded, status: deviceTokenUploaded }) 
-                    api.setDeviceToken(deviceToken)
-                } catch (e) {     
-                    dispatch({ type: Actions.user.setNotificationTokenUploaded, status: false })  
-                }
-            } else {
-                dispatch({ type: Actions.user.setNotificationToken, notificationToken: deviceToken })
-            }
-
-            
+                const deviceTokenUploaded = await api.uploadDeviceToken(deviceToken)
+                api.setDeviceToken(deviceToken)  
+        } else {
+            if (savedDeviceToken != deviceToken) {
+                //update on server and keychain
+                const deviceTokenUploaded = await api.uploadDeviceToken(deviceToken)
+                api.setDeviceToken(deviceToken)
+            } 
         }
         
-        //check if registered, and then add listeners:
+   
         addNotificationsEventListeners();
 
 

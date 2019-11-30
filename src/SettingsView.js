@@ -91,25 +91,15 @@ const SettingsView = ({navigation}) => {
           setAccessToken(null)
 
         dispatch({ type: Actions.user.setListenForNotifications, listenForNotifications: false })
-        dispatch({ type: Actions.user.setNotificationToken, notificationToken: '' })
-        dispatch({ type: Actions.user.setNotificationTokenUploaded, status : false })
           
         navigation.navigate('Auth');
 
       })
       .catch(async (error) => {
         console.log("Log out cancelled",state.user.notificationToken);
-        
         const deviceToken = await api.getDeviceToken()
-        
         api.uploadDeviceToken(deviceToken)
-          .then(status => {
-            dispatch({ type: Actions.user.setNotificationTokenUploaded, status : true })
-          }).catch(e => {
-            console.log(e)
-          })
-        
-
+          
       });
       
     }).catch(e => {

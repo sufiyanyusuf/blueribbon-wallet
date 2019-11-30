@@ -68,16 +68,18 @@ const SignInView = ({ navigation }) => {
           audience: 'https://' + credentials.domain + '/userinfo',
           audience: 'https://blueribbon.io/api/user'
       })
-      .then(credentials => {
+      .then(async(credentials) => {
 
         SInfo.setItem("accessToken", credentials.accessToken, {});
-    
         setAccessToken(true)
-      
         navigation.navigate('App')
-
         dispatch({ type: Actions.user.setListenForNotifications, listenForNotifications: true })
- 
+        
+        const deviceToken = await api.getDeviceToken()
+        if (deviceToken) {
+          await api.uploadDeviceToken()  
+        }
+
       })
       .catch(error => console.log(error));
     

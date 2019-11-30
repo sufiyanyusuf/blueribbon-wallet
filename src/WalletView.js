@@ -141,7 +141,6 @@ const WalletView = ({ navigation }) => {
 
                 axios.get('https://3458a3ef.ngrok.io/api/user/isNew', config).then(response => {
 
-                    // update notification token on server
                     const newUser = response.data
                     if (newUser == true) {
                       return navigation.navigate('ProfileSetup')
