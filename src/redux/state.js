@@ -15,7 +15,7 @@ const state = {
         'newUser':false,
         'promptedForNotifications':true,
         'registeredForNotifications': false,
-        'listenForNotifications': true,
+        'listenForNotifications': false,
         'notificationToken':'',
         'notificationTokenUploaded':false,
     }

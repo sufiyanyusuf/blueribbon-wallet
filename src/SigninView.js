@@ -40,6 +40,8 @@ const SignInView = ({ navigation }) => {
           auth0.auth
             .userInfo({ token: accessToken })
             .then(data => {
+              
+              dispatch({ type: Actions.user.setListenForNotifications, listenForNotifications: true })
               setAccessToken(true)
               navigation.navigate('App');
 

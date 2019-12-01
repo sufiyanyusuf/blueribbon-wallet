@@ -32,34 +32,30 @@ const App = () => {
 
         console.log('listen for notif',shouldListenForNotifications)
 
+        NotificationsIOS.addEventListener('remoteNotificationsRegistered', onPushRegistered);
+        NotificationsIOS.addEventListener('remoteNotificationsRegistrationFailed', onPushRegistrationFailed);
+
         if (shouldListenForNotifications) {
-        
+            
+            console.log('adding')
+            setRegistered(true)
             AppState.addEventListener('change', _handleAppStateChange);
 
             if (isIOS) {
                 NotificationsIOS.requestPermissions();
-                NotificationsIOS.addEventListener('remoteNotificationsRegistered', onPushRegistered);
-                NotificationsIOS.addEventListener('remoteNotificationsRegistrationFailed', onPushRegistrationFailed);
-
-                return () => {
-                    NotificationsIOS.removeEventListener('remoteNotificationsRegistered', onPushRegistered);
-                    NotificationsIOS.removeEventListener('remoteNotificationsRegistrationFailed', onPushRegistrationFailed);      
-                }
+                console.log('req registration')
             }
             if (isAndroid) {
                 NotificationsAndroid.setRegistrationTokenUpdateListener(onPushRegistered);
             } 
-        } else {
-            
-            AppState.removeEventListener('change', _handleAppStateChange);
-
-        }
+        } 
         
     }, [shouldListenForNotifications])
 
     /*
         REGISTRATION
     */
+
 
     const onPushRegistered = async (deviceToken) => {
 
@@ -80,13 +76,11 @@ const App = () => {
             } 
         }
         
-   
-        addNotificationsEventListeners();
-
+        // addNotificationsEventListeners();
 
     };
     
-    const  onPushRegistrationFailed = error => {
+    const onPushRegistrationFailed = error => {
         console.log(error);
     };
     
@@ -96,8 +90,10 @@ const App = () => {
     */
     
 
-    _handleAppStateChange = async nextAppState => {
+    const _handleAppStateChange = async nextAppState => {
+
         console.log(nextAppState)
+
         if (appState.match(/inactive|background/) && nextAppState === 'active' && registered) {
           addNotificationsEventListeners();
           if (isIOS) {
@@ -120,7 +116,7 @@ const App = () => {
         LISTENERS SETUP / REMOVAL
     */
 
-    addNotificationsEventListeners = () => {
+    const addNotificationsEventListeners = () => {
         console.log('adding')
         if (isIOS) {
           NotificationsIOS.addEventListener('notificationReceivedForeground', onNotificationReceivedForeground);
@@ -133,15 +129,16 @@ const App = () => {
           NotificationsAndroid.setNotificationOpenedListener(onAndroidNotificationReceived);
         }
     };
-    
+  
+
     useEffect(() => {
         return () => {
             AppState.removeEventListener('change', _handleAppStateChange);
             if (isIOS) {
-              NotificationsIOS.removeEventListener('remoteNotificationsRegistered', onPushRegistered);
-              NotificationsIOS.removeEventListener('remoteNotificationsRegistrationFailed', onPushRegistrationFailed);
-              NotificationsIOS.removeEventListener('notificationReceivedForeground', onNotificationReceivedForeground);
-              NotificationsIOS.removeEventListener('notificationOpened', onNotificationOpened);
+                NotificationsIOS.removeEventListener('remoteNotificationsRegistered', onPushRegistered);
+                NotificationsIOS.removeEventListener('remoteNotificationsRegistrationFailed', onPushRegistrationFailed);
+                NotificationsIOS.removeEventListener('notificationReceivedForeground', onNotificationReceivedForeground);
+                NotificationsIOS.removeEventListener('notificationOpened', onNotificationOpened);
             }
         }
     },[])
@@ -150,11 +147,11 @@ const App = () => {
         LISTENERS HANDLERS
     */
 
-    onAndroidNotificationReceived = notification => {
+    const onAndroidNotificationReceived = notification => {
         console.log('Notification Received - Android ', notification);
     };
 
-    onNotificationReceivedForeground = (notification, completion) => {
+    const onNotificationReceivedForeground = (notification, completion) => {
         if (completion) {
         // completion({alert: true, sound: false, badge: false});
         }
@@ -162,7 +159,7 @@ const App = () => {
         // PushNotificationIOS.removeAllDeliveredNotifications();
     };
 
-    onNotificationReceivedBackground = (notification, completion) => {
+    const onNotificationReceivedBackground = (notification, completion) => {
         if (completion) {
         // completion({alert: true, sound: false, badge: false});
         }
@@ -170,7 +167,7 @@ const App = () => {
         // PushNotificationIOS.removeAllDeliveredNotifications();
     };
 
-    onNotificationOpened = (notification, completion, action) => {
+    const onNotificationOpened = (notification, completion, action) => {
         console.log('Notification opened by device user', notification);
         console.log(`Notification opened with an action identifier: ${action.identifier} and response text: ${action.text}`, notification,);
         completion();
