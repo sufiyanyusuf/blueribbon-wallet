@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useRef,useState, useEffect} from 'react';
 import {
     StyleSheet,
     Text,
@@ -6,38 +6,36 @@ import {
     TouchableOpacity,
   } from 'react-native';
 import FitImage from 'react-native-fit-image';
+import * as api from '.././utils/Api'
 
-const WalletCard = ({id,productTitle,brandName,logoUrl,remainingValue}) => {
+const WalletCard = ({ id, productTitle, brandName, logoUrl, remainingValue, showOptions}) => {
 
-    showOptions = ()=>{
-        console.log("showoptions");
-    }
+  return (
+    <View style={styles.CardContainer}>
+      <View style={styles.contentContainer}>
+          <View style={styles.cardHeader}>
+              <View style = {styles.cardHeaderTextContainer}>
+                  <Text style={styles.h3}>{brandName}</Text>
+                  <Text style={styles.caption}>{productTitle}</Text>
+              </View>
 
-    return (
-      <View style={styles.CardContainer}>
-        <View style={styles.contentContainer}>
-            <View style={styles.cardHeader}>
-                <View style = {styles.cardHeaderTextContainer}>
-                    <Text style={styles.h3}>{brandName}</Text>
-                    <Text style={styles.caption}>{productTitle}</Text>
-                </View>
+              <FitImage
+                resizeMode="contain"
+                source={{ uri: logoUrl }}
+                style={styles.fitImage}
+              />
 
-                <FitImage
-                  resizeMode="contain"
-                  source={{ uri: logoUrl }}
-                  style={styles.fitImage}
-                />
-
-            </View>
-          <Text style={styles.h1}>{remainingValue} Remaining</Text>
-        </View>
-          <TouchableOpacity style={styles.cta} onPress={()=>this.showOptions()}>
-            <Text style={styles.ctaText}> Manage Subscription </Text>
-          </TouchableOpacity>
+          </View>
+        <Text style={styles.h1}>{remainingValue} Remaining</Text>
       </View>
-    );
-}
+      <TouchableOpacity style={styles.cta} onPress={()=>showOptions(id)}>
+        <Text style={styles.ctaText}> Manage Subscription </Text>
+      </TouchableOpacity>
 
+
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
     CardContainer: {

@@ -45,7 +45,6 @@ target 'BlueRibbon' do
 
 
 
-  pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
 
 

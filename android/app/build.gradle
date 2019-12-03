@@ -188,7 +188,6 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-svg')
     implementation project(':react-native-firebase')
     implementation project(':@react-native-firebase_dynamic-links')
     implementation project(':react-native-maps')

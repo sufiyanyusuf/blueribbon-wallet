@@ -6,7 +6,11 @@ import {
     StyleSheet,
     ScrollView,
     RefreshControl,
-    SafeAreaView
+    SafeAreaView,
+    FlatList,
+    TouchableOpacity,
+    Dimensions,
+    Modal
 } from 'react-native';
 import SInfo from 'react-native-sensitive-info';
 import WalletCard from './components/WalletCard';
@@ -15,13 +19,18 @@ import { firebase } from '@react-native-firebase/dynamic-links';
 import * as api from './utils/Api'
 import {StateContext,DispatchContext} from './redux/contexts';
 import Actions from './redux/action';
+import SubscriptionOptionsView from "./SubscriptionOptionsView";
 
 const WalletView = ({ navigation }) => {
     
     const state = React.useContext(StateContext);
     const dispatch = React.useContext(DispatchContext);
-    
-    firebase.dynamicLinks().getInitialLink()
+    const [subscriptions,setSubscriptions] = useState([])
+    const [refreshing, setRefreshing] = React.useState(false);
+    const [selectedId, setSelectedId] = React.useState();
+    const [optionsVisible, setOptionsVisible] = useState(false)
+
+    firebase.dynamicLinks().getInitialLink()   
     .then((url) => {
         if (url) {
             console.log('dynamic link ',url)
@@ -50,10 +59,6 @@ const WalletView = ({ navigation }) => {
         }
     };
 
-
-    const [subscriptions,setSubscriptions] = useState([])
-    const [refreshing, setRefreshing] = React.useState(false);
-
     function wait(timeout) {
         return new Promise(resolve => {
             fetchSubscriptions()
@@ -68,7 +73,8 @@ const WalletView = ({ navigation }) => {
 
     
     const fetchSubscriptions = async () => {
-
+        //move this to api
+        console.log('fetching')
         SInfo.getItem("accessToken", {}).then(accessToken => {
         
             var config = {
@@ -77,27 +83,10 @@ const WalletView = ({ navigation }) => {
             try{
                 axios.get('https://3458a3ef.ngrok.io/api/subscriptions/',config)
                     .then(response => {
-                        console.log(response.data)
-
-                        var _subscriptions = []
-
-                        response.data.map ((subscription,index) => {
-
-                            _subscriptions = (_subscriptions.concat([<WalletCard 
-                                id = {subscription.id}
-                                key = {index.toString()} 
-                                productTitle = {subscription.title}
-                                brandName = {subscription.brand_name}
-                                logoUrl = {subscription.brand_logo}
-                                remainingValue = {subscription.value}
-                            />]))
-                            
-                        })
-
+                        var _subscriptions = response.data
+                        console.log(_subscriptions)
                         setSubscriptions(_subscriptions)
-
                     }
-
                 )
             }catch(e){
                 console.log(e)
@@ -157,32 +146,76 @@ const WalletView = ({ navigation }) => {
     
     },[])
 
+
+    const showOptions = (id) => {
+        setSelectedId(id)
+        setOptionsVisible(true)
+    }
+
+    const closeSheet = () => {
+        fetchSubscriptions()
+        setSelectedId(null)
+    }
+
+    const dismissSubscriptionOptions = () => {
+        console.log('dismiss')
+        setOptionsVisible(false)
+        fetchSubscriptions()
+        setSelectedId(null)
+    }
     
     return (
-        <SafeAreaView>
-            <ScrollView
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                }
+        <SafeAreaView style={styles.container}>
+            <FlatList
+                data={subscriptions}
+                keyExtractor={subscription => (subscription.id).toString()}
+                renderItem={({ item }) => <WalletCard 
+                    id = {item.id}
+                    productTitle = {item.title}
+                    brandName = {item.brand_name}
+                    logoUrl = {item.brand_logo}
+                    remainingValue={item.value}
+                    showOptions = {showOptions}
+                />}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            />    
+           
+            <Modal
+                animationType="slide"
+                transparent={false}
+                visible={optionsVisible}
+                presentationStyle="overFullScreen"
             >
-                <View style={styles.container}>
-                    {subscriptions}
-                </View>
-            </ScrollView>
+                <SubscriptionOptionsView
+                    subscription = {(subscriptions.filter(sub => sub.id == selectedId))}    
+                    metaData={{ active: true, autoRenew: true, paused: false, expiry: 'Jan 19, 2020', lastPayment: 'Nov 19, 2020', brandName: 'Masafi' }}
+                    dismiss={dismissSubscriptionOptions}
+                    subscriptionId={selectedId}
+                />
+            </Modal>
+
         </SafeAreaView>
     )
-    
     
 }
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      marginTop:60,
-      marginBottom:40,
-      justifyContent: 'center',
-      alignItems: 'stretch',
-    }
+        flex: 1,
+    },
+    item: {
+        backgroundColor: '#f9c2ff',
+        padding: 20,
+        marginVertical: 8,
+        marginHorizontal: 16,
+    },
+    title: {
+        fontSize: 32,
+    },
+
 });
+
+
+
 
 export default WalletView;

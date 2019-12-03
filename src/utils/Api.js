@@ -127,4 +127,58 @@ export const checkLocationEligibility = async (location,token,listingId) => {
     })
 }
 
+export const pauseSubscription = async (subscriptionId) => {
+    return new Promise (async (resolve, reject) => {
+        try {
+            const token = await getToken()
 
+            var config = {
+                headers: {'Authorization': "bearer " + token}
+            };
+    
+            var bodyParams = {
+                subscriptionId:subscriptionId
+            }
+
+            let res = await axios.post('https://3458a3ef.ngrok.io/subscriptionManagment/pauseSubscription',bodyParams,config)
+                
+            if (res.status == 200) {
+                resolve(res.data)
+            } else {  
+                resolve(false)
+            }
+            console.log('done')
+        
+        }catch(e){
+            reject(e)
+        }
+    })
+}
+
+export const resumeSubscription = async (subscriptionId) => {
+    return new Promise (async (resolve, reject) => {
+        try {
+            const token = await getToken()
+
+            var config = {
+                headers: {'Authorization': "bearer " + token}
+            };
+    
+            var bodyParams = {
+                subscriptionId:subscriptionId
+            }
+
+            let res = await axios.post('https://3458a3ef.ngrok.io/subscriptionManagment/resumeSubscription',bodyParams,config)
+                
+            if (res.status == 200) {
+                resolve(res.data)
+            } else {  
+                resolve(false)
+            }
+            console.log('done')
+        
+        }catch(e){
+            reject(e)
+        }
+    })
+}

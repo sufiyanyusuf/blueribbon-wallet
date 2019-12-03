@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
 import WalletView from './WalletView';
+import ExploreView from './ExploreView';
 import UpcomingView from './UpcomingView';
 import SettingsView from './SettingsView';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
@@ -10,8 +11,10 @@ import { createStackNavigator } from 'react-navigation-stack';
 import PaymentConfirmation from './PaymentConfirmation'
 import AddLocationView from './AddLocationView'
 import ProfileSetupStack from './ProfileSetupNavigator';
-
+import SubscriptionOptionsView from './SubscriptionOptionsView'
+  
 const TabNavigator = createBottomTabNavigator({
+    Explore:ExploreView,
     Wallet:WalletView,
     Upcoming: UpcomingView,
     Settings: SettingsView,
@@ -53,6 +56,9 @@ const CoreStack = createStackNavigator(
     Confirmation:PaymentConfirmation,
     AddLocation: {
       screen: AddLocationView,
+    },
+    ManageSubscription: {
+      screen: SubscriptionOptionsView,
     }
   },
   {

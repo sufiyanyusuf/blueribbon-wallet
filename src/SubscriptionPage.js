@@ -333,7 +333,7 @@ const SubscriptionPage = ({navigation}) => {
                     label: listing.title,
                     amount: pricing.toString(),
                 }])
-            .then(stripeTokenInfo => {
+            .then(async (stripeTokenInfo) => {
 
             const value = getOrderValue(currentOrderSemantics) 
 
@@ -348,12 +348,12 @@ const SubscriptionPage = ({navigation}) => {
                 frequency:value.frequency
             }
             try{
-                axios.post('https://3458a3ef.ngrok.io/api/payment/new/applePay',bodyParams,config)
-                .then(res => {
-                    console.log(res)
-                    stripe.completeNativePayRequest()
-                    navigation.navigate('Home');
-                })
+                
+                const res = await axios.post('https://3458a3ef.ngrok.io/api/payment/new/applePay',bodyParams,config)
+                console.log(res)
+                stripe.completeNativePayRequest()
+                navigation.navigate('Home');
+                
             }catch(e){
                 console.log(e)
                 stripe.cancelNativePayRequest()
