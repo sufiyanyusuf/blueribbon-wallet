@@ -36,19 +36,19 @@ const UpcomingView = () => {
     
     return (
         <SafeAreaView style={styles.container}>
-                    <FlatList
-                        data={orders}
-                        ListHeaderComponent = {<Text style={styles.title}> Your Orders </Text>}
-                        keyExtractor={order => (order.id).toString()}
-                        renderItem={({ item }) =>
-                            <UpcomingCard
-                                id = {item.id}
-                                status={item.status}
-                                date={item.date}
-                                message={item.message}
-                            />}
-                        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-                    /> 
+            <FlatList
+                data={orders}
+                ListHeaderComponent = {<Text style={styles.title}> Your Orders </Text>}
+                keyExtractor={order => (order.id).toString()}
+                renderItem={({ item }) =>
+                    <UpcomingCard
+                        id = {item.id}
+                        status={item.status}
+                        date={item.date}
+                        message={item.message}
+                    />}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            /> 
                     
         </SafeAreaView>
     )

@@ -10,9 +10,10 @@ import {
     FlatList,
     TouchableOpacity,
     Dimensions,
-    Modal
-    
+    Modal,
+    Image
 } from 'react-native';
+import FitImage from 'react-native-fit-image';
 import SInfo from 'react-native-sensitive-info';
 import WalletCard from './components/WalletCard';
 import axios from 'axios';
@@ -21,6 +22,7 @@ import * as api from './utils/Api'
 import {StateContext,DispatchContext} from './redux/contexts';
 import Actions from './redux/action';
 import SubscriptionOptionsView from "./SubscriptionOptionsView";
+import RightArrowIcon from './assets/icons/general/rightArrow.png';
 
 const WalletView = ({ navigation }) => {
     
@@ -164,19 +166,139 @@ const WalletView = ({ navigation }) => {
         fetchSubscriptions()
         setSelectedId(null)
     }
+
+    const Cta = ({ brand, title, id, logoUrl, paused }) => {
+    
+        const styles = StyleSheet.create({
+            ctaTitle: {
+                fontFamily: "TTCommons-Bold",
+                fontSize: 20,
+                color: "#717585"
+            },
+            ctaSubtitle: {
+                fontFamily: "TTCommons-Regular",
+                fontSize: 18,
+                color: "#717585"
+            },
+            textContainer: {
+                flexDirection: "column",
+                alignItems: "baseline",
+                justifyContent:"center",
+            },
+            cta: {
+                flex:1,
+                borderRadius:20,
+                backgroundColor: "#FAFAFA",
+                flexDirection:'row',
+                alignItems:"center",
+                justifyContent:"space-between",
+                color: "#717585",
+                padding: 15,
+                paddingRight:20,
+            },
+            container: {
+                flex: 1,
+                marginTop: 0,
+                margin:15
+            },
+            logo: {
+                height: 60,
+                width: 60,
+                borderRadius: 30,
+                overflow: 'hidden',
+                marginRight:15
+            },
+            pausedBadge: {
+                fontFamily: "TTCommons-Bold",
+                fontSize: 14,
+                color: "#EB3B4E",
+                letterSpacing:1
+            },
+            redDot: {
+                height:10,
+                width: 10,
+                borderRadius: 5,
+                backgroundColor: "#EB3B4E",
+                marginRight: 2,
+                marginLeft: 80
+            }
+        });
+
+        return (
+
+            <View style = {styles.container}>
+               
+                <TouchableOpacity onPress = {()=>showOptions(id)}>
+                    <View style={{ flexDirection: "row", flex:1}}>
+                            
+                        <View style={styles.cta}>
+                               
+                            <View style={{ flex:1, flexDirection:"column"}}>
+                                <View style={{ flexDirection: "row", alignItems: "center", justifyContent:"space-between" }}>
+                                    
+                                    <View style={{ flexDirection: "row", justifyContent:"flex-start" }}>
+
+                                        <Image
+                                            resizeMode="contain"
+                                            source={{ uri: logoUrl }}
+                                            style={styles.logo}
+                                        />
+                                        
+                                        <View style={styles.textContainer}>
+                                            <Text style={styles.ctaTitle}> {brand} </Text>
+                                            <Text style={styles.ctaSubtitle}> {title} </Text>
+                                            
+                                        </View>
+
+                                    </View>
+                            
+                                    <Image source={RightArrowIcon} />
+                                </View>
+
+                                <View>
+                                    {paused &&
+                                        <View style={{ flexDirection: "row" }}>
+                                            <View style={styles.redDot} />
+                                            <Text style={styles.pausedBadge}> PAUSED </Text> 
+                                        </View>
+                                        
+                                    }
+                                </View>
+                            </View>
+                            
+
+                            
+                        </View>
+
+                    </View>
+                </TouchableOpacity>
+            </View>
+            
+        )
+
+     
+    }
     
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
                 data={subscriptions}
+                ListHeaderComponent = {<Text style={styles.title}> Your Subscriptions </Text>}
                 keyExtractor={subscription => (subscription.id).toString()}
-                renderItem={({ item }) => <WalletCard 
-                    id = {item.id}
-                    productTitle = {item.title}
-                    brandName = {item.brand_name}
-                    logoUrl = {item.brand_logo}
-                    remainingValue={item.value}
-                    showOptions = {showOptions}
+                // renderItem={({ item }) => <WalletCard 
+                //     id = {item.id}
+                //     productTitle = {item.title}
+                //     brandName = {item.brand_name}
+                //     logoUrl = {item.brand_logo}
+                //     remainingValue={item.value}
+                //     showOptions = {showOptions}
+                // />}
+                renderItem = {({ item }) => <Cta 
+                    brand={item.brand_name}
+                    title={item.title}
+                    id={item.id}
+                    logoUrl={item.brand_logo}
+                    paused = {item.currentState.subscription_state === 'paused'}
                 />}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             />    
@@ -211,7 +333,15 @@ const styles = StyleSheet.create({
         marginHorizontal: 16,
     },
     title: {
-        fontSize: 32,
+        
+        fontFamily:"TTCommons-Bold",
+        fontSize: 36,
+        color: "#383B46",
+        letterSpacing: -1,
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingBottom: 25,
+        paddingTop:60
     },
 
 });
