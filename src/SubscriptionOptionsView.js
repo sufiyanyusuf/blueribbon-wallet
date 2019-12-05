@@ -39,18 +39,21 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
     const [title, setTitle] = useState("")
 
     useEffect(() => {
-        if (subscription.length > 0) {
-            setTitle(subscription[0].title)
-            if (subscription[0].currentState == "inactive") {
-                setActive(false)
-            }
-            if (subscription[0].currentState == "active") {
-                setActive(true)
-            }
-            if (subscription[0].currentState == "paused") {
-                setPaused(true)
-            }
+        console.log(subscription)
+
+        setTitle(subscription.title)
+
+        if (subscription.currentState.subscription_state == "inactive") {
+            setActive(false)
         }
+        if (subscription.currentState.subscription_state == "active") {
+            setActive(true)
+        }
+        if (subscription.currentState.subscription_state == "paused") {
+            setPaused(true)
+        }
+
+   
     }, [subscription])
     
     const pauseSubscription = async () => {
@@ -60,6 +63,7 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
                 setPaused(true)
                 animateHighlight()
                 const paused = await api.pauseSubscription(subscriptionId)
+                console.log(paused)
                 if (paused == false) {
                     setPaused(false)
                 }
@@ -371,12 +375,12 @@ const styles = StyleSheet.create({
     },
     ctaTitle: {
         fontFamily:"TTCommons-Bold",
-        fontSize: 18,
+        fontSize: 20,
         color:"#717585"
     },
     ctaSubtitle: {
         fontFamily:"TTCommons-Regular",
-        fontSize: 16,
+        fontSize: 18,
         color:"#717585"
     },
     cta: {

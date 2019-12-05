@@ -81,6 +81,29 @@ export const removeDeviceToken = async () => {
     })
 }
 
+export const getUpcomingOrders = async () => {
+    
+    return new Promise (async (resolve, reject) => {
+
+        try {
+
+            const token = await getToken()
+
+            var config = {
+                headers: {'Authorization': "bearer " + token}
+            };
+
+            axios.get('https://3458a3ef.ngrok.io/api/subscriptions/orders',config)
+            .then(res => {
+                console.log(res)
+                resolve(res.data)
+            })
+        }catch(e){
+            reject(e)
+        }
+    })
+}
+
 export const getUserLocations = async (token) => {
     
     return new Promise ((resolve, reject) => {
@@ -141,7 +164,7 @@ export const pauseSubscription = async (subscriptionId) => {
             }
 
             let res = await axios.post('https://3458a3ef.ngrok.io/subscriptionManagment/pauseSubscription',bodyParams,config)
-                
+               
             if (res.status == 200) {
                 resolve(res.data)
             } else {  

@@ -12,32 +12,76 @@ import PaymentConfirmation from './PaymentConfirmation'
 import AddLocationView from './AddLocationView'
 import ProfileSetupStack from './ProfileSetupNavigator';
 import SubscriptionOptionsView from './SubscriptionOptionsView'
-  
+import {Image} from 'react-native'; 
+
+import ExploreIcon from './assets/icons/tabBarIcons/explore.png';
+import SubscriptionsIcon from './assets/icons/tabBarIcons/subscriptions.png';
+import UpcomingIcon from './assets/icons/tabBarIcons/upcoming.png';
+import ProfileIcon from './assets/icons/tabBarIcons/profile.png';
+
 const TabNavigator = createBottomTabNavigator({
-    Explore:ExploreView,
-    Wallet:WalletView,
-    Upcoming: UpcomingView,
-    Settings: SettingsView,
-},{
-    defaultNavigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        const { routeName } = navigation.state;
-        let IconComponent = Ionicons;
-        let iconName;
-        if (routeName === 'Wallet') {
-          iconName = `ios-wallet`;
-        }else if (routeName === 'Upcoming') {
-          iconName = `ios-calendar`;
-        }else if (routeName === 'Settings') {
-          iconName = `ios-cog`;
-        }
-        
-        return <IconComponent name={iconName} size={25} color={tintColor} />;
-      },
-    }),
+  
+  Explore: {
+    screen: ExploreView,
+    navigationOptions: {
+      title: 'Explore',
+      tabBarIcon: ({tintColor}) => (<Image
+        source={ExploreIcon}
+        style={{ width: 26, height: 26, resizeMode: 'contain', tintColor:tintColor  }}
+      />)
+    },
+  },
+  Wallet: {
+    screen: WalletView,
+    navigationOptions: {
+      title: 'Wallet',
+      tabBarIcon: ({tintColor}) => (<Image
+        source={SubscriptionsIcon}
+        style={{ width: 26, height: 26, resizeMode: 'contain', tintColor:tintColor  }}
+      />)
+    },
+  },
+  Upcoming: {
+    screen: UpcomingView,
+    navigationOptions: {
+      title: 'Upcoming',
+      tabBarIcon: ({ tintColor }) => (
+        <Image
+          source={UpcomingIcon}
+          style={{ width: 26, height: 26, resizeMode: 'contain', tintColor:tintColor }}
+        />)
+    },
+  },
+  Settings: {
+    screen: SettingsView,
+    navigationOptions: {
+      title: 'Settings',
+      tabBarIcon: ({tintColor}) => (
+        <Image
+          source={ProfileIcon}
+          style={{ width: 26, height: 26, resizeMode: 'contain', tintColor:tintColor}}
+        />)
+    },
+  
+    },
+  },{
+ 
     tabBarOptions: {
-      activeTintColor: '#0A71F2',
-      inactiveTintColor: 'gray',
+      style: {
+        height: 60,
+        paddingTop: 10,
+        borderTopColor: "#EEEFF3",
+      },
+      labelStyle: {
+        fontFamily: "TTCommons-Regular",
+        fontSize: 12,
+        letterSpacing: 0.2,
+        paddingTop: 2,
+        marginBottom:0,
+      },
+      labelPosition:'below-icon',
+      activeTintColor: '#2C43A3',
+      inactiveTintColor: '#717585',
     },
   }
 );

@@ -188,7 +188,7 @@ const WalletView = ({ navigation }) => {
                 presentationStyle="fullScreen"
             >
                 <SubscriptionOptionsView
-                    subscription = {(subscriptions.filter(sub => sub.id == selectedId))}    
+                    subscription = {(subscriptions.filter(sub => sub.id == selectedId)[0])}    
                     metaData={{ active: true, autoRenew: true, paused: false, expiry: 'Jan 19, 2020', lastPayment: 'Nov 19, 2020', brandName: 'Masafi' }}
                     dismiss={dismissSubscriptionOptions}
                     subscriptionId={selectedId}
