@@ -38,7 +38,7 @@ const UpcomingView = () => {
         <SafeAreaView style={styles.container}>
             <FlatList
                 data={orders}
-                ListHeaderComponent = {<Text style={styles.title}> Your Orders </Text>}
+                ListHeaderComponent = {<Text style={styles.title}>Your Orders</Text>}
                 keyExtractor={order => (order.id).toString()}
                 renderItem={({ item }) =>
                     <UpcomingCard
@@ -48,8 +48,7 @@ const UpcomingView = () => {
                         message={item.message}
                     />}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-            /> 
-                    
+            />    
         </SafeAreaView>
     )
 
@@ -60,10 +59,6 @@ export default UpcomingView
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      marginTop:10,
-      marginBottom:40,
-      justifyContent: 'center',
-      alignItems: 'stretch',
     },
     title: {
         fontFamily:"TTCommons-Bold",
@@ -71,7 +66,7 @@ const styles = StyleSheet.create({
         color: "#383B46",
         letterSpacing: -1,
         paddingLeft: 30,
-        paddingRight: 30,
+        paddingRight: 50,
         paddingBottom: 25,
         paddingTop:60
     },

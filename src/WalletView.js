@@ -88,6 +88,7 @@ const WalletView = ({ navigation }) => {
                     .then(response => {
                         var _subscriptions = response.data
                         console.log(_subscriptions)
+                        _subscriptions.sort(function(a, b){return a.id - b.id});
                         setSubscriptions(_subscriptions)
                     }
                 )
@@ -172,12 +173,12 @@ const WalletView = ({ navigation }) => {
         const styles = StyleSheet.create({
             ctaTitle: {
                 fontFamily: "TTCommons-Bold",
-                fontSize: 20,
+                fontSize: 18,
                 color: "#717585"
             },
             ctaSubtitle: {
                 fontFamily: "TTCommons-Regular",
-                fontSize: 18,
+                fontSize: 16,
                 color: "#717585"
             },
             textContainer: {
@@ -199,7 +200,8 @@ const WalletView = ({ navigation }) => {
             container: {
                 flex: 1,
                 marginTop: 0,
-                margin:15
+                margin: 20,
+                marginBottom:15
             },
             logo: {
                 height: 60,
@@ -283,16 +285,8 @@ const WalletView = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <FlatList
                 data={subscriptions}
-                ListHeaderComponent = {<Text style={styles.title}> Your Subscriptions </Text>}
+                ListHeaderComponent = {<Text style={styles.title}>Your Subscriptions</Text>}
                 keyExtractor={subscription => (subscription.id).toString()}
-                // renderItem={({ item }) => <WalletCard 
-                //     id = {item.id}
-                //     productTitle = {item.title}
-                //     brandName = {item.brand_name}
-                //     logoUrl = {item.brand_logo}
-                //     remainingValue={item.value}
-                //     showOptions = {showOptions}
-                // />}
                 renderItem = {({ item }) => <Cta 
                     brand={item.brand_name}
                     title={item.title}
@@ -333,13 +327,12 @@ const styles = StyleSheet.create({
         marginHorizontal: 16,
     },
     title: {
-        
         fontFamily:"TTCommons-Bold",
         fontSize: 36,
         color: "#383B46",
         letterSpacing: -1,
         paddingLeft: 30,
-        paddingRight: 30,
+        paddingRight: 50,
         paddingBottom: 25,
         paddingTop:60
     },

@@ -80,13 +80,13 @@ const badgeStyles = StyleSheet.create({
     paddingLeft: 12,
     paddingRight: 10,
     paddingTop: 8,
-    paddingBottom: 4,
+    paddingBottom: 3,
     borderRadius:12
   },
   text: {
     fontFamily: "TTCommons-Bold",
-    fontSize: 14,
-    letterSpacing: 2,
+    fontSize: 12,
+    letterSpacing: 1.5,
   },
   due: {
     backgroundColor: "#FDEFA1", 
@@ -134,13 +134,13 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginRight:10,
     fontFamily:"TTCommons-Bold",
-    fontSize: 18,
+    fontSize: 16,
     color: "#717585",
     textAlign:"right"
   },
   message:{
     fontFamily:"TTCommons-Regular",
-    fontSize: 18,
+    fontSize: 16,
     color: "#383B46",
     marginRight:80
   },
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
 },
 ctaText:{
     fontFamily:"TTCommons-Bold",
-    fontSize: 20,
+    fontSize: 18,
     fontStyle: "normal",
     letterSpacing: 0,
     textAlign: "justify",

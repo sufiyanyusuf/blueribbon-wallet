@@ -375,12 +375,12 @@ const styles = StyleSheet.create({
     },
     ctaTitle: {
         fontFamily:"TTCommons-Bold",
-        fontSize: 20,
+        fontSize: 18,
         color:"#717585"
     },
     ctaSubtitle: {
         fontFamily:"TTCommons-Regular",
-        fontSize: 18,
+        fontSize: 16,
         color:"#717585"
     },
     cta: {
