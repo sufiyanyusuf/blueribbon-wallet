@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { 
     Text, 
     Button,
@@ -11,6 +11,8 @@ import {
     SafeAreaView,
     TouchableOpacity,
     Image,
+    ActivityIndicator,
+    Animated
 } from 'react-native';
 import * as api from './utils/Api'
 
@@ -21,10 +23,13 @@ import PaymentIcon from './assets/icons/subscriptionOptions/payment.png';
 import ResumeIcon from './assets/icons/subscriptionOptions/resume.png';
 import RenewNowIcon from './assets/icons/subscriptionOptions/renewNow.png';
 import CloseIcon from './assets/icons/subscriptionOptions/close.png';
+import { Easing } from 'react-native-reanimated';
 
 
 
 const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,subscription }) => { 
+    
+   
 
     // const metaData = navigation.getParam('metaData')
     const [active,setActive] = useState(metaData.active)
@@ -33,7 +38,6 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
     const [loading, setLoading] = useState(false)
     const [title, setTitle] = useState("")
 
-    console.log(subscription)
     useEffect(() => {
         if (subscription.length > 0) {
             setTitle(subscription[0].title)
@@ -51,23 +55,38 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
     
     const pauseSubscription = async () => {
         try {
-            setLoading(true)
-            const paused = await api.pauseSubscription(subscriptionId)
-            setPaused (paused)
+            if (loading == false) {
+                setLoading(true)
+                setPaused(true)
+                animateHighlight()
+                const paused = await api.pauseSubscription(subscriptionId)
+                if (paused == false) {
+                    setPaused(false)
+                }
+                setLoading(false)
+            }
         } catch (e) {
             console.log(e)
+            setPaused(false)
             setLoading(false)
         }
     }
 
     const resumeSubscription = async () => {
         try {
-            setLoading(true)
-            const resumed = await api.resumeSubscription(subscriptionId)
-            setPaused(!resumed)
-            setLoading(false)
+            if (loading == false) {
+                setLoading(true)
+                setPaused(false)
+                animateUnHighlight()
+                const resumed = await api.resumeSubscription(subscriptionId)
+                if (resumed == false) {
+                    setPaused(true)
+                }
+                setLoading(false)
+            }
         } catch (e) {
             console.log(e)
+            setPaused(true)
             setLoading(false)
         }
     }
@@ -92,26 +111,113 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
         
     }
 
+    const animateHighlight = () => {
+        Animated.timing(pausedShadowAnim, {
+            toValue: 0.10,
+            duration: 500,
+        }).start();
+    }
 
-    const Cta = ({ title, subtitle, highlighted, action, icon }) => {
+    const animateUnHighlight = () => {
+        Animated.timing(pausedShadowAnim, {
+            toValue: 0,
+            duration: 500,
+        }).start();
+
+    }
+
+    const [fadeAnim] = useState(new Animated.Value(0))
+    const [scaleXAnim] = useState(new Animated.Value(0.85))
+    const [scaleYAnim] = useState(new Animated.Value(0.75))
+
+    const [pausedShadowAnim] = useState(new Animated.Value(0))
+
+    const Cta = ({ title, subtitle, highlighted, action, icon, ctaKey }) => {
+        
+        
+        useEffect(() => { 
+
+            if (highlighted == true) {
+                console.log(highlighted)    
+                    Animated.spring(pausedShadowAnim,{
+                        toValue: 0.12,
+                        velocity: 2,
+                        friction: 5,
+                        tension: 5,
+                    }).start()
+            }
+
+            let sequence = Animated.sequence([
+              
+                Animated.parallel([
+                    Animated.spring(fadeAnim,{
+                        toValue: 1,
+                        tension: ctaKey*1,
+                        friction:ctaKey*80,
+                        delay:15*ctaKey
+                    }),
+                    Animated.spring(scaleXAnim, {
+                        delay:15*ctaKey,
+                        tension: ctaKey*1,
+                        friction:ctaKey*50,
+                        toValue: 1, 
+                    }),
+                    Animated.spring(scaleYAnim, {
+                        delay:15*ctaKey,
+                        tension: ctaKey*1,
+                        friction:ctaKey*50,
+                        toValue: 1, 
+                    }) 
+                ]),
+            ])
+           
+            sequence.start()
+
+        }, [])
+
+    
         return (
-            <TouchableOpacity
-                style={[styles.cta, (highlighted == true) ? styles.ctaHighlighted : null]}
-                onPress={action}
-                disabled = {loading}
+
+            <Animated.View 
+                style={{
+                    opacity: fadeAnim, 
+                    transform: [{scaleX: scaleXAnim},{scaleY: scaleYAnim}]
+                }}
             >
-                <Image source={icon} />
-                <View style={styles.textContainer}>
-                    <Text style={styles.ctaTitle}> {title} </Text>
-                    <Text style={styles.ctaSubtitle}> {subtitle} </Text>
-                </View>
-            </TouchableOpacity>
+                
+               
+                <TouchableOpacity onPress={action} activeOpacity = {0.8}>
+                    
+                    <Animated.View style={[styles.cta, {
+                         shadowRadius: 25,
+                         shadowOffset: {
+                             width: 0,
+                             height: 3
+                         },
+                         shadowOpacity: ctaKey == 1 ? pausedShadowAnim:0
+                    }]}>
+                    
+                        <Image source={icon} />
+                        <View style={styles.textContainer}>
+                            <Text style={styles.ctaTitle}> {title} </Text>
+                            <Text style={styles.ctaSubtitle}> {subtitle} </Text>
+                        </View>
+                        
+                    </Animated.View>
+
+                </TouchableOpacity>
+               
+
+          
+            
+            </Animated.View>
+            
         )
     }
 
     return (
 
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <TouchableOpacity
                 style={styles.closeCta}
                 onPress={dismiss}
@@ -129,6 +235,7 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
                             highlighted={true}
                             action={resumeSubscription}
                             icon={ResumeIcon}
+                            ctaKey={1}
                         />
                         ):(
                         <Cta
@@ -137,6 +244,7 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
                             highlighted={false}
                             action={pauseSubscription}
                             icon={PauseIcon}
+                            ctaKey={1}
                         />     
                     ) 
                 ):(null)
@@ -150,6 +258,7 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
                             highlighted={false}
                             action={cancelAutoRenew}
                             icon={RenewIcon}
+                            ctaKey={3}
                         />
                     ): (
                         <Cta
@@ -158,6 +267,7 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
                             highlighted={true}
                             action={enableAutoRenew}
                             icon={RenewIcon}
+                            ctaKey={3}
                         />
                     )
                 
@@ -168,6 +278,7 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
                         highlighted={true}
                         action={renewSubscription}
                         icon={RenewNowIcon}
+                        ctaKey={3}
                     />   
                 )
 
@@ -179,6 +290,7 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
                 highlighted={false}
                 action={showReceipt}
                 icon={PaymentIcon}
+                ctaKey={6}
             /> 
             <Cta
                 title="Got A Problem ?"
@@ -186,6 +298,7 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
                 highlighted={false}
                 action={showChat}
                 icon={MessageIcon}
+                ctaKey={9}
             /> 
 
             
@@ -193,14 +306,18 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
             <Text style = {styles.subscriptionDate}> Subscribed on Nov 21, 2019</Text>
 
             </View>
-        </SafeAreaView>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     closeCta: {
-        marginTop: 10,
-        marginLeft:20
+        marginTop: 0,
+        marginLeft: 0,
+        paddingTop: 30,
+        paddingLeft: 25,
+        paddingRight: 25,
+        paddingBottom:30
     },
     textContainer: {
         flexDirection: "column",
@@ -298,6 +415,7 @@ const styles = StyleSheet.create({
       color: "#ffffff",
     },
     
-  })
+})
+  
 
 export default SubscriptionOptionsView;

@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, StyleSheet } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, SafeAreaView } from 'react-native';
 import UpcomingCard from './components/UpcomingCard';
 
 export default class UpcomingView extends Component {
     render() {
         return (
-            <ScrollView>
-                <View style={styles.container}>
-                    <UpcomingCard/>
-                    <UpcomingCard/>
-                    <UpcomingCard/>
-                </View>
-            </ScrollView>
+            <SafeAreaView>
+                <ScrollView>
+                    <Text style={styles.title}> Your Orders </Text>
+                    <View style={styles.container}>
+                        <UpcomingCard/>
+                        <UpcomingCard/>
+                        <UpcomingCard/>
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
         )
     }
 }
@@ -23,5 +26,15 @@ const styles = StyleSheet.create({
       marginBottom:40,
       justifyContent: 'center',
       alignItems: 'stretch',
-    }
+    },
+    title: {
+        fontFamily:"TTCommons-Bold",
+        fontSize: 36,
+        color: "#383B46",
+        letterSpacing: -1,
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingBottom: 10,
+        paddingTop:60
+    },
 });

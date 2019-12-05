@@ -11,6 +11,7 @@ import {
     TouchableOpacity,
     Dimensions,
     Modal
+    
 } from 'react-native';
 import SInfo from 'react-native-sensitive-info';
 import WalletCard from './components/WalletCard';
@@ -184,7 +185,7 @@ const WalletView = ({ navigation }) => {
                 animationType="slide"
                 transparent={false}
                 visible={optionsVisible}
-                presentationStyle="overFullScreen"
+                presentationStyle="fullScreen"
             >
                 <SubscriptionOptionsView
                     subscription = {(subscriptions.filter(sub => sub.id == selectedId))}    

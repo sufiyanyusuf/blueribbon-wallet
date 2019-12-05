@@ -1,9 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
-    Alert,
-    AppRegistry,
-    Button,
-    Platform,
     StyleSheet,
     Text,
     View,
@@ -11,57 +7,55 @@ import {
   } from 'react-native';
 import FitImage from 'react-native-fit-image';
 
-export default class UpcomingCard extends Component {
-    constructor(props) {
-      super(props);
-    }
+const UpcomingCard = ({status,brand,date,message }) => {
 
-    showOptions(){
-        console.log("showoptions");
-    }
+  const showOptions = () => {
+    console.log("showoptions");
+  }
 
-    render() {
-        return (
-          <View style={styles.CardContainer}>
-            <View style={styles.contentContainer}>
-                <View style={styles.cardHeader}>
-                    <View>
-                        <Text style={styles.h3}>Brand Name</Text>
-                        <Text style={styles.caption}>Product Name</Text>
-                    </View>
-                    <View>
-                        <FitImage style={styles.graphic} resizeMode={'contain'} source={require('../assets/logo_sample.png')}/>
-                    </View>
-                </View>
-                <View>
-                    <Text style={styles.h1}>Date</Text>
-                    <Text style={styles.h3}>Timeslot</Text>
-                </View>
-                <View style = {styles.addressContainer}>
-                    <Text style={styles.caption}>Address</Text>
-                </View>
-            </View>
-              <TouchableOpacity style={styles.cta} onPress={()=>this.showOptions()}>
-               <Text style={styles.ctaText}> Manage Delivery </Text>
-             </TouchableOpacity>
+  const StatusBadge = (status) => {
+    return (
+      <View>
+      </View>
+    )
+  }
+
+  return (
+    <View style={styles.CardContainer}>
+      <View style={styles.contentContainer}>
+          <View style={styles.cardHeader}>
+              <View>
+                  <Text style={styles.h3}>Brand Name</Text>
+                  <Text style={styles.caption}>Product Name</Text>
+              </View>
+              <View>
+                  <FitImage style={styles.graphic} resizeMode={'contain'} source={require('../assets/logo_sample.png')}/>
+              </View>
           </View>
-        );
-    }
+          <View>
+              <Text style={styles.h1}>Date</Text>
+              <Text style={styles.h3}>Timeslot</Text>
+          </View>
+          <View style = {styles.addressContainer}>
+              <Text style={styles.caption}>Address</Text>
+          </View>
+      </View>
+        <TouchableOpacity style={styles.cta} onPress={()=>showOptions()}>
+          <Text style={styles.ctaText}> Manage Delivery </Text>
+        </TouchableOpacity>
+    </View>
+  );
+    
 }
+
+export default UpcomingCard;
 
 const styles = StyleSheet.create({
     CardContainer: {
       flex: 1,
       margin:20,
       backgroundColor: '#FFFFFF',
-      shadowRadius: 8,
-      shadowOpacity: 0.15,
       borderRadius: 20,
-      shadowOffset: {
-        width: 0,
-        height: 3
-      },
-      elevation: 5,
       alignItems: 'stretch'
     },
     contentContainer:{
