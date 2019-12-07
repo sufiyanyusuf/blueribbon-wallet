@@ -17,21 +17,22 @@ const ExploreCard = ({ listing, goToListing, parallaxProps }) => {
     const logoUrl = "https://storage.googleapis.com/blueribbon/Copy%20of%20mnslogo-1.jpg"
     const prodUrl = "https://storage.googleapis.com/blueribbon/71.2_d0b4c0d1-0b20-44a9-9d83-9a245715f16c_2048x.jpg"
 
+
   return (
       <View style={styles.CardContainer}>
           
           <View style={styles.cardHeader}>
             <FitImage
                 resizeMode="contain"
-                source={{ uri: logoUrl }}
+                source={{ uri: listing.organization.logo }}
                 style={styles.fitImageWithSize}
             />
-            <Text style={styles.title}>Bloombox For Babies</Text>
-            <Text style={styles.caption}>Starting from AED 75 / Week</Text>   
+            <Text style={styles.title}>{listing.title}</Text>
+            <Text style={styles.caption}>By {listing.organization.title}</Text>   
           </View>
    
           <ParallaxImage
-              source={{ uri: prodUrl }}
+              source={{ uri: listing.productInfo.image_url }}
               containerStyle={styles.imageContainer}
               style={styles.productImage}
               parallaxFactor = {0.15}
@@ -40,7 +41,7 @@ const ExploreCard = ({ listing, goToListing, parallaxProps }) => {
           </ParallaxImage>
 
         <View style={styles.cardFooter}>    
-            <TouchableOpacity style={styles.cta} onPress={goToListing}>
+            <TouchableOpacity style={styles.cta} onPress={()=>goToListing(listing.id)}>
                   <Text style={styles.ctaText}>View Details</Text>
                   <Image style={styles.ctaIcon}source={RightArrowIcon}/>
             </TouchableOpacity>

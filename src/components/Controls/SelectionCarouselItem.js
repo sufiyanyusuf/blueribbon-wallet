@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         flex: 1,
         borderWidth:3,
         borderRadius: 25,
-        borderColor:"#0A71F2",
+        borderColor:"#2C43A3",
         shadowRadius: 6,
         shadowOpacity: 0.20,
         shadowOffset: {
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     },
     item_title_checked:{
         fontFamily: "TTCommons-Bold",
-        color: "#0A71F2",
+        color: "#2C43A3",
     },
     title:{
         fontFamily:"TTCommons-Bold",

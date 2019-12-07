@@ -278,7 +278,7 @@ styles = StyleSheet.create({
   title:{
     fontFamily: "TTCommons-Bold",
     fontSize: 36,
-    color: "#0A71F2"
+    color: "#2C43A3"
   },
   subtitle:{
     fontFamily: "TTCommons-Bold",

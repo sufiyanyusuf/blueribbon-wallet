@@ -37,6 +37,7 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
     const [autoRenew,setAutorenew] = useState(metaData.autoRenew)
     const [loading, setLoading] = useState(false)
     const [title, setTitle] = useState("")
+    const [subscriptionStatus, setSubscriptionStatus] = useState ("PAUSED")
 
     useEffect(() => {
         console.log(subscription)
@@ -44,12 +45,15 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
         setTitle(subscription.title)
 
         if (subscription.currentState.subscription_state == "inactive") {
+            setSubscriptionStatus("EXPIRED")
             setActive(false)
         }
         if (subscription.currentState.subscription_state == "active") {
+            setSubscriptionStatus("ACTIVE")
             setActive(true)
         }
         if (subscription.currentState.subscription_state == "paused") {
+            setSubscriptionStatus("PAUSED")
             setPaused(true)
         }
 
@@ -61,6 +65,7 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
             if (loading == false) {
                 setLoading(true)
                 setPaused(true)
+                setSubscriptionStatus("PAUSED")
                 animateHighlight()
                 const paused = await api.pauseSubscription(subscriptionId)
                 console.log(paused)
@@ -71,6 +76,7 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
             }
         } catch (e) {
             console.log(e)
+            setSubscriptionStatus("ACTIVE")
             setPaused(false)
             setLoading(false)
         }
@@ -81,6 +87,7 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
             if (loading == false) {
                 setLoading(true)
                 setPaused(false)
+                setSubscriptionStatus("ACTIVE")
                 animateUnHighlight()
                 const resumed = await api.resumeSubscription(subscriptionId)
                 if (resumed == false) {
@@ -90,6 +97,7 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
             }
         } catch (e) {
             console.log(e)
+            setSubscriptionStatus("PAUSED")
             setPaused(true)
             setLoading(false)
         }
@@ -230,7 +238,17 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
             </TouchableOpacity>
         <View style={styles.container}>
                 <Text style={styles.title}> {title} </Text>
-            <Text style = {styles.status}> STATUS</Text>
+
+                {subscriptionStatus === "PAUSED" &&
+                    <Text style={[styles.status,styles.pausedTextStatus]}>{subscriptionStatus}</Text>
+                }
+                {subscriptionStatus === "ACTIVE" &&
+                    <Text style={styles.status}>{subscriptionStatus}</Text>
+                }
+                {subscriptionStatus === "EXPIRED" &&
+                    <Text style={[styles.status, styles.expiredTextStatus]}>{subscriptionStatus}</Text>
+                }
+
                 {active ? (
                     (active && paused == true) ? (
                         <Cta
@@ -289,7 +307,7 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
             }
             
             <Cta
-                title="Payment Receipt"
+                title="Order & Receipt"
                 subtitle={"Last payment on " + metaData.lastPayment}
                 highlighted={false}
                 action={showReceipt}
@@ -298,15 +316,13 @@ const SubscriptionOptionsView = ({ navigation,subscriptionId,metaData,dismiss,su
             /> 
             <Cta
                 title="Got A Problem ?"
-                subtitle={"Message " + metaData.brandName}
+                subtitle={"Message " + subscription.brand_name}
                 highlighted={false}
                 action={showChat}
                 icon={MessageIcon}
                 ctaKey={9}
             /> 
 
-            
-            
             <Text style = {styles.subscriptionDate}> Subscribed on Nov 21, 2019</Text>
 
             </View>
@@ -349,10 +365,16 @@ const styles = StyleSheet.create({
     status: {
         fontFamily:"TTCommons-Bold",
         fontSize: 14,
-        color: "#FF0000",
+        color: "#13936C",
         letterSpacing: 2,
         textAlign: "center",
         paddingBottom:50
+    },
+    pausedTextStatus: {
+        color: "#EB3B4E",
+    },
+    expiredTextStatus: {
+        color: "#888888",
     },
     subscriptionDate: {
         paddingTop: 40,
@@ -402,7 +424,7 @@ const styles = StyleSheet.create({
       paddingRight: 20,
       paddingLeft: 20,
       borderRadius:35,
-      backgroundColor: "#0A71F2",
+      backgroundColor: "#2C43A3",
       color: "#4a4a4a",
       flexDirection:'row',
       alignItems:'center',

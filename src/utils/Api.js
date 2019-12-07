@@ -104,6 +104,28 @@ export const getUpcomingOrders = async () => {
     })
 }
 
+export const getListings = async () => {
+    
+    return new Promise (async (resolve, reject) => {
+
+        try {
+
+            const token = await getToken()
+
+            var config = {
+                headers: {'Authorization': "bearer " + token}
+            };
+
+            axios.get('https://3458a3ef.ngrok.io/api/listing/',config)
+            .then(res => {
+                resolve(res.data)
+            })
+        }catch(e){
+            reject(e)
+        }
+    })
+}
+
 export const getUserLocations = async (token) => {
     
     return new Promise ((resolve, reject) => {

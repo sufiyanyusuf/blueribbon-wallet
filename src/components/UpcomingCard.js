@@ -19,7 +19,7 @@ const UpcomingCard = ({id,status,date,message }) => {
     return (
       <View>
 
-        {status == "initiated" &&
+        {(status == "initiated" || status == "pending") &&
           <View style={[badgeStyles.container,badgeStyles.due]}>
             <Text style={[badgeStyles.text,badgeStyles.dueText]}>DUE</Text>
           </View>

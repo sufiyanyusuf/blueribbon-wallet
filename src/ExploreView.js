@@ -11,21 +11,35 @@ import globalStyles from './assets/GlobalStyles';
 import UpcomingCard from './components/UpcomingCard';
 import Carousel from 'react-native-snap-carousel';
 import ExploreCard from './components/ExploreCard'
+import * as api from './utils/Api'
+
 const ExploreView = ({ navigation }) => {
 
-    const [currentIndex,setCurrentIndex] = useState(0)
+    const [listings, setListings] = useState([])
+    
+    useEffect(() => {
+        let getListings = async () => {
+            try {
+                let listings = await api.getListings()
+                setListings(listings)
+            } catch (e) {
+                console.log(e)            
+            }
+        }
+        getListings()
+    },[])
     
     // center items on screen
     const { width } = Dimensions.get('window');
     const cardWidth = width-50
     const contentOffset = (width - cardWidth);
 
-    const data = [{ key: 1, value: '1' }, { key: 2, value: '2' }, { key: 3, value: '3' }, { key: 4, value: '4' }, { key: 5, value: '4' }, { key: 6, value: '4' }]
     
     const _renderItem = ({item, index}, parallaxProps) => {
         return (
             <View style={styles.carouselCardContainer}>
                 <ExploreCard
+                    listing={item}
                     goToListing={goToListing}
                     parallaxProps = {parallaxProps}
                 />
@@ -33,8 +47,9 @@ const ExploreView = ({ navigation }) => {
         );
     }
 
-    const goToListing = (id = 4) => {
-        navigation.navigate('LandingPage',{id:4})
+    const goToListing = (id) => {
+        console.log(id)
+        navigation.navigate('LandingPage',{id:id})
     }
 
     return (
@@ -42,7 +57,7 @@ const ExploreView = ({ navigation }) => {
 
             <View style={styles.carouselContainer}>
                 <Carousel
-                    data={data}
+                    data={listings}
                     renderItem={_renderItem}
                     sliderWidth={width}
                     itemWidth={cardWidth}

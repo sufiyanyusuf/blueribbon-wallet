@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         height: 50,
         width: 50,
         borderRadius: 25,
-        backgroundColor: "#0A71F2",
+        backgroundColor: "#2C43A3",
         color: "#4a4a4a",
         alignItems:'center',
         justifyContent:'space-around'

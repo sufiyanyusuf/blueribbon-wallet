@@ -79,7 +79,7 @@ styles = StyleSheet.create({
     paddingTop:5,
     height: 60,
     borderRadius: 30,
-    backgroundColor: "#0A71F2",
+    backgroundColor: "#2C43A3",
     flexDirection:'row',
     alignItems:'center',
     justifyContent:"center",
@@ -128,7 +128,7 @@ styles = StyleSheet.create({
   title:{
     fontFamily: "TTCommons-Bold",
     fontSize: 36,
-    color: "#0A71F2"
+    color: "#2C43A3"
   },
   subtitle:{
     fontFamily: "TTCommons-Bold",

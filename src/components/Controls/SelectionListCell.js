@@ -75,15 +75,15 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderStyle: "solid",
         borderWidth: 3,
-        borderColor: "#0A71F2",
+        borderColor: "#2C43A3",
         backgroundColor: "#ffffff",
     },
     checkbox_checked:{
-        backgroundColor: "#0A71F2",
+        backgroundColor: "#2C43A3",
     },
     item_title_checked:{
         fontFamily: "TTCommons-Bold",
-        color: "#0A71F2",
+        color: "#2C43A3",
     },
     title:{
         fontFamily:"TTCommons-Bold",
